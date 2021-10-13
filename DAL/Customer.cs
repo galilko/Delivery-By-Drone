@@ -8,23 +8,22 @@ namespace IDAL
 {
     namespace DO
     {
-        struct BaseStation
+        class Customer
         {
-            private int x;
             public int Id { get; set; }
             public string Name { get; set; }
+            public string Phone { get; set; }
             public double Longitude { get; set; }
             public double Lattitude { get; set; }
-            public int ChargeSlots { get; set; }
             public override string ToString()
             {
-                string result = "";
-                result += $"Id: {Id} \n ";
-                result += $"Name: {Name} \n ";
-                result += $"Longitude: {Longitude} \n ";
-                result += $"Lattitude: {Lattitude} \n ";
-                result += $"Num of charge slots: {ChargeSlots} \n ";
-                return result;
+                string str = "";
+                str += $"Id: {Id}";
+                str += $"Name: {Name}";
+                str += $"Phone: {Phone}";
+                str += $"Longitude: {Longitude}";
+                str += $"Lattitude: {Lattitude}";
+                return str;
             }
         }
     }
