@@ -20,7 +20,7 @@ namespace IDAL
             maintenance,
             delivery
         }
-        enum Priority
+        enum Priorities
         {
             normal,
             fast,
