@@ -10,7 +10,6 @@ namespace IDAL
     {
         struct BaseStation
         {
-            private int x;
             public int Id { get; set; }
             public string Name { get; set; }
             public double Longitude { get; set; }
