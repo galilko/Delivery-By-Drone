@@ -8,7 +8,7 @@ namespace IDAL
 {
     namespace DO
     {
-        struct BaseStation
+        public struct BaseStation
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -18,11 +18,11 @@ namespace IDAL
             public override string ToString()
             {
                 string result = "";
-                result += $"Id: {Id} \n ";
-                result += $"Name: {Name} \n ";
-                result += $"Longitude: {Longitude} \n ";
-                result += $"Lattitude: {Lattitude} \n ";
-                result += $"Num of charge slots: {FreeChargeSlots} \n ";
+                result += $"Id:\t\t\t {Id}\n";
+                result += $"Name:\t\t\t {Name}\n";
+                result += $"Longitude:\t\t {Longitude}\n";
+                result += $"Lattitude:\t\t {Lattitude}\n";
+                result += $"Num of charge slots:\t {FreeChargeSlots}\n";
                 return result;
             }
         }

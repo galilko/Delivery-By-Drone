@@ -24,28 +24,42 @@ namespace DalObject
             internal static int NewParcelId = 0;
         }
 
+        static Random _R = new Random();
+        static T RandomEnumValue<T>()
+        {
+            var v = Enum.GetValues(typeof(T));
+            return (T)v.GetValue(_R.Next(v.Length));
+        }
+
         public static void Initialize()
         {
-            //   Drone[] drones[0] = {1, "",decimal, decimal, 55}
-            DronesArr[0] = new Drone() { Id = Config.DroneIndex++, Model = "a", MaxWeight = WeightCategories.Heavy, Status = DroneStatusCategories.Free, Battery = 25.2 };
-            DronesArr[1] = new Drone() { Id = Config.DroneIndex++, Model = "b", MaxWeight = WeightCategories.Heavy, Status = DroneStatusCategories.Free, Battery = 45.2 };
-            DronesArr[2] = new Drone() { Id = Config.DroneIndex++, Model = "c", MaxWeight = WeightCategories.Light, Status = DroneStatusCategories.Delivery, Battery = 82.54 };
-            DronesArr[3] = new Drone() { Id = Config.DroneIndex++, Model = "d", MaxWeight = WeightCategories.Light, Status = DroneStatusCategories.Maintenance, Battery = 85.32 };
-            DronesArr[4] = new Drone() { Id = Config.DroneIndex++, Model = "e", MaxWeight = WeightCategories.Medium, Status = DroneStatusCategories.Delivery, Battery = 0 };
-
+            Random rand = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                DronesArr[i] = new Drone()
+                {
+                    Id = Config.DroneIndex++,
+                    Model = "mod" + i.ToString(),
+                    MaxWeight = RandomEnumValue<WeightCategories>(),
+                    Status = RandomEnumValue<DroneStatusCategories>(),
+                    Battery = rand.NextDouble() * 100
+                };
+            }
             BaseStationsArr[0] = new BaseStation() { Id = Config.BaseStationIndex++, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 };
             BaseStationsArr[1] = new BaseStation() { Id = Config.BaseStationIndex++, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 };
 
-            Random rand = new Random();
+            String[] maleNames = { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian" };
+            String[] lastNames = { "abbott", "acosta", "adams", "adkins", "aguilar" };
+
             for (int i = 0; i < 10; i++)
             {
                 CustomersArr[i] = new Customer()
                 {
                     Id = rand.Next(100000000, 999999999),
-                    Name = "Gal Gabay",
+                    Name = maleNames[rand.Next(maleNames.Length)] + " " + lastNames[rand.Next(lastNames.Length)],
                     Lattitude = rand.NextDouble() * (33.4188709641265 - 29.49970431757609) + 29.49970431757609,
                     Longitude = rand.NextDouble() * (35.89927249423983 - 34.26371323423407) + 34.26371323423407,
-                    Phone = "05" + rand.Next(0, 99999999).ToString()
+                    Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1,"-")
                 };
                 Config.CustomerIndex++;
             }

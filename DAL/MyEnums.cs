@@ -9,25 +9,25 @@ namespace IDAL
 {
     namespace DO
     {
-        enum WeightCategories
+        public enum WeightCategories
         {
             [Description("light")]
-            Light,
+            Light = 0,
             [Description("medium")]
-            Medium,
+            Medium = 1,
             [Description("heavy")]
-            Heavy
+            Heavy = 2
         }
-        enum DroneStatusCategories
+        public enum DroneStatusCategories
         {
             [Description("free")]
-            Free,
+            Free = 0,
             [Description("maintenance")]
-            Maintenance,
+            Maintenance = 1,
             [Description("delivery")]
-            Delivery
+            Delivery = 2
         }
-        enum Priorities
+        public enum Priorities
         {
             [Description("normal")]
             Normal,
