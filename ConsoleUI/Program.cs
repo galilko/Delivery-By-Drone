@@ -6,7 +6,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DalObject.DalObject dal = new DalObject.DalObject(1);
+            
+            Console.WriteLine("cscc");
         }
     }
 }
