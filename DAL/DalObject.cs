@@ -13,21 +13,27 @@ namespace DalObject
         {
             DataSource.Initialize();
         }
-        public void GetCustomersArr()
+        public void PrintAllCustomers()
         {
             for (int i = 0; i < DataSource.Config.CustomerIndex; i++)
                 Console.WriteLine(DataSource.CustomersArr[i].ToString());
         }
-        public void GetDronesArr()
+        public void PrintAllDrones()
         {
             for (int i = 0; i < DataSource.Config.DroneIndex; i++)
                 Console.WriteLine(DataSource.DronesArr[i].ToString());
         }
-        public void PrintBaseStations()
+        public void PrintAllBaseStations()
         {
             for (int i = 0; i < DataSource.Config.BaseStationIndex; i++)
                 Console.WriteLine(DataSource.BaseStationsArr[i].ToString());
         }
+        public void PrintAllParcels()
+        {
+            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+                Console.WriteLine(DataSource.ParcelsArr[i].ToString());
+        }
+
         public void AddBaseStation(string name, double latitude, double longitude, int freeSlots)
         {
             if (DataSource.Config.BaseStationIndex < 5)
@@ -64,9 +70,37 @@ namespace DalObject
                     Status = status,
                     Battery = battery
                 };
-
             }
-
         }
+        public void AddCustomer(int id, string name, string phone, double latitude, double longitude)
+        {
+            if (DataSource.Config.BaseStationIndex < 100)
+            {
+                DataSource.CustomersArr[DataSource.Config.CustomerIndex++] = new Customer()
+                {
+                    Id = id,
+                    Name = name,
+                    Phone = phone,
+                    Lattitude = latitude,
+                    Longitude = longitude
+                };
+            }
+        }
+        public void AddParcel(int senderId, int targetId, WeightCategories weight, Priorities priority)
+        {
+            if (DataSource.Config.BaseStationIndex < 1000)
+            {
+                DataSource.ParcelsArr[DataSource.Config.ParcelIndex++] = new Parcel()
+                {
+                    Id = DataSource.Config.NewParcelId++,
+                    SenderId = senderId,
+                    TargetId = targetId,
+                    Weight = weight,
+                    Priority = priority,
+                    Requested = DateTime.Now
+                };
+            }
+        }
+
     }
 }
