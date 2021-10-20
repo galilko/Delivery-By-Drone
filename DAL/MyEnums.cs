@@ -3,28 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace IDAL
 {
     namespace DO
     {
-        enum WeightCategories
+        public enum WeightCategories
         {
-            light,
-            medium,
-            heavy
+            [Description("light")]
+            Light = 0,
+            [Description("medium")]
+            Medium = 1,
+            [Description("heavy")]
+            Heavy = 2
         }
-        enum DroneStatusCategories
+        public enum DroneStatusCategories
         {
-            free,
-            maintenance,
-            delivery
+            [Description("free")]
+            Free = 0,
+            [Description("maintenance")]
+            Maintenance = 1,
+            [Description("delivery")]
+            Delivery = 2
         }
-        enum Priorities
+        public enum Priorities
         {
-            normal,
-            fast,
-            emergency
+            [Description("normal")]
+            Normal,
+            [Description("fast")]
+            Fast,
+            [Description("emergency")]
+            Emergency
         }
         class MyEnums
         {
