@@ -8,7 +8,7 @@ namespace IDAL
 {
     namespace DO
     {
-        struct Customer
+        public struct Customer
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -18,11 +18,11 @@ namespace IDAL
             public override string ToString()
             {
                 string str = "";
-                str += $"Id: {Id}";
-                str += $"Name: {Name}";
-                str += $"Phone: {Phone}";
-                str += $"Longitude: {Longitude}";
-                str += $"Lattitude: {Lattitude}";
+                str += $"Id:\t\t {Id}\n";
+                str += $"Name:\t\t {Name}\n";
+                str += $"Phone:\t\t {Phone}\n";
+                str += $"Longitude:\t {Longitude}\n";
+                str += $"Lattitude:\t {Lattitude}\n";
                 return str;
             }
         }

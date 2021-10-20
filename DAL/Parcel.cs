@@ -9,7 +9,7 @@ namespace IDAL
 {
     namespace DO
     {
-        struct Parcel
+        public struct Parcel
         {
             public int Id { get; set; }
             public int SenderId { get; set; }
@@ -25,16 +25,16 @@ namespace IDAL
             public override string ToString()
             {
                 string result = "";
-                result += $"Id: {Id} \n ";
-                result += $"Sender Id: {SenderId} \n ";
-                result += $"Target Id: {TargetId} \n ";
-                result += $"Weight: {Weight} \n ";
-                result += $"Priority: {Priority} \n ";
-                result += $"Requested: {Requested} \n ";
-                result += $"Drone Id: {DroneId} \n ";
-                result += $"Scheduled: {Scheduled} \n ";
-                result += $"Picked Up: {PickedUp} \n ";
-                result += $"Delivered: {Delivered} \n ";
+                result += $"Id:\t\t {Id}\n";
+                result += $"Sender Id:\t {SenderId}\n";
+                result += $"Target Id:\t {TargetId}\n";
+                result += $"Weight:\t\t {Weight}\n";
+                result += $"Priority:\t {Priority}\n";
+                result += $"Requested:\t {Requested}\n";
+                result += $"Drone Id:\t {DroneId}\n";
+                result += $"Scheduled:\t {Scheduled}\n";
+                result += $"Picked Up:\t {PickedUp}\n";
+                result += $"Delivered:\t {Delivered}\n";
                 return result;
             }
         }

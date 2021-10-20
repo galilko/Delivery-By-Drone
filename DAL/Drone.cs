@@ -8,7 +8,7 @@ namespace IDAL
 {
     namespace DO
     {
-        struct Drone
+        public struct Drone
         {
             public int Id { get; set; }
             public string Model { get; set; }
@@ -18,11 +18,11 @@ namespace IDAL
             public override string ToString()
             {
                 string result = "";
-                result += $"Id: {Id} \n ";
-                result += $"Model: {Model} \n ";
-                result += $"Max weight: {MaxWeight} \n ";
-                result += $"Drone status: {Status} \n ";
-                result += $"Battery status: {Battery} \n ";
+                result += $"Id:\t\t {Id}\n";
+                result += $"Model:\t\t {Model}\n";
+                result += $"Max weight:\t {MaxWeight}\n";
+                result += $"Drone status:\t {Status}\n";
+                result += $"Battery status:\t {Battery.ToString("F2")} %\n";
                 return result;
             }
         }
