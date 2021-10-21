@@ -6,13 +6,14 @@ namespace ConsoleUI
 {
     class Program
     {
+        public static void myPrint<T>(T t)
+        {
+            Console.WriteLine(t.ToString(), Console.ForegroundColor = ConsoleColor.Green);
+        }
         static void Main(string[] args)
         {
             int choice1 = 0, choice2 = 1;
             DalObject.DalObject dal = new DalObject.DalObject();
-            //   dal.GetDronesArr();
-            // dal.GetCustomersArr();
-            // dal.PrintBaseStations();
             do
             {
                 Console.WriteLine(@"---------------------------------
@@ -23,20 +24,17 @@ FOR UPDATING PRESS 2
 FOR VIEWING PRESS 3
 FOR LIST-VIEWING PRESS 4
 FOR EXIT PRESS 5
----------------------------------"
-                    );
+---------------------------------");
                 choice1 = Convert.ToInt32(Console.ReadLine());
                 switch (choice1)
                 {
-                    case 1:
-                        {
+                    case 1:{
                             Console.WriteLine(@"---------------------------------
 FOR ADDING A BASE STATION PRESS 1
 FOR ADDING A DRONE PRESS 2
 FOR ADDING A CUSTOMER PRESS 3
 FOR ADDING A PARCEL PRESS 4
----------------------------------"
-         );
+---------------------------------");
                             choice2 = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("---------------------------------");
                             switch (choice2)
@@ -130,8 +128,72 @@ FOR ADDING A PARCEL PRESS 4
                             }
                             break;
                         }
-                    case 4:
-                        {
+                    case 3:{
+                            Console.WriteLine(@"---------------------------------
+FOR VIEWING A BASE STATION PRESS 1
+FOR VIEWING A DRONE PRESS 2
+FOR VIEWING A CUSTOMER PRESS 3
+FOR VIEWING A PARCEL PRESS 4
+---------------------------------");
+                            choice2 = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("---------------------------------");
+                            switch (choice2)
+                            {
+                                case 1:{
+                                        Console.Write("ENTER BASE-STATION ID FOR VIEWING:\t");
+                                        int id = Int32.Parse(Console.ReadLine());
+                                        Console.WriteLine("---------------------------------");
+                                        BaseStation myBase = dal.FindBaseStation(id);
+                                        if (myBase.Equals(default(BaseStation)))
+                                            Console.Write($"BASE-STATION {id} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
+
+                                        else
+                                            Console.Write(myBase.ToString(), Console.ForegroundColor = ConsoleColor.Green);
+                                        Console.ResetColor(); break;
+                                    }
+                                case 2:{
+                                        Console.Write("ENTER DRONE ID FOR VIEWING:\t");
+                                        int id = Int32.Parse(Console.ReadLine());
+                                        Console.WriteLine("---------------------------------");
+                                        Drone myDrone = dal.FindDrone(id);
+                                        if (myDrone.Equals(default(Drone)))
+                                            Console.WriteLine($"DRONE {id} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
+
+                                        else
+                                            Console.WriteLine(myDrone.ToString(), Console.ForegroundColor = ConsoleColor.Green);
+                                        Console.ResetColor(); break;
+                                    }
+                                case 3:{
+                                        Console.Write("ENTER CUSTOMER ID FOR VIEWING:\t");
+                                        int id = Int32.Parse(Console.ReadLine());
+                                        Console.WriteLine("---------------------------------");
+                                        Customer myCustomer = dal.FindCustomer(id);
+                                        if (myCustomer.Equals(default(Customer)))
+                                            Console.WriteLine($"CUSTOMER {id} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
+
+                                        else
+                                            Console.WriteLine(myCustomer.ToString(), Console.ForegroundColor = ConsoleColor.Green);
+                                        Console.ResetColor();
+                                        break;
+                                    }
+                                case 4:{
+                                        Console.Write("ENTER PARCEL ID FOR VIEWING:\t");
+                                        int id = Int32.Parse(Console.ReadLine());
+                                        Console.WriteLine("---------------------------------");
+                                        Parcel myParcel = dal.FindParcel(id);
+                                        if (myParcel.Equals(default(Parcel)))
+                                            Console.WriteLine($"PARCEL {id} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
+                                        else
+                                            Console.WriteLine(myParcel.ToString(), Console.ForegroundColor = ConsoleColor.Green);
+                                        Console.ResetColor();
+                                        break;
+                                    }
+                                default:
+                                    break;
+                            }
+                            break;
+                        }
+                    case 4:{
                             Console.WriteLine(@"---------------------------------
 FOR VIEWING ALL BASE-STATIONS PRESS 1
 FOR VIEWING ALL DRONES PRESS 2
@@ -139,30 +201,47 @@ FOR VIEWING ALL CUSTOMERS PRESS 3
 FOR VIEWING ALL PARCELS PRESS 4
 FOR VIEWING ALL NON-SCHEDULED PARCELS PRESS 5
 FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
----------------------------------"
-    );
+---------------------------------");
                             choice2 = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("---------------------------------");
                             switch (choice2)
                             {
-                                case 1:
-                                    {
-                                        dal.PrintAllBaseStations();
+                                case 1:{
+                                        Array.ForEach(dal.AllBaseStations(), myPrint);
+                                        Console.ResetColor();
                                         break;
                                     }
-                                case 2:
-                                    {
-                                        dal.PrintAllDrones();
+                                case 2:{
+                                        Array.ForEach(dal.AllDrones(), myPrint);
+                                        Console.ResetColor();
                                         break;
                                     }
-                                case 3:
-                                    {
-                                        dal.PrintAllCustomers();
+                                case 3:{
+                                        Array.ForEach(dal.AllCustomers(), myPrint);
+                                        Console.ResetColor();
                                         break;
                                     }
-                                case 4:
-                                    {
-                                        dal.PrintAllParcels();
+                                case 4:{
+                                        Array.ForEach(dal.AllParcels(), myPrint);
+                                        Console.ResetColor();
+                                        break;
+                                    }
+                                case 5:{
+                                        Parcel[] myArr = dal.NoneScheduledParcels();
+                                        if (myArr.Length > 0)
+                                            Array.ForEach(myArr, myPrint);
+                                        else
+                                            Console.WriteLine("THERE AREN'T NONE-SCHEDULED PARCELS", Console.ForegroundColor = ConsoleColor.Red);
+                                        Console.ResetColor();
+                                        break;
+                                    }
+                                case 6:{
+                                        BaseStation[] myArr = dal.FreeSlotsBaseStations();
+                                        if(myArr.Length > 0)
+                                            Array.ForEach(myArr, myPrint);
+                                        else
+                                            Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
+                                        Console.ResetColor();
                                         break;
                                     }
                                 default:
@@ -171,8 +250,7 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                             break;
 
                         }
-                    case 5:
-                        {
+                    case 5:{
                             Console.WriteLine("---------------------------------\nGOOD-BYE");
                             break;
                         }
@@ -185,4 +263,3 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
         }
     }
 }
-s
