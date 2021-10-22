@@ -27,7 +27,8 @@ FOR EXIT PRESS 5
                 choice1 = Convert.ToInt32(Console.ReadLine());
                 switch (choice1)
                 {
-                    case 1:{
+                    case 1:
+                        {
                             Console.WriteLine(@"---------------------------------
 FOR ADDING A BASE STATION PRESS 1
 FOR ADDING A DRONE PRESS 2
@@ -127,6 +128,28 @@ FOR ADDING A PARCEL PRESS 4
                             }
                             break;
                         }
+                    case 2:
+                        {
+                        Console.WriteLine(@"-------------------------------
+FOR ASSINGING A PACKAGE TO AN DRONE PRESS 1
+FOR COLLECTING OF A PACKEAGE BY DRONE PRESS 2
+FOR DELIVER A PACKAGE TO THE CUSTOMER
+FOR SENDING A DRONE FOR CHARGING AT A BASE STATION
+FOR RELISING A DRONE FROM A CHARGER AT A BASE STATION
+-------------------------------- ");
+                        choice2 = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("---------------------------------");
+                        switch (choice2)
+                        {
+                                case 1: {
+                                        Console.WriteLine("ENTER PAKAGE ID FOR LINK IT TO DRONE:\t");
+                                        int id = Int32.Parse(Console.ReadLine());
+                                        Console.WriteLine("---------------------------------");
+                                        Parcel par = 
+                                        
+
+                        }
+
                     case 3:{
                             Console.WriteLine(@"---------------------------------
 FOR VIEWING A BASE STATION PRESS 1
