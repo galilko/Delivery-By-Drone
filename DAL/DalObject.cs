@@ -13,6 +13,34 @@ namespace DalObject
         {
             DataSource.Initialize();
         }
+        public void AddDroneCharge(int droneId,int basestationId)
+        {
+            if (DataSource.Config.DroneChargeIndex < 10)
+            {
+                DataSource.DroneChargeArr[DataSource.Config.DroneChargeIndex++] = new DroneCharge()
+                {
+                    DroneId = droneId,
+                    StationId = basestationId,
+                };
+
+            }
+
+        }
+        public void ReleaseDrone(int droneId)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (DataSource.DroneChargeArr[i].DroneId == droneId)
+                {
+                    for (int j = i; j < 10; j++)
+                    {
+                        DataSource.DroneChargeArr[j] = DataSource.DroneChargeArr[j + 1];
+                    }
+                    DataSource.Config.DroneChargeIndex--;
+                    break;
+                }
+            }
+        }
 
         public void AddBaseStation(string name, double latitude, double longitude, int freeSlots)
         {
@@ -91,6 +119,14 @@ namespace DalObject
             return default;
         }
         public Drone FindDrone(int id)
+        {
+            foreach (var item in DataSource.DronesArr)
+                if (item.Id == id)
+                    return item;
+            return default;
+        }
+
+        public Drone FindDroneCharge(int id)
         {
             foreach (var item in DataSource.DronesArr)
                 if (item.Id == id)
