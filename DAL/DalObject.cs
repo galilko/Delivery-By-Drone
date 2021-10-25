@@ -161,13 +161,6 @@ namespace DalObject
                     return item;
             return default;
         }
-        public Drone FindDroneCharge(int id)
-        {
-            foreach (var item in DataSource.DronesArr)
-                if (item.Id == id)
-                    return item;
-            return default;
-        }
         public Customer FindCustomer(int id)
         {
             foreach (var item in DataSource.CustomersArr)

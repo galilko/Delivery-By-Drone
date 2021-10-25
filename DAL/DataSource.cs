@@ -39,7 +39,7 @@ namespace DalObject
             {
                 DronesArr[i] = new Drone()
                 {
-                    Id = Config.DroneIndex++,
+                    Id = rand.Next(100,999),
                     Model = "model" + i.ToString(),
                     MaxWeight = RandomEnumValue<WeightCategories>(),
                     Status = RandomEnumValue<DroneStatusCategories>(),
@@ -49,8 +49,8 @@ namespace DalObject
             BaseStationsArr[0] = new BaseStation() { Id = Config.BaseStationIndex++, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 };
             BaseStationsArr[1] = new BaseStation() { Id = Config.BaseStationIndex++, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 };
 
-            String[] maleNames = { "aaron", "abdul", "abe", "abel", "abraham", "adam", "adan", "adolfo", "adolph", "adrian" };
-            String[] lastNames = { "abbott", "acosta", "adams", "adkins", "aguilar" };
+            String[] maleNames = { "Aaron", "Shoham", "Gal", "Yossef", "David", "Eyal", "Michael", "Matan", "Shaul", "Dvir" };
+            String[] lastNames = { "Cohen", "Gabay", "Levi", "Weiss", "Miletzki" };
 
             for (int i = 0; i < 10; i++)
             {
@@ -67,16 +67,15 @@ namespace DalObject
 
             for (int i = 0; i < 10; i++)
             {
-                TimeSpan tSpan = new TimeSpan(0, rand.Next(0, 24), rand.Next(0, 60), 0);
+                //TimeSpan tSpan = new TimeSpan(0, rand.Next(0, 24), rand.Next(0, 60), 0);
                 ParcelsArr[i] = new Parcel()
                 {
                     Id = Config.NewParcelId++,
                     SenderId = CustomersArr[i].Id,
                     TargetId = CustomersArr[9 - i].Id,
-                    Weight = WeightCategories.Heavy,
-                    Priority = Priorities.Emergency,
+                    Weight = RandomEnumValue<WeightCategories>(),
+                    Priority = RandomEnumValue<Priorities>(),
                     Requested = DateTime.Now,
-                    //DroneId = rand.Next(0, Config.DroneIndex - 1),
                 };
                 Config.ParcelIndex++;
             }
