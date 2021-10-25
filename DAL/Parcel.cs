@@ -31,9 +31,12 @@ namespace IDAL
                 result += $"Priority:\t {Priority}\n";
                 result += $"Requested:\t {Requested}\n";
                 result += $"Drone Id:\t {DroneId}\n";
-                result += $"Scheduled:\t {Scheduled}\n";
-                result += $"Picked Up:\t {PickedUp}\n";
-                result += $"Delivered:\t {Delivered}\n";
+                result += $"Scheduled:\t ";
+                result += (Scheduled == DateTime.MinValue) ? "Not yet\n" : $"{Scheduled}\n";
+                result += $"Picked Up:\t ";
+                result += (PickedUp == DateTime.MinValue) ? "Not yet\n" : $"{PickedUp}\n";
+                result += $"Delivered:\t ";
+                result += (Delivered == DateTime.MinValue) ? "Not yet\n" : $"{Delivered}\n";
                 return result;
             }
         }

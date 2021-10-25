@@ -14,7 +14,7 @@ namespace DalObject
         internal static BaseStation[] BaseStationsArr = new BaseStation[5];
         internal static Customer[] CustomersArr = new Customer[100];
         internal static Parcel[] ParcelsArr = new Parcel[1000];
-        internal static DroneCharge[] DroneChargeArr = new DroneCharge[10];
+        internal static List<DroneCharge> DroneChargeList = new List<DroneCharge>();
 
         internal class Config
         {
@@ -22,8 +22,7 @@ namespace DalObject
             internal static int BaseStationIndex = 0;
             internal static int CustomerIndex = 0;
             internal static int ParcelIndex = 0;
-            internal static int NewParcelId = 0;
-            internal static int DroneChargeIndex = 0;
+            internal static int NewParcelId = 100000;
         }
 
         static Random _R = new Random();
@@ -41,7 +40,7 @@ namespace DalObject
                 DronesArr[i] = new Drone()
                 {
                     Id = Config.DroneIndex++,
-                    Model = "mod" + i.ToString(),
+                    Model = "model" + i.ToString(),
                     MaxWeight = RandomEnumValue<WeightCategories>(),
                     Status = RandomEnumValue<DroneStatusCategories>(),
                     Battery = rand.NextDouble() * 100
@@ -77,7 +76,7 @@ namespace DalObject
                     Weight = WeightCategories.Heavy,
                     Priority = Priorities.Emergency,
                     Requested = DateTime.Now,
-                    DroneId = rand.Next(0, Config.DroneIndex - 1),
+                    //DroneId = rand.Next(0, Config.DroneIndex - 1),
                 };
                 Config.ParcelIndex++;
             }

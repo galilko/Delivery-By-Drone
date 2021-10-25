@@ -13,48 +13,84 @@ namespace DalObject
         {
             DataSource.Initialize();
         }
-        public void AddDroneCharge(int droneId,int basestationId)
-        {
-            if (DataSource.Config.DroneChargeIndex < 10)
-            {
-                DataSource.DroneChargeArr[DataSource.Config.DroneChargeIndex++] = new DroneCharge()
-                {
-                    DroneId = droneId,
-                    StationId = basestationId,
-                };
 
-            }
-
-        }
-        public void ReleaseDrone(int droneId)
+        public void ScheduleDroneForParcel(int parcelId, int droneId)
         {
-            for (int i = 0; i < 10; i++)
-            {
-                if (DataSource.DroneChargeArr[i].DroneId == droneId)
+            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+                if (DataSource.ParcelsArr[i].Id == parcelId)
                 {
-                    for (int j = i; j < 10; j++)
-                    {
-                        DataSource.DroneChargeArr[j] = DataSource.DroneChargeArr[j + 1];
-                    }
-                    DataSource.Config.DroneChargeIndex--;
+                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
+                        if (DataSource.DronesArr[j].Id == droneId)
+                        {
+                            DataSource.ParcelsArr[i].DroneId = droneId;
+                            DataSource.ParcelsArr[i].Scheduled = DateTime.Now;
+                            break;
+                        }
                     break;
                 }
-            }
+        }
+        public void PickingUpAParcel(int parcelId)
+        {
+            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+                if (DataSource.ParcelsArr[i].Id == parcelId)
+                {
+                    DataSource.ParcelsArr[i].PickedUp = DateTime.Now;
+                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
+                        if (DataSource.DronesArr[j].Id == DataSource.ParcelsArr[i].DroneId)
+                        {
+                            DataSource.DronesArr[j].Status = DroneStatusCategories.Delivery;
+                            break; 
+                        }
+                }
+        }
+        public void DeliverAParcel(int parcelId)
+        {
+            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+                if (DataSource.ParcelsArr[i].Id == parcelId)
+                {
+                    DataSource.ParcelsArr[i].Delivered = DateTime.Now;
+                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
+                        if (DataSource.DronesArr[j].Id == DataSource.ParcelsArr[i].DroneId)
+                        {
+                            DataSource.DronesArr[j].Status = DroneStatusCategories.Free;
+                            break;
+                        }
+                }
+        }
+        public void ChargeDrone(int droneId, int baseStationId)
+        {
+            for (int i = 0; i < DataSource.Config.DroneIndex; i++)
+                if (DataSource.DronesArr[i].Id == droneId)
+                    for (int j = 0; j < DataSource.Config.BaseStationIndex; j++)
+                        if (DataSource.BaseStationsArr[j].Id == baseStationId)
+                        {
+                            DataSource.DronesArr[i].Status = DroneStatusCategories.Maintenance;
+                            DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
+                            DataSource.BaseStationsArr[j].FreeChargeSlots--;
+                            break;
+                        }
+        }
+        public void ReleaseDroneFromCharge(int droneId)
+        {
+            for (int i = 0; i < DataSource.Config.DroneIndex; i++)
+                if (DataSource.DronesArr[i].Id == droneId)
+                {
+                    DataSource.DronesArr[i].Status = DroneStatusCategories.Free;
+                    DroneCharge droneCharge = DataSource.DroneChargeList.Find(myDroneCharge => myDroneCharge.DroneId == droneId);
+                    for (int j = 0; j < DataSource.Config.BaseStationIndex; j++)
+                        if (DataSource.BaseStationsArr[j].Id == droneCharge.StationId)
+                        {
+                            DataSource.BaseStationsArr[j].FreeChargeSlots++;
+                            DataSource.DroneChargeList.Remove(droneCharge);
+                            break;
+                        }
+                }
         }
 
         public void AddBaseStation(string name, double latitude, double longitude, int freeSlots)
         {
             if (DataSource.Config.BaseStationIndex < 5)
             {
-
-                /*BaseStation b = new BaseStation()
-                {
-                    Id = DataSource.Config.BaseStationIndex,
-                    Name = "Eilat IceMall",
-                    Lattitude = 29.55411169296884,
-                    Longitude = 34.96563532708392,
-                    FreeChargeSlots = 5
-                };*/
                 DataSource.BaseStationsArr[DataSource.Config.BaseStationIndex] = new BaseStation()
                 {
                     Id = DataSource.Config.BaseStationIndex++,
@@ -125,7 +161,6 @@ namespace DalObject
                     return item;
             return default;
         }
-
         public Drone FindDroneCharge(int id)
         {
             foreach (var item in DataSource.DronesArr)
@@ -181,10 +216,6 @@ namespace DalObject
             return tmpList.ToArray();
         }
 
-        public static void UpdateDroneForParcel(int parcelId)
-        {
-
-        }
 
     }
 }

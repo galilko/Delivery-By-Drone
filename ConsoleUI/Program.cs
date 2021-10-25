@@ -131,11 +131,11 @@ FOR ADDING A PARCEL PRESS 4
                     case 2:
                         {
                             Console.WriteLine(@"-------------------------------
-FOR ASSINGING A PACKAGE TO AN DRONE PRESS 1
-FOR COLLECTING A PACKEAGE BY DRONE PRESS 2
-FOR DELIVERING A PACKAGE TO THE CUSTOMER PRESS 3
-FOR SENDING A DRONE FOR CHARGING AT A BASE STATION PRESS 4
-FOR RELISING A DRONE FROM A CHARGER AT A BASE STATION PRESS 5
+FOR ASSINGING A PARCEL TO A DRONE PRESS 1
+FOR PICK UP A PARCEL BY DRONE PRESS 2
+FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 3
+FOR SENDING A DRONE FOR CHARGING AT BASE STATION PRESS 4
+FOR RELEASING A DRONE FROM CHARGING PRESS 5
 -------------------------------- ");
                             choice2 = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("---------------------------------");
@@ -143,96 +143,53 @@ FOR RELISING A DRONE FROM A CHARGER AT A BASE STATION PRESS 5
                             {
                                 case 1:
                                     {
-                                        Console.WriteLine("ENTER PAKAGE ID FOR LINK IT TO A DRONE:\t");
-                                        int parcelid = Int32.Parse(Console.ReadLine());
-                                        Console.WriteLine("---------------------------------");
-                                        Parcel myparcel = dal.FindParcel(parcelid);
-                                        if (myparcel.Equals(default(Parcel)))
-                                        { Console.Write($"PARCEL {parcelid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                        else
-                                        {
-
-                                            Console.WriteLine("ENTER DRONE ID\t");
-                                            int droneid = Int32.Parse(Console.ReadLine());
-                                            Drone mydrone = dal.FindDrone(droneid);
-                                            if (mydrone.Equals(default(Drone)))
-                                            { Console.Write($"PARCEL {droneid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                            else
-                                            {
-                                                myparcel.DroneId = droneid;
-                                                myparcel.Scheduled = DateTime.Now;
-                                            }
-                                        }
-                                        Console.ResetColor();
+                                        Console.WriteLine("ENTER PARCEL ID AND DRONE ID FOR SCHEDULING:");
+                                        Console.Write("PARCEL ID:\t");
+                                        int parcelId = Int32.Parse(Console.ReadLine());
+                                        Console.Write("DRONE ID:\t");
+                                        int droneId = Int32.Parse(Console.ReadLine());
+                                        dal.ScheduleDroneForParcel(parcelId, droneId);
                                         break;
                                     }
                                 case 2:
                                     {
-                                        Console.WriteLine("ENTER PAKAGE ID FOR PICKE UP:\t");
-                                        int parcelid = Int32.Parse(Console.ReadLine());
-                                        Console.WriteLine("---------------------------------");
-                                        Parcel myparcel = dal.FindParcel(parcelid);
-                                        if (myparcel.Equals(default(Parcel)))
-                                        { Console.Write($"PARCEL {parcelid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                        else
-                                        {
-                                            myparcel.PickedUp = DateTime.Now;
-                                        }
-                                        Console.ResetColor();
+                                        Console.WriteLine("ENTER PARCEL ID FOR PICKING UP:\t");
+                                        int parcelId = Int32.Parse(Console.ReadLine());
+                                        dal.PickingUpAParcel(parcelId);
                                         break;
                                     }
                                 case 3:
                                     {
-                                        Console.WriteLine("ENTER PAKAGE ID FOR DELIVERY:\t");
-                                        int parcelid = Int32.Parse(Console.ReadLine());
-                                        Console.WriteLine("---------------------------------");
-                                        Parcel myparcel = dal.FindParcel(parcelid);
-                                        if (myparcel.Equals(default(Parcel)))
-                                        { Console.Write($"PARCEL {parcelid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                        else
-                                        {
-                                            myparcel.Delivered = DateTime.Now;
-                                        }
-                                        Console.ResetColor();
+                                        Console.WriteLine("ENTER PARCEL ID FOR DELIVERY:\t");
+                                        int parcelId = Int32.Parse(Console.ReadLine());
+                                        dal.DeliverAParcel(parcelId);
                                         break;
                                     }
                                 case 4:
                                     {
-                                        Console.WriteLine("ENTER DRONE ID FOR CHARGING:\t");
-                                        int droneid = Int32.Parse(Console.ReadLine());
-                                        Console.WriteLine("---------------------------------");
-                                        Drone mydrone = dal.FindDrone(droneid);
-                                        if (mydrone.Equals(default(Drone)))
-                                        { Console.Write($"DRONE {droneid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
+                                        BaseStation[] myArr = dal.FreeSlotsBaseStations();
+                                        if (myArr.Length <= 0)
+                                            Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
                                         else
                                         {
-                                            Console.WriteLine("SELECT A BASE STATION FROM THE LIST:\t");
-                                            Array.ForEach(dal.AllBaseStations(), myPrint);
-                                            Console.ResetColor();
-                                            int basestationid = Int32.Parse(Console.ReadLine());
+                                            Array.ForEach(myArr, myPrint);
+                                            Console.WriteLine("ENTER DRONE ID AND BASE-STATION ID FOR CHARGING:\t");
                                             Console.WriteLine("---------------------------------");
-                                            BaseStation mybasestation = dal.FindBaseStation(basestationid);
-                                            if (mybasestation.Equals(default(BaseStation)))
-                                            { Console.Write($"BASESTION {basestationid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                            else
-                                            {
-                                                dal.AddDroneCharge(droneid, basestationid);
-                                            }
+                                            Console.WriteLine("DRONE ID:\t");
+                                            int droneId = Int32.Parse(Console.ReadLine());
+                                            Console.WriteLine("BASE-STATION ID:\t");
+                                            int baseStationId = Int32.Parse(Console.ReadLine());
+                                            Console.WriteLine("---------------------------------");
+                                            dal.ChargeDrone(droneId, baseStationId);
                                         }
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 5:
                                     {
-                                        Console.WriteLine("ENTER DRONE ID FOR RELEASE FROM CHARGE:\t");
-                                        int droneid = Int32.Parse(Console.ReadLine());
-                                        Console.WriteLine("---------------------------------");
-                                        Drone mydrone = dal.FindDrone(droneid);
-                                        if (mydrone.Equals(default(Drone)))
-                                        { Console.Write($"DRONE {droneid} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red); }
-                                        else
-                                        { dal.ReleaseDrone(droneid); }
-                                        Console.ResetColor();
+                                        Console.WriteLine("ENTER DRONE ID FOR RELEASING FROM CHARGE:\t");
+                                        int droneId = Int32.Parse(Console.ReadLine());
+                                        dal.ReleaseDroneFromCharge(droneId);
                                         break;
                                     }
                                 default:
