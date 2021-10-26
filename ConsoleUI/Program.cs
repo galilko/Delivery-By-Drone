@@ -11,7 +11,7 @@ namespace ConsoleUI
         }
         static void Main(string[] args)
         {
-            int choice1 = 0, choice2 = 1;
+            int choice1 = 0, choice2 = 1; 
             bool properConversion;
             DalObject.DalObject dal = new DalObject.DalObject();
             do
