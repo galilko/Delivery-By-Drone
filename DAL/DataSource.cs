@@ -35,6 +35,7 @@ namespace DalObject
         public static void Initialize()
         {
             Random rand = new Random();
+            //initialize drones
             for (int i = 0; i < 5; i++)
             {
                 DronesArr[i] = new Drone()
@@ -46,12 +47,13 @@ namespace DalObject
                     Battery = rand.NextDouble() * 100
                 };
             }
-            BaseStationsArr[0] = new BaseStation() { Id = 1, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 };
-            BaseStationsArr[1] = new BaseStation() { Id = 2, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 };
+            //initialize base-stations
+            BaseStationsArr[0] = new BaseStation() { Id = 10, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 };
+            BaseStationsArr[1] = new BaseStation() { Id = 11, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 };
             Config.BaseStationIndex = 2;
+            //initialize customers
             String[] maleNames = { "Aaron", "Shoham", "Gal", "Yossef", "David", "Eyal", "Michael", "Matan", "Shaul", "Dvir" };
             String[] lastNames = { "Cohen", "Gabay", "Levi", "Weiss", "Miletzki" };
-
             for (int i = 0; i < 10; i++)
             {
                 CustomersArr[i] = new Customer()
@@ -63,8 +65,8 @@ namespace DalObject
                     Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1,"-")
                 };
                 Config.CustomerIndex++;
-            }
-
+            }            
+            //initialize parcels
             for (int i = 0; i < 10; i++)
             {
                 //TimeSpan tSpan = new TimeSpan(0, rand.Next(0, 24), rand.Next(0, 60), 0);

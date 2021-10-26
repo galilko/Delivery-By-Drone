@@ -8,6 +8,11 @@ namespace IDAL
 {
     public static class Converter
     {
+        /// <summary>
+        /// convert a double longitude to sexadecimal string and return it
+        /// </summary>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
         public static string LongitudeToSexadecimal(double longitude)
         {
             int hours = Convert.ToInt32(Math.Truncate(longitude));
@@ -21,6 +26,11 @@ namespace IDAL
                 str += " W";
             return str;
         }
+        /// <summary>
+        /// convert a double latitude to sexadecimal string and return it
+        /// </summary>
+        /// <param name="longitude"></param>
+        /// <returns></returns>
         public static string LatitudeToSexadecimal(double longitude)
         {
             int hours = Convert.ToInt32(Math.Truncate(longitude));
