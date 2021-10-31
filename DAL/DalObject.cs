@@ -22,9 +22,10 @@ namespace DalObject
         public void ScheduleDroneForParcel(int parcelId, int droneId)
         {
             Parcel found = DataSource.ParcelsList.FirstOrDefault(p => p.Id == parcelId);
-            foreach (var drone in DataSource.DronesList)
+            if (!found.Equals(default(Parcel)))
             {
-                if (drone.Id == droneId && !found.Equals(default(Parcel)))
+                Drone found1 = DataSource.DronesList.FirstOrDefault(p => p.Id == droneId);
+                if (!found1.Equals(default(Drone)))
                 {
                     DataSource.ParcelsList.Remove(found);
                     found.DroneId = droneId;
@@ -39,17 +40,20 @@ namespace DalObject
         /// <param name="parcelId">parcel id to picking up</param>
         public void PickingUpAParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
-                if (DataSource.ParcelsList[i].Id == parcelId)
+            Parcel found = DataSource.ParcelsList.FirstOrDefault(p => p.Id == parcelId);
+            if (!found.Equals(default(Parcel)))
+            {
+                DataSource.ParcelsList.Remove(found);
+                found.PickedUp = DateTime.Now;
+                DataSource.ParcelsList.Add(found);
+                Drone found1 = DataSource.DronesList.FirstOrDefault(p => p.Id == found.DroneId);
+                if (!found1.Equals(default(Drone)))
                 {
-                    DataSource.ParcelsList[i].PickedUp = DateTime.Now;
-                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
-                        if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
-                        {
-                            DataSource.DronesList[j].Status = DroneStatusCategories.Delivery;
-                            break; 
-                        }
+                    DataSource.DronesList.Remove(found1);
+                    found1.Status = DroneStatusCategories.Delivery;
+                    DataSource.DronesList.Add(found1);
                 }
+            }
         }
         /// <summary>
         /// finish delivery of a parcel
@@ -57,17 +61,20 @@ namespace DalObject
         /// <param name="parcelId">parcel id to deliver</param>
         public void DeliverAParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
-                if (DataSource.ParcelsList[i].Id == parcelId)
+            Parcel found = DataSource.ParcelsList.FirstOrDefault(p => p.Id == parcelId);
+            if (!found.Equals(default(Parcel)))
+            {
+                DataSource.ParcelsList.Remove(found);
+                found.Delivered = DateTime.Now;
+                DataSource.ParcelsList.Add(found);
+                Drone found1 = DataSource.DronesList.FirstOrDefault(p => p.Id == found.DroneId);
+                if (!found1.Equals(default(Drone)))
                 {
-                    DataSource.ParcelsList[i].Delivered = DateTime.Now;
-                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
-                        if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
-                        {
-                            DataSource.DronesList[j].Status = DroneStatusCategories.Free;
-                            break;
-                        }
+                    DataSource.DronesList.Remove(found1);
+                    found1.Status = DroneStatusCategories.Free;
+                    DataSource.DronesList.Add(found1);
                 }
+            }
         }
         /// <summary>
         /// connect a drone to charging at base-station
@@ -76,16 +83,21 @@ namespace DalObject
         /// <param name="baseStationId">requested base-station</param>
         public void ChargeDrone(int droneId, int baseStationId)
         {
-            for (int i = 0; i < DataSource.Config.DroneIndex; i++)
-                if (DataSource.DronesList[i].Id == droneId)
-                    for (int j = 0; j < DataSource.Config.BaseStationIndex; j++)
-                        if (DataSource.BaseStationsList[j].Id == baseStationId)
-                        {
-                            DataSource.DronesList[i].Status = DroneStatusCategories.Maintenance;
-                            DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
-                            DataSource.BaseStationsList[j].FreeChargeSlots--;
-                            break;
-                        }
+            Drone found = DataSource.DronesList.FirstOrDefault(p => p.Id == droneId);
+            if (!found.Equals(default(Drone)))
+            {
+                BaseStation found1 = DataSource.BaseStationsList.FirstOrDefault(p => p.Id == baseStationId);
+                if (!found1.Equals(default(BaseStation)))
+                {
+                    DataSource.DronesList.Remove(found);
+                    DataSource.BaseStationsList.Remove(found1);
+                    found.Status = DroneStatusCategories.Maintenance;
+                    found1.FreeChargeSlots--;
+                    DataSource.BaseStationsList.Add(found1);
+                    DataSource.DronesList.Add(found);
+                    DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
+                }
+            }
         }
         /// <summary>
         /// release a drone from charging
