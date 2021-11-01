@@ -12,11 +12,11 @@ namespace IDAL
         public enum WeightCategories
         {
             [Description("light")]
-            Light = 0,
+            Light = 1,
             [Description("medium")]
-            Medium = 1,
+            Medium = 2,
             [Description("heavy")]
-            Heavy = 2
+            Heavy = 3
         }
         public enum DroneStatusCategories
         {

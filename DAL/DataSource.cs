@@ -45,8 +45,8 @@ namespace DalObject
                 });
             }
             //initialize base-stations
-            BaseStationsList[0] = new BaseStation() { Id = 10, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 };
-            BaseStationsList[1] = new BaseStation() { Id = 11, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 };
+            BaseStationsList.Add(new BaseStation() { Id = 10, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 4 });
+            BaseStationsList.Add(new BaseStation() { Id = 11, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 5 });
             //initialize customers
             String[] maleNames = { "Aaron", "Shoham", "Gal", "Yossef", "David", "Eyal", "Michael", "Matan", "Shaul", "Dvir" };
             String[] lastNames = { "Cohen", "Gabay", "Levi", "Weiss", "Miletzki" };
@@ -79,9 +79,5 @@ namespace DalObject
             }
         }
 
-        private static void ParcelsList(Parcel parcel)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -21,17 +21,17 @@ namespace DalObject
         /// <param name="droneId">drone id for schedule</param>
         public void ScheduleDroneForParcel(int parcelId, int droneId)
         {
-            Parcel found = DataSource.ParcelsList.FirstOrDefault(p => p.Id == parcelId);
-            foreach (var drone in DataSource.DronesList)
-            {
-                if (drone.Id == droneId && !found.Equals(default(Parcel)))
-                {
-                    DataSource.ParcelsList.Remove(found);
-                    found.DroneId = droneId;
-                    found.Scheduled = DateTime.Now;
-                    DataSource.ParcelsList.Add(found);
-                }
-            }
+            for (int i = 0; i < DataSource.ParcelsList.Count; i++)
+                if (DataSource.ParcelsList[i].Id == parcelId)
+                    for (int j = 0; j < DataSource.DronesList.Count; j++)
+                        if (DataSource.DronesList[j].Id == droneId)
+                        {
+                            Parcel my_parcel = DataSource.ParcelsList[i];
+                            my_parcel.DroneId = droneId;
+                            my_parcel.Scheduled = DateTime.Now;
+                            DataSource.ParcelsList[i] = my_parcel;
+                            return;
+                        }
         }
         /// <summary>
         /// picking up a parcel by its drone
@@ -39,15 +39,19 @@ namespace DalObject
         /// <param name="parcelId">parcel id to picking up</param>
         public void PickingUpAParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+            for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
                 {
-                    DataSource.ParcelsList[i].PickedUp = DateTime.Now;
-                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
+                    Parcel myParcel = DataSource.ParcelsList[i];
+                    myParcel.PickedUp = DateTime.Now;
+                    for (int j = 0; j < DataSource.DronesList.Count; j++)
                         if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
                         {
-                            DataSource.DronesList[j].Status = DroneStatusCategories.Delivery;
-                            break; 
+                            Drone myDrone = DataSource.DronesList[j];
+                            myDrone.Status = DroneStatusCategories.Delivery;
+                            DataSource.ParcelsList[i] = myParcel;
+                            DataSource.DronesList[j] = myDrone;
+                            return; 
                         }
                 }
         }
@@ -57,15 +61,19 @@ namespace DalObject
         /// <param name="parcelId">parcel id to deliver</param>
         public void DeliverAParcel(int parcelId)
         {
-            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+            for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
                 {
-                    DataSource.ParcelsList[i].Delivered = DateTime.Now;
-                    for (int j = 0; j < DataSource.Config.DroneIndex; j++)
+                    Parcel myParcel = DataSource.ParcelsList[i];
+                    myParcel.Delivered = DateTime.Now;
+                    for (int j = 0; j < DataSource.DronesList.Count; j++)
                         if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
                         {
-                            DataSource.DronesList[j].Status = DroneStatusCategories.Free;
-                            break;
+                            Drone myDrone = DataSource.DronesList[j];
+                            myDrone.Status = DroneStatusCategories.Free;
+                            DataSource.ParcelsList[i] = myParcel;
+                            DataSource.DronesList[j] = myDrone;
+                            return;
                         }
                 }
         }
@@ -76,15 +84,19 @@ namespace DalObject
         /// <param name="baseStationId">requested base-station</param>
         public void ChargeDrone(int droneId, int baseStationId)
         {
-            for (int i = 0; i < DataSource.Config.DroneIndex; i++)
+            for (int i = 0; i < DataSource.DronesList.Count; i++)
                 if (DataSource.DronesList[i].Id == droneId)
-                    for (int j = 0; j < DataSource.Config.BaseStationIndex; j++)
+                    for (int j = 0; j < DataSource.BaseStationsList.Count; j++)
                         if (DataSource.BaseStationsList[j].Id == baseStationId)
                         {
-                            DataSource.DronesList[i].Status = DroneStatusCategories.Maintenance;
                             DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
-                            DataSource.BaseStationsList[j].FreeChargeSlots--;
-                            break;
+                            Drone myDrone = DataSource.DronesList[i];
+                            myDrone.Status = DroneStatusCategories.Maintenance;
+                            BaseStation myBaseStation = DataSource.BaseStationsList[j];
+                            myBaseStation.FreeChargeSlots--;
+                            DataSource.DronesList[i] = myDrone;
+                            DataSource.BaseStationsList[j] = myBaseStation;
+                            return;
                         }
         }
         /// <summary>
@@ -93,15 +105,18 @@ namespace DalObject
         /// <param name="droneId">drone's id to release</param>
         public void ReleaseDroneFromCharge(int droneId)
         {
-            for (int i = 0; i < DataSource.Config.DroneIndex; i++)
+            for (int i = 0; i < DataSource.DronesList.Count; i++)
                 if (DataSource.DronesList[i].Id == droneId)
                 {
-                    DataSource.DronesList[i].Status = DroneStatusCategories.Free;
+                    Drone myDrone = DataSource.DronesList[i];
+                    myDrone.Status = DroneStatusCategories.Free;
                     DroneCharge droneCharge = DataSource.DroneChargeList.Find(myDroneCharge => myDroneCharge.DroneId == droneId);
-                    for (int j = 0; j < DataSource.Config.BaseStationIndex; j++)
+                    for (int j = 0; j < DataSource.BaseStationsList.Count; j++)
                         if (DataSource.BaseStationsList[j].Id == droneCharge.StationId)
                         {
-                            DataSource.BaseStationsList[j].FreeChargeSlots++;
+                            BaseStation myBaseStation = DataSource.BaseStationsList[j];
+                            myBaseStation.FreeChargeSlots++;
+                            DataSource.BaseStationsList[j] = myBaseStation;
                             DataSource.DroneChargeList.Remove(droneCharge);
                             break;
                         }
@@ -115,21 +130,7 @@ namespace DalObject
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <param name="freeSlots"></param>
-        public void AddBaseStation(string name, double latitude, double longitude, int freeSlots)
-        {
-            if (DataSource.Config.BaseStationIndex < 5)
-            {
-                DataSource.BaseStationsList[DataSource.Config.BaseStationIndex] = new BaseStation()
-                {
-                    Id = 10 + DataSource.Config.BaseStationIndex++,
-                    Name = name,
-                    Lattitude = latitude,
-                    Longitude = longitude,
-                    FreeChargeSlots = freeSlots
-                };
-
-            }
-        }
+        public void AddBaseStation(BaseStation newBaseStation) => DataSource.BaseStationsList.Add(newBaseStation);
         /// <summary>
         /// adding a new drone into array
         /// </summary>
@@ -138,20 +139,7 @@ namespace DalObject
         /// <param name="weight"></param>
         /// <param name="status"></param>
         /// <param name="battery"></param>
-        public void AddDrone(int id, string model, WeightCategories weight, DroneStatusCategories status, double battery)
-        {
-            if (DataSource.Config.BaseStationIndex < 10)
-            {
-                DataSource.DronesList[DataSource.Config.DroneIndex++] = new Drone()
-                {
-                    Id = id,
-                    Model = model,
-                    MaxWeight = weight,
-                    Status = status,
-                    Battery = battery
-                };
-            }
-        }
+        public void AddDrone(Drone newDrone) => DataSource.DronesList.Add(newDrone);
         /// <summary>
         /// adding a new customer into array
         /// </summary>
@@ -160,20 +148,7 @@ namespace DalObject
         /// <param name="phone"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        public void AddCustomer(int id, string name, string phone, double latitude, double longitude)
-        {
-            if (DataSource.Config.BaseStationIndex < 100)
-            {
-                DataSource.CustomersList[DataSource.Config.CustomerIndex++] = new Customer()
-                {
-                    Id = id,
-                    Name = name,
-                    Phone = phone,
-                    Lattitude = latitude,
-                    Longitude = longitude
-                };
-            }
-        }
+        public void AddCustomer(Customer newCustomer) => DataSource.CustomersList.Add(newCustomer);
         /// <summary>
         /// adding a new parcel into array
         /// </summary>
@@ -181,21 +156,7 @@ namespace DalObject
         /// <param name="targetId"></param>
         /// <param name="weight"></param>
         /// <param name="priority"></param>
-        public void AddParcel(int senderId, int targetId, WeightCategories weight, Priorities priority)
-        {
-            if (DataSource.Config.BaseStationIndex < 1000)
-            {
-                DataSource.ParcelsList[DataSource.Config.ParcelIndex++] = new Parcel()
-                {
-                    Id = DataSource.Config.NewParcelId++,
-                    SenderId = senderId,
-                    TargetId = targetId,
-                    Weight = weight,
-                    Priority = priority,
-                    Requested = DateTime.Now
-                };
-            }
-        }
+        public void AddParcel(Parcel newParcel) => DataSource.ParcelsList.Add(newParcel);
 
         /// <summary>
         /// find a base-station by id and return it
@@ -250,57 +211,45 @@ namespace DalObject
         /// return array of customers
         /// </summary>
         /// <returns></returns>
-        public Customer[] AllCustomers()
-        {
-            return DataSource.CustomersList.Skip(0).Take(DataSource.Config.CustomerIndex).ToArray();
-        }
+        public IEnumerable<Customer> AllCustomers() => DataSource.CustomersList;
         /// <summary>
         /// return array of drones
         /// </summary>
         /// <returns></returns>
-        public Drone[] AllDrones()
-        {
-            return DataSource.DronesList.Skip(0).Take(DataSource.Config.DroneIndex).ToArray();
-        }
+        public IEnumerable<Drone> AllDrones() => DataSource.DronesList;
         /// <summary>
         /// return array of base-stations
         /// </summary>
         /// <returns></returns>
-        public BaseStation[] AllBaseStations()
-        {
-            return DataSource.BaseStationsList.Skip(0).Take(DataSource.Config.BaseStationIndex).ToArray();
-        }
+        public IEnumerable<BaseStation> AllBaseStations() => DataSource.BaseStationsList;
         /// <summary>
         /// return array of parcels
         /// </summary>
         /// <returns></returns>
-        public Parcel[] AllParcels()
-        {
-            return DataSource.ParcelsList.Skip(0).Take(DataSource.Config.ParcelIndex).ToArray();
-        }
+        public IEnumerable<Parcel> AllParcels() => DataSource.ParcelsList;
         /// <summary>
         /// return array of none-scheduled parcels
         /// </summary>
         /// <returns></returns>
-        public Parcel[] NoneScheduledParcels()
+        public IEnumerable<Parcel> NoneScheduledParcels()
         {
             List<Parcel> tmpList = new();
-            for (int i = 0; i < DataSource.Config.ParcelIndex; i++)
+            for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Scheduled == DateTime.MinValue)
                     tmpList.Add(DataSource.ParcelsList[i]);
-            return tmpList.ToArray();
+            return tmpList;
         }
         /// <summary>
         /// return array of base-stations with free-slots
         /// </summary>
         /// <returns></returns>
-        public BaseStation[] FreeSlotsBaseStations()
+        public IEnumerable<BaseStation> FreeSlotsBaseStations()
         {
             List<BaseStation> tmpList = new();
-            for (int i = 0; i < DataSource.Config.BaseStationIndex; i++)
+            for (int i = 0; i < DataSource.BaseStationsList.Count; i++)
                 if (DataSource.BaseStationsList[i].FreeChargeSlots > 0)
                     tmpList.Add(DataSource.BaseStationsList[i]);
-            return tmpList.ToArray();
+            return tmpList;
         }
 
 

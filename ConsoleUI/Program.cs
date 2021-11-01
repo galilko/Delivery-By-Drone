@@ -1,6 +1,8 @@
 ﻿using System;
 using IDAL.DO;
 using DalObject;
+using System.Collections.Generic;
+
 namespace ConsoleUI
 {
     class Program
@@ -40,34 +42,39 @@ FOR ADDING A PARCEL PRESS 4
                             switch (choice2)
                             {
                                 case 1:{
+                                        BaseStation myBaseStation = new();
                                         Console.WriteLine("ENTER BASE-STATION DETAILS\n" +
                                             "---------------------------------");
+                                        Console.Write("ID:\t\t");
+                                        int.TryParse(Console.ReadLine(), out int id);
+                                        myBaseStation.Id = id;
                                         Console.Write("Name:\t");
-                                        string name = Console.ReadLine();
+                                        myBaseStation.Name = Console.ReadLine();
                                         Console.Write("Latitude:\t");
                                         double.TryParse(Console.ReadLine(), out double latitude);
+                                        myBaseStation.Lattitude = latitude;
                                         Console.Write("Longitude:\t");
                                         double.TryParse(Console.ReadLine(), out double longitude);
+                                        myBaseStation.Longitude = longitude;
                                         Console.Write("Number of free charger slots:\t");
                                         int.TryParse(Console.ReadLine(), out int freeSlots);
-                                        dal.AddBaseStation(name, latitude, longitude, freeSlots);
+                                        myBaseStation.FreeChargeSlots = freeSlots;
+                                        dal.AddBaseStation(myBaseStation);
                                         break;
                                     }
                                 case 2:{
+                                        Drone myDrone = new();
                                         Console.WriteLine("ENTER DRONE DETAILS\n" +
                                             "---------------------------------");
                                         Console.Write("Id:\t");
                                         int.TryParse(Console.ReadLine(), out int id);
+                                        myDrone.Id = id;
                                         Console.Write("Model:\t");
-                                        string model = Console.ReadLine();
-                                        Console.Write("Weight category:\t");
-                                        if (!Enum.TryParse(Console.ReadLine(), out WeightCategories weight))
-                                        {
-                                            Console.WriteLine("---------------------------------\n" +
-                                                "ERROR - invalid weight category");
-                                            break;
-                                        }
-                                        Console.Write("Status:\t");
+                                        myDrone.Model = Console.ReadLine();
+                                        Console.Write("Weight category [1-Light|2-Medium|3-Heavy]:\t");
+                                        int.TryParse(Console.ReadLine(), out int weightCat);
+                                        myDrone.MaxWeight = (WeightCategories)weightCat;
+                                        /*Console.Write("Status:\t");
                                         if (!Enum.TryParse(Console.ReadLine(), out DroneStatusCategories status))
                                         {
                                             Console.WriteLine("---------------------------------\n" +
@@ -75,48 +82,47 @@ FOR ADDING A PARCEL PRESS 4
                                             break;
                                         }
                                         Console.Write("Battery:\t");
-                                        double.TryParse(Console.ReadLine(), out double battery);
-                                        dal.AddDrone(id, model, weight, status, battery);
+                                        double.TryParse(Console.ReadLine(), out double battery);*/
+                                        dal.AddDrone(myDrone);
                                         break;
                                     }
                                 case 3:{
+                                        Customer myCustomer = new();
                                         Console.WriteLine("ENTER CUSTOMER DETAILS\n" +
                                            "---------------------------------");
                                         Console.Write("Id:\t");
                                         int.TryParse(Console.ReadLine(), out int id);
+                                        myCustomer.Id = id;
                                         Console.Write("Name:\t");
-                                        string name = Console.ReadLine();
+                                        myCustomer.Name = Console.ReadLine();
                                         Console.Write("Phone:\t");
-                                        string phone = Console.ReadLine();
+                                        myCustomer.Phone = Console.ReadLine();
                                         Console.Write("Latitude:\t");
                                         double.TryParse(Console.ReadLine(), out double latitude);
+                                        myCustomer.Lattitude = latitude;
                                         Console.Write("Longitude:\t");
                                         double.TryParse(Console.ReadLine(), out double longitude);
-                                        dal.AddCustomer(id, name, phone, latitude, longitude);
+                                        myCustomer.Longitude = longitude;
+                                        dal.AddCustomer(myCustomer);
                                         break;
                                     }
                                 case 4:{
+                                        Parcel myParcel = new();
                                         Console.WriteLine("ENTER PARCEL DETAILS\n" +
                                           "---------------------------------");
                                         Console.Write("SENDER-ID:\t");
                                         int.TryParse(Console.ReadLine(), out int senderId);
+                                        myParcel.SenderId = senderId;
                                         Console.Write("TARGET-ID:\t");
                                         int.TryParse(Console.ReadLine(), out int targetId);
-                                        Console.Write("WEIGHT:\t");
-                                        if (!Enum.TryParse(Console.ReadLine(), out WeightCategories weight))
-                                        {
-                                            Console.WriteLine("---------------------------------\n" +
-                                                "ERROR - invalid weight category");
-                                            break;
-                                        }
-                                        Console.Write("PRIORITY:\t");
-                                        if (!Enum.TryParse(Console.ReadLine(), out Priorities priority))
-                                        {
-                                            Console.WriteLine("---------------------------------\n" +
-                                                "ERROR - invalid priority category");
-                                            break;
-                                        }
-                                        dal.AddParcel(senderId, targetId, weight, priority);
+                                        myParcel.TargetId = targetId;
+                                        Console.Write("Weight category [1-Light|2-Medium|3-Heavy]:\t");
+                                        int.TryParse(Console.ReadLine(), out int weightCat);
+                                        myParcel.Weight = (WeightCategories)weightCat;
+                                        Console.Write("Priority [1-Normal|2-Fast|3-Emengercy]:\t");
+                                        int.TryParse(Console.ReadLine(), out int priority);
+                                        myParcel.Priority = (Priorities)priority;
+                                        dal.AddParcel(myParcel);
                                         break;
                                     }
                                 default:
@@ -163,12 +169,12 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                     }
                                 case 4:
                                     {
-                                        BaseStation[] myArr = dal.FreeSlotsBaseStations();
-                                        if (myArr.Length <= 0)
+                                        List<BaseStation> myList =(List<BaseStation>) dal.FreeSlotsBaseStations();
+                                        if (myList.Count <= 0)
                                             Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
                                         else
                                         {
-                                            Array.ForEach(myArr, myPrint);
+                                            myList.ForEach(myPrint);
                                             Console.ResetColor();
                                             Console.WriteLine("ENTER DRONE ID AND BASE-STATION ID FOR CHARGING:\t");
                                             Console.WriteLine("---------------------------------");
@@ -273,38 +279,38 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                             switch (choice2)
                             {
                                 case 1:{
-                                        Array.ForEach(dal.AllBaseStations(), myPrint);
+                                        ((List<BaseStation>)dal.AllBaseStations()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 2:{
-                                        Array.ForEach(dal.AllDrones(), myPrint);
+                                        ((List<Drone>)dal.AllDrones()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 3:{
-                                        Array.ForEach(dal.AllCustomers(), myPrint);
+                                        ((List<Customer>)dal.AllCustomers()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 4:{
-                                        Array.ForEach(dal.AllParcels(), myPrint);
+                                        ((List<Parcel>)dal.AllParcels()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 5:{
-                                        Parcel[] myArr = dal.NoneScheduledParcels();
-                                        if (myArr.Length > 0)
-                                            Array.ForEach(myArr, myPrint);
+                                        List<Parcel> myList = (List<Parcel>)dal.NoneScheduledParcels();
+                                        if (myList.Count > 0)
+                                            myList.ForEach(myPrint);
                                         else
                                             Console.WriteLine("THERE AREN'T NONE-SCHEDULED PARCELS", Console.ForegroundColor = ConsoleColor.Red);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 6:{
-                                        BaseStation[] myArr = dal.FreeSlotsBaseStations();
-                                        if(myArr.Length > 0)
-                                            Array.ForEach(myArr, myPrint);
+                                        List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
+                                        if(myList.Count > 0)
+                                            myList.ForEach(myPrint);
                                         else
                                             Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
                                         Console.ResetColor();
