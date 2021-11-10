@@ -156,14 +156,15 @@ namespace DalObject
         #endregion
 
         #endregion
-        #region Add Base Station
+        #region Add methods
+        #region  Add Base Station
         /// <summary>
         /// adding a new base atation into array
         /// </summary>
         /// <param name="name"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        /// <param name="freeSlots"></param>
+        /// <param name="freeSlots"></param> 
         public void AddBaseStation(BaseStation newBaseStation)
         {
             if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
@@ -171,6 +172,7 @@ namespace DalObject
             DataSource.BaseStationsList.Add(newBaseStation);
         }
         #endregion
+        #region Add Drone
         /// <summary>
         /// adding a new drone into array
         /// </summary>
@@ -179,7 +181,14 @@ namespace DalObject
         /// <param name="weight"></param>
         /// <param name="status"></param>
         /// <param name="battery"></param>
-        public void AddDrone(Drone newDrone) => DataSource.DronesList.Add(newDrone);
+        public void AddDrone(Drone newDrone)
+        {
+            if (DataSource.DronesList.Exists(item => item.Id == newDrone.Id))
+                throw new DroneException($"Base Station {newDrone.Id} is already exist");
+            DataSource.DronesList.Add(newDrone);
+        }
+        #endregion
+        #region Add Customer
         /// <summary>
         /// adding a new customer into array
         /// </summary>
@@ -188,7 +197,14 @@ namespace DalObject
         /// <param name="phone"></param>
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
-        public void AddCustomer(Customer newCustomer) => DataSource.CustomersList.Add(newCustomer);
+        public void AddCustomer(Customer newCustomer)
+        {
+            if (DataSource.CustomersList.Exists(item => item.Id == newCustomer.Id))
+                throw new CustomerException($"Customer {newCustomer.Id} is already exist");
+            DataSource.CustomersList.Add(newCustomer);
+        }
+        #endregion
+        #region Add Parcel
         /// <summary>
         /// adding a new parcel into array
         /// </summary>
@@ -196,7 +212,14 @@ namespace DalObject
         /// <param name="targetId"></param>
         /// <param name="weight"></param>
         /// <param name="priority"></param>
-        public void AddParcel(Parcel newParcel) => DataSource.ParcelsList.Add(newParcel);
+        public void AddParcel(Parcel newParcel)
+        {
+            if (DataSource.ParcelsList.Exists(item => item.Id == newParcel.Id))
+                throw new ParcelException($"Parcel {newParcel.Id} is already exist");
+            DataSource.ParcelsList.Add(newParcel);
+        }
+        #endregion
+        #endregion
 
         /// <summary>
         /// find a base-station by id and return it
