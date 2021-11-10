@@ -4,15 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
-#
+
 namespace DalObject
 {
-    public class DalObject
+    public class DalObject : IDAL.IDal
     {
+        #region ctor
         public DalObject()
         {
             DataSource.Initialize();
         }
+        #endregion
+        #region Update methods
+        #region Schedule Drone For Parcel
 
         /// <summary>
         /// schedule a drone for parcel delivery
@@ -21,33 +25,36 @@ namespace DalObject
         /// <param name="droneId">drone id for schedule</param>
         public void ScheduleDroneForParcel(int parcelId, int droneId)
         {
+            if (!DataSource.ParcelsList.Exists(item => item.Id == parcelId))
+                throw new ParcelException($"Parcel {parcelId} doesn't exist");
+            if (!DataSource.DronesList.Exists(item => item.Id == droneId))
+                throw new DroneException($"Drone {droneId} doesn't exist");
             for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
                 {
                     for (int j = 0; j < DataSource.DronesList.Count; j++)
                     {
+                        if (DataSource.DronesList[j].Id == droneId)
                         {
-                            if (DataSource.DronesList[j].Id == droneId)
-                            {
-                                Parcel my_parcel = DataSource.ParcelsList[i];
-                                my_parcel.DroneId = droneId;
-                                my_parcel.Scheduled = DateTime.Now;
-                                DataSource.ParcelsList[i] = my_parcel;
-                                return;
-                            }
+                            Parcel my_parcel = DataSource.ParcelsList[i];
+                            my_parcel.DroneId = droneId;
+                            my_parcel.Scheduled = DateTime.Now;
+                            DataSource.ParcelsList[i] = my_parcel;
+                            return;
                         }
                     }
-                    throw new DroneIdException($"Drone Id dosn't exist: {droneId}");
                 }
-                else
-                    throw new ParcelIdException($"Parcel Id dosn't exist: {parcelId}");
         }
+        #endregion
+        #region PickingUpAParcel
         /// <summary>
         /// picking up a parcel by its drone
         /// </summary>
         /// <param name="parcelId">parcel id to picking up</param>
         public void PickingUpAParcel(int parcelId)
         {
+            if (!DataSource.ParcelsList.Exists(item => item.Id == parcelId))
+                throw new ParcelException($"Parcel {parcelId} doesn't exist");
             for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
                 {
@@ -60,16 +67,21 @@ namespace DalObject
                             myDrone.Status = DroneStatusCategories.Delivery;
                             DataSource.ParcelsList[i] = myParcel;
                             DataSource.DronesList[j] = myDrone;
-                            return; 
+                            return;
                         }
                 }
         }
+        #endregion
+        #region DeliverAParcel
+
         /// <summary>
         /// finish delivery of a parcel
         /// </summary>
         /// <param name="parcelId">parcel id to deliver</param>
         public void DeliverAParcel(int parcelId)
         {
+            if (!DataSource.ParcelsList.Exists(item => item.Id == parcelId))
+                throw new ParcelException($"Parcel {parcelId} doesn't exist");
             for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
                 {
@@ -86,6 +98,8 @@ namespace DalObject
                         }
                 }
         }
+        #endregion
+        #region ChargeDrone
         /// <summary>
         /// connect a drone to charging at base-station
         /// </summary>
@@ -93,6 +107,10 @@ namespace DalObject
         /// <param name="baseStationId">requested base-station</param>
         public void ChargeDrone(int droneId, int baseStationId)
         {
+            if (!DataSource.DronesList.Exists(item => item.Id == droneId))
+                throw new DroneException($"Drone {droneId} doesn't exist");
+            if (!DataSource.BaseStationsList.Exists(item => item.Id == baseStationId))
+                throw new BaseStationException($"Base Station {baseStationId} doesn't exist");
             for (int i = 0; i < DataSource.DronesList.Count; i++)
                 if (DataSource.DronesList[i].Id == droneId)
                     for (int j = 0; j < DataSource.BaseStationsList.Count; j++)
@@ -108,12 +126,16 @@ namespace DalObject
                             return;
                         }
         }
+        #endregion
+        #region Release Drone From Charge
         /// <summary>
         /// release a drone from charging
         /// </summary>
         /// <param name="droneId">drone's id to release</param>
         public void ReleaseDroneFromCharge(int droneId)
         {
+            if (!DataSource.DronesList.Exists(item => item.Id == droneId))
+                throw new DroneException($"Drone {droneId} doesn't exist");
             for (int i = 0; i < DataSource.DronesList.Count; i++)
                 if (DataSource.DronesList[i].Id == droneId)
                 {
@@ -131,7 +153,10 @@ namespace DalObject
                         }
                 }
         }
+        #endregion
 
+        #endregion
+        #region Add Base Station
         /// <summary>
         /// adding a new base atation into array
         /// </summary>
@@ -139,7 +164,13 @@ namespace DalObject
         /// <param name="latitude"></param>
         /// <param name="longitude"></param>
         /// <param name="freeSlots"></param>
-        public void AddBaseStation(BaseStation newBaseStation) => DataSource.BaseStationsList.Add(newBaseStation);
+        public void AddBaseStation(BaseStation newBaseStation)
+        {
+            if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
+                throw new BaseStationException($"Base Station {newBaseStation.Id} is already exist");
+            DataSource.BaseStationsList.Add(newBaseStation);
+        }
+        #endregion
         /// <summary>
         /// adding a new drone into array
         /// </summary>
