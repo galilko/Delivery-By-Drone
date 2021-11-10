@@ -220,7 +220,7 @@ namespace DalObject
         }
         #endregion
         #endregion
-
+        #region Find methods
         /// <summary>
         /// find a base-station by id and return it
         /// </summary>
@@ -231,7 +231,7 @@ namespace DalObject
             foreach (var item in DataSource.BaseStationsList)
                 if (item.Id == id)
                     return item;
-            return default;
+            throw new BaseStationException($"base station {id} dosn't exist");
         }
         /// <summary>
         /// find a drone by id and return it
@@ -243,7 +243,7 @@ namespace DalObject
             foreach (var item in DataSource.DronesList)
                 if (item.Id == id)
                     return item;
-            return default;
+            throw new DroneException($"Dron {id} dosn't exist");
         }
         /// <summary>
         /// find a customer by id and return it
@@ -255,7 +255,7 @@ namespace DalObject
             foreach (var item in DataSource.CustomersList)
                 if (item.Id == id)
                     return item;
-            return default;
+            throw new CustomerException($"Customer {id} dosn't exist");
         }
         /// <summary>
         /// find a parcel by id and return it
@@ -267,9 +267,10 @@ namespace DalObject
             foreach (var item in DataSource.ParcelsList)
                 if (item.Id == id)
                     return item;
-            return default;
+            throw new ParcelException($"Parcel {id} dosn't exist");
         }
-
+        #endregion
+        #region All lists
         /// <summary>
         /// return array of customers
         /// </summary>
@@ -290,6 +291,8 @@ namespace DalObject
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Parcel> AllParcels() => DataSource.ParcelsList;
+        #endregion
+        #region others
         /// <summary>
         /// return array of none-scheduled parcels
         /// </summary>
@@ -314,7 +317,6 @@ namespace DalObject
                     tmpList.Add(DataSource.BaseStationsList[i]);
             return tmpList;
         }
-
-
+        #endregion
     }
 }
