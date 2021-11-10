@@ -39,9 +39,7 @@ namespace DalObject
                 {
                     Id = rand.Next(100,999),
                     Model = "model" + i.ToString(),
-                    MaxWeight = RandomEnumValue<WeightCategories>(),
-                    Status = RandomEnumValue<DroneStatusCategories>(),
-                    Battery = rand.NextDouble() * 100
+                    MaxWeight = RandomEnumValue<WeightCategories>()
                 });
             }
             //initialize base-stations

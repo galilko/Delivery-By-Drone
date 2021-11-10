@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL.DO;
-
+#
 namespace DalObject
 {
     public class DalObject
@@ -23,15 +23,24 @@ namespace DalObject
         {
             for (int i = 0; i < DataSource.ParcelsList.Count; i++)
                 if (DataSource.ParcelsList[i].Id == parcelId)
+                {
                     for (int j = 0; j < DataSource.DronesList.Count; j++)
-                        if (DataSource.DronesList[j].Id == droneId)
+                    {
                         {
-                            Parcel my_parcel = DataSource.ParcelsList[i];
-                            my_parcel.DroneId = droneId;
-                            my_parcel.Scheduled = DateTime.Now;
-                            DataSource.ParcelsList[i] = my_parcel;
-                            return;
+                            if (DataSource.DronesList[j].Id == droneId)
+                            {
+                                Parcel my_parcel = DataSource.ParcelsList[i];
+                                my_parcel.DroneId = droneId;
+                                my_parcel.Scheduled = DateTime.Now;
+                                DataSource.ParcelsList[i] = my_parcel;
+                                return;
+                            }
                         }
+                    }
+                    throw new DroneIdException($"Drone Id dosn't exist: {droneId}");
+                }
+                else
+                    throw new ParcelIdException($"Parcel Id dosn't exist: {parcelId}");
         }
         /// <summary>
         /// picking up a parcel by its drone
