@@ -18,15 +18,7 @@ namespace IDAL
             [Description("heavy")]
             Heavy = 3
         }
-        public enum DroneStatusCategories
-        {
-            [Description("free")]
-            Free = 0,
-            [Description("maintenance")]
-            Maintenance = 1,
-            [Description("delivery")]
-            Delivery = 2
-        }
+
         public enum Priorities
         {
             [Description("normal")]

@@ -20,6 +20,11 @@ namespace DalObject
         internal class Config
         {
             internal static int NewParcelId = 100000;
+            internal static double BatteryUseFREE { get { return 0.5; } }
+            internal static double BatteryUseLight { get { return 2.5; } }
+            internal static double BatteryUseMedium { get { return 3.5; } }
+            internal static double BatteryUseHeavy { get { return 5.5; } }
+            internal static double BatteryChargeRate { get { return 20.5; } }
         }
 
         static Random _R = new Random();

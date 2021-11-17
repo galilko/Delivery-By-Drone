@@ -24,5 +24,6 @@ namespace IDAL
         void PickingUpAParcel(int parcelId);
         void ReleaseDroneFromCharge(int droneId);
         void ScheduleDroneForParcel(int parcelId, int droneId);
+        double[] GetBatteryUse();
     }
 }

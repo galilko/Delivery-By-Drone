@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace DalObject
+namespace IDAL.DO
 {
     [Serializable]
     internal class BaseStationException : Exception

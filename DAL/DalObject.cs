@@ -9,6 +9,12 @@ namespace DalObject
 {
     public class DalObject : IDAL.IDal
     {
+        public double[] GetBatteryUse()
+        {
+            return new double[5] { DataSource.Config.BatteryUseFREE, DataSource.Config.BatteryUseLight,
+                DataSource.Config.BatteryUseMedium, DataSource.Config.BatteryUseHeavy, DataSource.Config.BatteryChargeRate};
+        }
+
         #region ctor
         public DalObject()
         {
@@ -184,7 +190,7 @@ namespace DalObject
         public void AddDrone(Drone newDrone)
         {
             if (DataSource.DronesList.Exists(item => item.Id == newDrone.Id))
-                throw new DroneException($"Base Station {newDrone.Id} is already exist");
+                throw new DroneException($"Drone {newDrone.Id} is already exist");
             DataSource.DronesList.Add(newDrone);
         }
         #endregion
@@ -231,7 +237,7 @@ namespace DalObject
             foreach (var item in DataSource.BaseStationsList)
                 if (item.Id == id)
                     return item;
-            throw new BaseStationException($"base station {id} dosn't exist");
+            throw new BaseStationException($"base station {id} doesn't exist");
         }
         /// <summary>
         /// find a drone by id and return it
@@ -243,7 +249,7 @@ namespace DalObject
             foreach (var item in DataSource.DronesList)
                 if (item.Id == id)
                     return item;
-            throw new DroneException($"Dron {id} dosn't exist");
+            throw new DroneException($"Drone {id} doesn't exist");
         }
         /// <summary>
         /// find a customer by id and return it
@@ -255,7 +261,7 @@ namespace DalObject
             foreach (var item in DataSource.CustomersList)
                 if (item.Id == id)
                     return item;
-            throw new CustomerException($"Customer {id} dosn't exist");
+            throw new CustomerException($"Customer {id} doesn't exist");
         }
         /// <summary>
         /// find a parcel by id and return it
@@ -267,7 +273,7 @@ namespace DalObject
             foreach (var item in DataSource.ParcelsList)
                 if (item.Id == id)
                     return item;
-            throw new ParcelException($"Parcel {id} dosn't exist");
+            throw new ParcelException($"Parcel {id} doesn't exist");
         }
         #endregion
         #region All lists
