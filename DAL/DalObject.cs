@@ -124,7 +124,6 @@ namespace DalObject
                         {
                             DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
                             Drone myDrone = DataSource.DronesList[i];
-                            myDrone.Status = DroneStatusCategories.Maintenance;
                             BaseStation myBaseStation = DataSource.BaseStationsList[j];
                             myBaseStation.FreeChargeSlots--;
                             DataSource.DronesList[i] = myDrone;
@@ -146,7 +145,6 @@ namespace DalObject
                 if (DataSource.DronesList[i].Id == droneId)
                 {
                     Drone myDrone = DataSource.DronesList[i];
-                    myDrone.Status = DroneStatusCategories.Free;
                     DroneCharge droneCharge = DataSource.DroneChargeList.Find(myDroneCharge => myDroneCharge.DroneId == droneId);
                     for (int j = 0; j < DataSource.BaseStationsList.Count; j++)
                         if (DataSource.BaseStationsList[j].Id == droneCharge.StationId)

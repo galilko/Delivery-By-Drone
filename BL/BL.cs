@@ -24,11 +24,14 @@ public class BL : IBL.IBL
         BatteryUseMedium = MyDal.GetBatteryUse()[2];
         BatteryUseHeavy = MyDal.GetBatteryUse()[3];
         BatteryChargeRate = MyDal.GetBatteryUse()[4];
-        List<DroneToList>
-        List<> Drones = (List<IDAL.DO.Drone>)MyDal.AllDrones();
+        List<DroneToList> Drones = (List<DroneToList>)MyDal.AllDrones()
+        List<IDAL.DO.Parcel> Parcels = (List<IDAL.DO.Parcel>)MyDal.AllParcels();
         foreach (var item in Drones)
         {
-            if
+            IDAL.DO.Parcel temp = Parcels.Find(p => p.DroneId == item.Id);
+            if(!temp.Equals(default (IDAL.DO.Parcel)))
+                item.Status = 
+
         }
     }
     public int aaa()
