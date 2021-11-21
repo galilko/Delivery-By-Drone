@@ -6,32 +6,56 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    class Converter
+    public class Converter
     {
-        public static List<DroneToList> ConvertDroneTolist(List<IDAL.DO.Drone> Drones , List<IDAL.DO.Parcel> Parcels, List<IDAL.DO.Customer> customers, List<IDAL.DO.BaseStation> BaseStations)
+        internal static IDAL.DO.Drone ConvertBlDroneToDalDrone(DroneToList myDrone)
         {
-            List<DroneToList> temp;
-            foreach (var item in Drones)
+            return new IDAL.DO.Drone()
             {
-                Drone a = new Drone();
-                a.Id = item.Id;
-                a.Model = item.Model;
-                a.Weight = (WeightCategories)item.MaxWeight;
-                var temp1 = Parcels.Find(temp => temp.DroneId == a.Id);
-                if (!temp1.Equals(default(IDAL.DO.Parcel)))
-                {
-                    a.Status = DroneStatusCategories.Delivery;
-                    if(!temp1.PickedUp.IsDaylightSavingTime())
-                    {
-                        var temp2 = customers.Find(temp => temp.Id == temp1.SenderId);
-                        var temp3 = BaseStations.
+                Id = myDrone.Id,
+                MaxWeight = (IDAL.DO.WeightCategories)myDrone.Weight,
+                Model = myDrone.Model
+            };
+        }
 
-                    }
+        internal static IDAL.DO.BaseStation ConvertBlBsToDalBs(BaseStation myBaseStation)
+        {
+            return new IDAL.DO.BaseStation()
+            {
+                Id = myBaseStation.Id,
+                Name = myBaseStation.Name,
+                Lattitude = myBaseStation.BSLocation.Latitude,
+                Longitude = myBaseStation.BSLocation.Longitude,
+                FreeChargeSlots = myBaseStation.FreeChargeSlots
+            };
+        }
 
-                    
+        internal static IDAL.DO.Customer ConvertBlCustomerToDalCustomer(Customer myCustomer)
+        {
+            return new IDAL.DO.Customer()
+            {
+                Id = myCustomer.Id,
+                Name = myCustomer.Name,
+                Phone = myCustomer.PhoneNumber,
+                Lattitude = myCustomer.CustomerLocation.Latitude,
+                Longitude = myCustomer.CustomerLocation.Longitude
+            };
+        }
 
-                  
-                }
-            }
+        internal static IDAL.DO.Parcel ConvertBlParcelToDalParcel(Parcel myParcel)
+        {
+            return new IDAL.DO.Parcel()
+            {
+                SenderId = myParcel.Sender.Id,
+                TargetId = myParcel.Target.Id,
+                DroneId = myParcel.DroneAtParcel.Id,
+                Priority = (IDAL.DO.Priorities)myParcel.Priority,
+                Weight = (IDAL.DO.WeightCategories)myParcel.Weight,
+                Requested = myParcel.Requested,
+                Scheduled = myParcel.Scheduled,
+                PickedUp = myParcel.PickedUp,
+                Delivered = myParcel.Delivered,
+            };
+        }
     }
 }

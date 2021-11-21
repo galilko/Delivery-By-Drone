@@ -23,11 +23,11 @@ namespace IBL.BO
     public enum Priorities
     {
         [Description("normal")]
-        Normal,
+        Normal = 1,
         [Description("fast")]
-        Fast,
+        Fast = 2,
         [Description("emergency")]
-        Emergency
+        Emergency = 3
     }
     public enum ParcelStatus
     {

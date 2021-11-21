@@ -70,7 +70,6 @@ namespace DalObject
                         if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
                         {
                             Drone myDrone = DataSource.DronesList[j];
-                            myDrone.Status = DroneStatusCategories.Delivery;
                             DataSource.ParcelsList[i] = myParcel;
                             DataSource.DronesList[j] = myDrone;
                             return;
@@ -97,7 +96,6 @@ namespace DalObject
                         if (DataSource.DronesList[j].Id == DataSource.ParcelsList[i].DroneId)
                         {
                             Drone myDrone = DataSource.DronesList[j];
-                            myDrone.Status = DroneStatusCategories.Free;
                             DataSource.ParcelsList[i] = myParcel;
                             DataSource.DronesList[j] = myDrone;
                             return;
@@ -220,6 +218,7 @@ namespace DalObject
         {
             if (DataSource.ParcelsList.Exists(item => item.Id == newParcel.Id))
                 throw new ParcelException($"Parcel {newParcel.Id} is already exist");
+            newParcel.Id = DataSource.Config.NewParcelId++;
             DataSource.ParcelsList.Add(newParcel);
         }
         #endregion

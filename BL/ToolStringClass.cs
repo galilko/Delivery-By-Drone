@@ -11,8 +11,8 @@ namespace IBL.BO
             foreach (PropertyInfo item in t.GetType().GetProperties())
             {
                 result +=
-                    ("name: {0,-15} value: {1,-15}"
-                    , item.Name, item.GetValue(t, null));
+                    ($"{item.Name,-15} : {item.GetValue(t, null), -15}\n"
+                     );
             }
             return result;
         }

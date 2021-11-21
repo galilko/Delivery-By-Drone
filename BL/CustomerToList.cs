@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace IBL.BO
 {
-    class CustomerToList
+    public class CustomerToList
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public int SentAndSuppliedParcels { get; set; }
         public int SentAndNotSuppliedParcels { get; set; }
         public int RecievedParcels { get; set; }

@@ -10,7 +10,7 @@ namespace IDAL.DO
         {
         }
 
-        public DroneException(string message) : base($"Drone Exception" + message)
+        public DroneException(string message) : base($"Drone Exception: " + message)
         {
         }
 

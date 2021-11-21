@@ -42,7 +42,7 @@ namespace DalObject
             {
                 DronesList.Add(new Drone()
                 {
-                    Id = rand.Next(100,999),
+                    Id = rand.Next(100, 999),
                     Model = "model" + i.ToString(),
                     MaxWeight = RandomEnumValue<WeightCategories>()
                 });
@@ -64,12 +64,12 @@ namespace DalObject
                     Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1, "-")
                 }
                 );
-            }            
+            }
             //initialize parcels
             for (int i = 0; i < 10; i++)
             {
-                //TimeSpan tSpan = new TimeSpan(0, rand.Next(0, 24), rand.Next(0, 60), 0);
-                ParcelsList.Add(new Parcel()
+                TimeSpan tSpan = new TimeSpan(0, rand.Next(0, 24), rand.Next(0, 60), 0);
+                Parcel parcel = new Parcel()
                 {
                     Id = Config.NewParcelId++,
                     SenderId = CustomersList[i].Id,
@@ -77,9 +77,31 @@ namespace DalObject
                     Weight = RandomEnumValue<WeightCategories>(),
                     Priority = RandomEnumValue<Priorities>(),
                     Requested = DateTime.Now
+                };
+
+                if (rand.Next(2) == 1)
+                {
+                    parcel.Scheduled = parcel.Requested + tSpan;
+                    parcel.DroneId = DronesList[rand.Next(DronesList.Count)].Id;
+                    if (rand.Next(2) == 1)
+                    {
+                        parcel.PickedUp = parcel.Scheduled + tSpan;
+                        if (rand.Next(2) == 1)
+                            parcel.Delivered = parcel.PickedUp + tSpan;
+                        else
+                            parcel.Delivered = DateTime.MinValue;
+                    }
+                    else
+                        parcel.PickedUp = parcel.Delivered = DateTime.MinValue;
                 }
-                );
+                else
+                {
+                    parcel.Scheduled = parcel.PickedUp = parcel.Delivered = DateTime.MinValue;
+                    parcel.DroneId = 0;
+                }
+                ParcelsList.Add(parcel);
             }
+            
         }
 
     }
