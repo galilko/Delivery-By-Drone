@@ -156,6 +156,18 @@ namespace DalObject
                 }
         }
         #endregion
+        #region ChangeModelDrone
+        public void ChangeModelDrone(int DroneId , String model)
+        {
+            Drone mydrone = DataSource.DronesList.Find(x => x.Id == DroneId);
+            if(mydrone.Equals(default))
+                throw new DroneException($"Drone {DroneId} doesn't exist");
+            DataSource.DronesList.Remove(mydrone);
+            mydrone.Model = model;
+            DataSource.DronesList.Add(mydrone);
+
+        }
+        #endregion
 
         #endregion
         #region Add methods
@@ -169,9 +181,10 @@ namespace DalObject
         /// <param name="freeSlots"></param> 
         public void AddBaseStation(BaseStation newBaseStation)
         {
-            if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
-                throw new BaseStationException($"Base Station {newBaseStation.Id} is already exist");
-            DataSource.BaseStationsList.Add(newBaseStation);
+            
+                if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
+                    throw new BaseStationException($"Base Station {newBaseStation.Id} is already exist");
+                DataSource.BaseStationsList.Add(newBaseStation);
         }
         #endregion
         #region Add Drone

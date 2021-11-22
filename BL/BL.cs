@@ -119,8 +119,15 @@ public class BL
     }
     public void AddBaseStation(BaseStation myBaseStation)
     {
-        myBaseStation.DronesInCharge = new List<DroneInCharge>();
-        MyDal.AddBaseStation(Converter.ConvertBlBsToDalBs(myBaseStation));
+        try
+        {
+            myBaseStation.DronesInCharge = new List<DroneInCharge>();
+            MyDal.AddBaseStation(Converter.ConvertBlBsToDalBs(myBaseStation));
+        }
+        catch (Exception ex)
+        {
+            throw new BlAddEntityException($"cannot add base station id:", ex);
+        }
     }
 
     public void AddDrone(DroneToList myDrone, int baseStationId)
@@ -149,20 +156,33 @@ public class BL
 
     public void AddCustomer(Customer myCustomer)
     {
-        MyDal.AddCustomer(Converter.ConvertBlCustomerToDalCustomer(myCustomer));
-        throw new NotImplementedException();
+        try
+        {
+            MyDal.AddCustomer(Converter.ConvertBlCustomerToDalCustomer(myCustomer));
+        }
+        catch (Exception ex)
+        {
+            throw new BlAddEntityException($"cannot add customer id:", ex);
+        }
     }
 
     public void AddParcel(Parcel myParcel)
     {
-        myParcel.Requested = DateTime.Now;
-        myParcel.Scheduled = myParcel.PickedUp = myParcel.Delivered = DateTime.MinValue;
-        myParcel.DroneAtParcel = new DroneAtParcel();
-        MyDal.AddParcel(Converter.ConvertBlParcelToDalParcel(myParcel));
+        try
+        {
+            myParcel.Requested = DateTime.Now;
+            myParcel.Scheduled = myParcel.PickedUp = myParcel.Delivered = DateTime.MinValue;
+            myParcel.DroneAtParcel = new DroneAtParcel();
+            MyDal.AddParcel(Converter.ConvertBlParcelToDalParcel(myParcel));
+        }
+        catch (Exception ex)
+        {
+            throw new BlAddEntityException($"cannot add parcel id:", ex);
+        }
     }
 
     public IEnumerable<BaseStationToList> AllBlBaseStations()
-    {
+    { 
         List<BaseStationToList> myList = new();
         foreach (var item in MyDal.AllBaseStations())
             myList.Add(new BaseStationToList()
@@ -233,6 +253,17 @@ public class BL
     public IEnumerable<BaseStationToList> FreeSlotsBaseStations()
     {
         return AllBlBaseStations().Where(x => x.FreeChargeSlots > 0).ToList();
+    }
+    public void ChangeModelDrone(int DroneId , String model)
+    {
+        try
+        {
+            MyDal.ChangeModelDrone(DroneId, model);
+        }
+        catch(Exception ex)
+        {
+            throw new BlAddEntityException($"cannot update drone id:", ex);
+        }
     }
 
     /*public BaseStation FindBaseStation(int baseStationId)

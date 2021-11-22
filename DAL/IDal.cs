@@ -1,4 +1,5 @@
 ﻿using IDAL.DO;
+using System;
 using System.Collections.Generic;
 
 namespace IDAL
@@ -25,5 +26,6 @@ namespace IDAL
         void ReleaseDroneFromCharge(int droneId);
         void ScheduleDroneForParcel(int parcelId, int droneId);
         double[] GetBatteryUse();
+        public void ChangeModelDrone(int DroneId, String model);
     }
 }

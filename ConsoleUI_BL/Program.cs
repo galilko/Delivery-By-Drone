@@ -167,21 +167,31 @@ FOR ADDING A PARCEL PRESS 4
                                     break;
                                 }
                             #endregion
-                            /*
+                            
                         case 2:
                             {
                                 Console.WriteLine(@"-------------------------------
-FOR ASSINGING A PARCEL TO A DRONE PRESS 1
-FOR PICK UP A PARCEL BY DRONE PRESS 2
-FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 3
-FOR SENDING A DRONE FOR CHARGING AT BASE STATION PRESS 4
-FOR RELEASING A DRONE FROM CHARGING PRESS 5
+FOR UPDATE THE DRONE MODEL PRESS 1
+FOR UPDATE THE BASE STATION DETAILS PRESS 2
+FOR UPDAT THE CUSTOMER DETAILS PRESS 3
+FOR ASSINGING A PARCEL TO A DRONE PRESS 4
+FOR PICK UP A PARCEL BY DRONE PRESS 5
+FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 6
+FOR SENDING A DRONE FOR CHARGING AT BASE STATION PRESS 7
+FOR RELEASING A DRONE FROM CHARGING PRESS 8
 -------------------------------- ");
                                 properConversion = int.TryParse(Console.ReadLine(), out choice2);
                                 Console.WriteLine("---------------------------------");
                                 switch (choice2)
-                                {
+                                    {
                                     case 1:
+                                        {
+                                             properConversion = int.TryParse(Console.ReadLine(), out int id);
+                                             if (!properConversion) { throw new Exception("Invalid ID"); }
+
+                                             break;
+                                        }
+                                    case 4:
                                         {
                                             Console.WriteLine("ENTER PARCEL ID AND DRONE ID FOR SCHEDULING:");
                                             Console.WriteLine("---------------------------------");
@@ -193,21 +203,21 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                             break;
                                         }
 
-                                    case 2:
+                                    case 5:
                                         {
                                             Console.Write("ENTER PARCEL ID FOR PICKING UP:\t");
                                             int.TryParse(Console.ReadLine(), out int parcelId);
                                             dal.PickingUpAParcel(parcelId);
                                             break;
                                         }
-                                    case 3:
+                                    case 6:
                                         {
                                             Console.Write("ENTER PARCEL ID FOR DELIVERY:\t");
                                             int.TryParse(Console.ReadLine(), out int parcelId);
                                             dal.DeliverAParcel(parcelId);
                                             break;
                                         }
-                                    case 4:
+                                    case 7:
                                         {
                                             List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
                                             if (myList.Count <= 0)
@@ -228,7 +238,7 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                             Console.ResetColor();
                                             break;
                                         }
-                                    case 5:
+                                    case 8:
                                         {
                                             Console.WriteLine("ENTER DRONE ID FOR RELEASING FROM CHARGE:\t");
                                             int.TryParse(Console.ReadLine(), out int droneId);
@@ -239,7 +249,7 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                         break;
                                 }
                                 break;
-                            }*/
+                            }
                       /*  case 3:
                             {
                                 Console.WriteLine(@"---------------------------------
