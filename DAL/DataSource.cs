@@ -38,7 +38,7 @@ namespace DalObject
         {
             Random rand = new Random();
             //initialize drones
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 20; i++)
             {
                 DronesList.Add(new Drone()
                 {
@@ -75,7 +75,7 @@ namespace DalObject
                     SenderId = CustomersList[i].Id,
                     TargetId = CustomersList[9 - i].Id,
                     Weight = RandomEnumValue<WeightCategories>(),
-                    Priority = RandomEnumValue<Priorities>(),
+                    Priority = (Priorities)rand.Next(1,4),
                     Requested = DateTime.Now
                 };
 

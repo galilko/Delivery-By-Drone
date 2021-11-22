@@ -10,7 +10,6 @@ namespace IBL.BO
     {
         public int Id { get; set; }
         public double BatteryStatus { get; set; }
-
-        public override string ToString() => ToolStringClass.ToStringProperty(this); 
+        public override string ToString() => $"Id: {Id,-15} Battery Status: {BatteryStatus}";
     }
 }

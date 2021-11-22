@@ -57,5 +57,36 @@ namespace IBL.BO
                 Delivered = myParcel.Delivered,
             };
         }
+
+        internal static ParcelInTransfer ConvertDalParcelToBlParcelInTranfer(IDAL.DO.Parcel parcel, List<IDAL.DO.Customer> customerList)
+        {
+            ParcelInTransfer pit = new() { Id = parcel.Id };
+            IDAL.DO.Customer sender = customerList.Find(x => x.Id == parcel.SenderId);
+            pit.Sender = new() { Id = sender.Id, Name = sender.Name }; 
+            IDAL.DO.Customer target = customerList.Find(x => x.Id == parcel.TargetId);
+            pit.Reciever = new() { Id = target.Id, Name = target.Name };
+            pit.Weight = (WeightCategories)parcel.Weight;
+            pit.Priority = (Priorities)parcel.Priority;
+            if (parcel.PickedUp == DateTime.MinValue)
+                pit.Status = false;
+            else
+                pit.Status = true;
+            pit.CollectionLocation = new() { Latitude = sender.Lattitude, Longitude = sender.Longitude };
+            pit.DeliveryDestinationLocation = new() { Latitude = target.Lattitude, Longitude = target.Longitude };
+            pit.TransportDistance = LocationFuncs.DistanceBetweenTwoLocations(pit.CollectionLocation, pit.DeliveryDestinationLocation);
+            return pit;
+        }
+
+        internal static ParcelStatus CalculateParcelStatus(IDAL.DO.Parcel parcel)
+        {
+            if (parcel.Delivered != DateTime.MinValue)
+                return ParcelStatus.Delivered;
+            else if (parcel.PickedUp != DateTime.MinValue)
+                return ParcelStatus.PickedUp;
+            else if (parcel.Scheduled != DateTime.MinValue)
+                return ParcelStatus.Scheduled;
+            else
+                return ParcelStatus.Defined;
+        }
     }
 }

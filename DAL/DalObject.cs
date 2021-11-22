@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDAL;
 using IDAL.DO;
 
 namespace DalObject
@@ -321,5 +322,62 @@ namespace DalObject
             return tmpList;
         }
         #endregion
+        List<DroneCharge> IDal.GetListOfInChargeDrones()
+        {
+            return DataSource.DroneChargeList;
+        }
+
+        void IDal.UpdateDroneModel(int droneId, string newName)
+        {
+            if (!DataSource.DronesList.Exists(x => x.Id == droneId))
+                throw new DroneException($"Drone {droneId} doesn't exists");
+            for (int i = 0; i < DataSource.DronesList.Count; i++)
+            {
+                if(DataSource.DronesList[i].Id == droneId)
+                {
+                    Drone myDrone = DataSource.DronesList[i];
+                    myDrone.Model = newName;
+                    DataSource.DronesList[i] = myDrone;
+                    return;
+                }
+            }
+        }
+
+        void IDal.UpdateBaseStation(int baseStationId, string newName, int slotsCount)
+        {
+            if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId))
+                throw new BaseStationException($"Base Station {baseStationId} doesn't exists");
+            for (int i = 0; i < DataSource.BaseStationsList.Count; i++)
+            {
+                if (DataSource.BaseStationsList[i].Id == baseStationId)
+                {
+                    BaseStation myBaseStation = DataSource.BaseStationsList[i];
+                    myBaseStation.FreeChargeSlots = slotsCount == 0 ? myBaseStation.FreeChargeSlots : slotsCount - DataSource.DroneChargeList.Where(x => x.StationId == baseStationId).Count();
+                    myBaseStation.Name = string.IsNullOrEmpty(newName)? myBaseStation.Name : newName;
+                    DataSource.BaseStationsList[i] = myBaseStation;
+                    return;
+                }
+            }
+        }
+
+        void IDal.UpdateCustomer(int customerId, string newName, string newPhone)
+        {
+            if (!DataSource.CustomersList.Exists(x => x.Id == customerId))
+                throw new CustomerException($"Customer {customerId} doesn't exist");
+            for (int i = 0; i < DataSource.CustomersList.Count; i++)
+            {
+                if (DataSource.CustomersList[i].Id == customerId)
+                {
+                    Customer myCustomer = DataSource.CustomersList[i];
+                    myCustomer.Name = string.IsNullOrEmpty(newName) ? myCustomer.Name : newName;
+                    myCustomer.Phone = string.IsNullOrEmpty(newPhone) ? myCustomer.Phone : newPhone;
+                    DataSource.CustomersList[i] = myCustomer;
+                    return;
+                }
+            }
+        }
+
+
+
     }
 }
