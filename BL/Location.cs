@@ -18,9 +18,9 @@ namespace IBL.BO
         }
         public override string ToString() => $"(Latitude: {IDAL.Converter.LatitudeToSexadecimal(Latitude)} , Longitude: {IDAL.Converter.LongitudeToSexadecimal(Longitude)})";
 
-        internal double CalcDistance(Location senderLocation)
+       /* internal double CalcDistance(Location senderLocation)
         {
             return Math.Sqrt(Math.Pow(this.Latitude - senderLocation.Latitude, 2) + Math.Pow(this.Longitude - senderLocation.Longitude, 2));
-        }
+        }*/
     }
 }

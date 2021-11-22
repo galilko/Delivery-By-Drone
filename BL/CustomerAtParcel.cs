@@ -10,6 +10,6 @@ namespace IBL.BO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public override string ToString() => ToolStringClass.ToStringProperty(this);
+        public override string ToString() => $"Id: {Id}\tName: {Name}";
     }
 }

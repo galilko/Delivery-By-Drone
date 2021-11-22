@@ -26,9 +26,10 @@ namespace IDAL
         void ReleaseDroneFromCharge(int droneId);
         void ScheduleDroneForParcel(int parcelId, int droneId);
         double[] GetBatteryUse();
+        void UpdateCustomer(int customerId, string newName, string newPhone);
         List<DroneCharge> GetListOfInChargeDrones();
         void UpdateDroneModel(int droneId, string newName);
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
-        void UpdateCustomer(int customerId, string newName, string newPhone);
+        
     }
 }

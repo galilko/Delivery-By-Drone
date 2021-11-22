@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDAL;
 using IDAL.DO;
 
 namespace DalObject
@@ -22,8 +23,6 @@ namespace DalObject
         }
         #endregion
         #region Update methods
-        #region Schedule Drone For Parcel
-
         /// <summary>
         /// schedule a drone for parcel delivery
         /// </summary>
@@ -51,8 +50,6 @@ namespace DalObject
                     }
                 }
         }
-        #endregion
-        #region PickingUpAParcel
         /// <summary>
         /// picking up a parcel by its drone
         /// </summary>
@@ -76,9 +73,6 @@ namespace DalObject
                         }
                 }
         }
-        #endregion
-        #region DeliverAParcel
-
         /// <summary>
         /// finish delivery of a parcel
         /// </summary>
@@ -102,8 +96,6 @@ namespace DalObject
                         }
                 }
         }
-        #endregion
-        #region ChargeDrone
         /// <summary>
         /// connect a drone to charging at base-station
         /// </summary>
@@ -129,8 +121,6 @@ namespace DalObject
                             return;
                         }
         }
-        #endregion
-        #region Release Drone From Charge
         /// <summary>
         /// release a drone from charging
         /// </summary>
@@ -156,24 +146,10 @@ namespace DalObject
                 }
         }
         #endregion
-        #region ChangeModelDrone
-        public void ChangeModelDrone(int DroneId , String model)
-        {
-            Drone mydrone = DataSource.DronesList.Find(x => x.Id == DroneId);
-            if(mydrone.Equals(default))
-                throw new DroneException($"Drone {DroneId} doesn't exist");
-            DataSource.DronesList.Remove(mydrone);
-            mydrone.Model = model;
-            DataSource.DronesList.Add(mydrone);
-
-        }
-        #endregion
-
-        #endregion
         #region Add methods
         #region  Add Base Station
         /// <summary>
-        /// adding a new base atation into array
+        /// adding a new base atation into list
         /// </summary>
         /// <param name="name"></param>
         /// <param name="latitude"></param>
@@ -189,7 +165,7 @@ namespace DalObject
         #endregion
         #region Add Drone
         /// <summary>
-        /// adding a new drone into array
+        /// adding a new drone into list
         /// </summary>
         /// <param name="id"></param>
         /// <param name="model"></param>
@@ -205,7 +181,7 @@ namespace DalObject
         #endregion
         #region Add Customer
         /// <summary>
-        /// adding a new customer into array
+        /// adding a new customer into list
         /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
@@ -221,7 +197,7 @@ namespace DalObject
         #endregion
         #region Add Parcel
         /// <summary>
-        /// adding a new parcel into array
+        /// adding a new parcel into list
         /// </summary>
         /// <param name="senderId"></param>
         /// <param name="targetId"></param>
@@ -334,5 +310,73 @@ namespace DalObject
             return tmpList;
         }
         #endregion
+        List<DroneCharge> IDal.GetListOfInChargeDrones()
+        {
+            return DataSource.DroneChargeList;
+        }
+        /// <summary>
+        /// change the drone model
+        /// </summary>
+        /// <param name="droneId"></param>
+        /// <param name="newName"></param>
+        void IDal.UpdateDroneModel(int droneId, string newName)
+        {
+            if (!DataSource.DronesList.Exists(x => x.Id == droneId))
+                throw new DroneException($"Drone {droneId} doesn't exists");
+            for (int i = 0; i < DataSource.DronesList.Count; i++)
+            {
+                if(DataSource.DronesList[i].Id == droneId)
+                {
+                    Drone myDrone = DataSource.DronesList[i];
+                    myDrone.Model = newName;
+                    DataSource.DronesList[i] = myDrone;
+                    return;
+                }
+            }
+        }
+        /// <summary>
+        /// change the name and the number of slots in base station
+        /// </summary>
+        /// <param name="baseStationId"></param>
+        /// <param name="newName"></param>
+        /// <param name="slotsCount"></param>
+        void IDal.UpdateBaseStation(int baseStationId, string newName, int slotsCount)
+        {
+            if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId))
+                throw new BaseStationException($"Base Station {baseStationId} doesn't exists");
+            for (int i = 0; i < DataSource.BaseStationsList.Count; i++)
+            {
+                if (DataSource.BaseStationsList[i].Id == baseStationId)
+                {
+                    BaseStation myBaseStation = DataSource.BaseStationsList[i];
+                    myBaseStation.FreeChargeSlots = slotsCount == 0 ? myBaseStation.FreeChargeSlots : slotsCount - DataSource.DroneChargeList.Where(x => x.StationId == baseStationId).Count();
+                    myBaseStation.Name = string.IsNullOrEmpty(newName)? myBaseStation.Name : newName;
+                    DataSource.BaseStationsList[i] = myBaseStation;
+                    return;
+                }
+            }
+        }
+        /// <summary>
+        /// change the name and the phon number
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <param name="newName"></param>
+        /// <param name="newPhone"></param>
+        void IDal.UpdateCustomer(int customerId, string newName, string newPhone)
+        {
+            if (!DataSource.CustomersList.Exists(x => x.Id == customerId))
+                throw new CustomerException($"Customer {customerId} doesn't exist");
+            for (int i = 0; i < DataSource.CustomersList.Count; i++)
+            {
+                if (DataSource.CustomersList[i].Id == customerId)
+                {
+                    Customer myCustomer = DataSource.CustomersList[i];
+                    myCustomer.Name = string.IsNullOrEmpty(newName) ? myCustomer.Name : newName;
+                    myCustomer.Phone = string.IsNullOrEmpty(newPhone) ? myCustomer.Phone : newPhone;
+                    DataSource.CustomersList[i] = myCustomer;
+                    return;
+                }
+            }
+        }
     }
 }

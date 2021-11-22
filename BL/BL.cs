@@ -17,7 +17,7 @@ public class BL
     internal static double BatteryChargeRate;
     internal static BL b;
     List<DroneToList> BlDrones;
-
+    #region BL Constractor
     public BL()
     {
         BlDrones = new();
@@ -111,8 +111,12 @@ public class BL
 
         }
     }
-
+    #endregion
     #region PARCEL FUNCS
+    /// <summary>
+    /// adding a new parcel into list through BL
+    /// </summary>
+    /// <param name="myParcel"></param>
     public void AddParcel(Parcel myParcel)
     {
         try
@@ -131,6 +135,11 @@ public class BL
             throw new BlAddEntityException($"cannot add Parcel id:", ex);
         }
     }
+    /// <summary>
+    /// find a parcel by id and return it through BL
+    /// </summary>
+    /// <param name="parcelId"></param>
+    /// <returns></returns>
     public Parcel FindParcel(int parcelId)
     {
         try
@@ -164,6 +173,10 @@ public class BL
             throw new BlFindItemException($"cannot Find parcel {parcelId}:", ex);
         }
     }
+    /// <summary>
+    /// return array of parcels through BL
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<ParcelToList> AllBlParcels()
     {
         List<ParcelToList> myList = new();
@@ -188,6 +201,10 @@ public class BL
             throw new BlViewItemsListException("Parcel list is empty");
         return myList;
     }
+    /// <summary>
+    /// return a list with all the parcels that defined
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<ParcelToList> NoneScheduledParcels()
     {
         var myList = AllBlParcels().Where(x => x.Status == ParcelStatus.Defined).ToList();
@@ -197,6 +214,10 @@ public class BL
     }
     #endregion
     #region BASE-STATION FUNCS
+    /// <summary>
+    /// adding a new base atation into list through BL
+    /// </summary>
+    /// <param name="myBaseStation"></param>
     public void AddBaseStation(BaseStation myBaseStation)
     {
         try
@@ -209,6 +230,11 @@ public class BL
         }
         myBaseStation.DronesInCharge = new List<DroneInCharge>();
     }
+    /// <summary>
+    /// find a base-station by id and return it through BL
+    /// </summary>
+    /// <param name="baseStationId"></param>
+    /// <returns></returns>
     public BaseStation FindBaseStation(int baseStationId)
     {
         try
@@ -237,6 +263,10 @@ public class BL
         }
 
     }
+    /// <summary>
+    /// return array of base-stations throu BL
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<BaseStationToList> AllBlBaseStations()
     { 
         List<BaseStationToList> myList = new();
@@ -259,6 +289,10 @@ public class BL
             throw new BlViewItemsListException("Base-station list is empty");
         return myList;
     }
+    /// <summary>
+    /// reurn list on free slots on base station from BL
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<BaseStationToList> FreeSlotsBaseStations()
     {
         try
@@ -273,6 +307,12 @@ public class BL
             throw new BlViewItemsListException($"cannot show Free Slots Base Stations list:", ex);
         }
     }
+    /// <summary>
+    /// change the name and the number of slots in base station through BL
+    /// </summary>
+    /// <param name="baseStationId"></param>
+    /// <param name="newName"></param>
+    /// <param name="slotsCount"></param>
     public void UpdateBaseStation(int baseStationId, string newName, int slotsCount)
     {
         try
@@ -286,6 +326,10 @@ public class BL
     }
     #endregion
     #region CUSTOMER FUNCS
+    /// <summary>
+    /// adding a new customer into list through BL
+    /// </summary>
+    /// <param name="myCustomer"></param>
     public void AddCustomer(Customer myCustomer)
     {
         try
@@ -297,6 +341,11 @@ public class BL
             throw new BlAddEntityException($"cannot add customer {myCustomer.Id}:", ex);
         }
     }
+    /// <summary>
+    /// find a customer by id and return it through BL
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <returns></returns>
     public Customer FindCustomer(int customerId)
     {
         try
@@ -348,6 +397,10 @@ public class BL
             throw new BlFindItemException($"cannot find customer {customerId}:", ex);
         }
     }
+    /// <summary>
+    /// return array of customers through BL 
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<CustomerToList> AllBlCustomers()
     {
         List<CustomerToList> myList = new();
@@ -373,6 +426,12 @@ public class BL
             throw new BlViewItemsListException("Customers list is empty");
         return myList;
     }
+    /// <summary>
+    /// change the name and the phon number
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <param name="newName"></param>
+    /// <param name="newPhone"></param>
     public void UpdateCustomer(int customerId, string newName, string newPhone)
     {
         try
@@ -386,6 +445,11 @@ public class BL
     }
     #endregion
     #region DRONE FUNCS
+    /// <summary>
+    /// adding a new drone into list through BL
+    /// </summary>
+    /// <param name="myDrone"></param>
+    /// <param name="baseStationId"></param>
     public void AddDrone(DroneToList myDrone, int baseStationId)
     {
         try
@@ -409,6 +473,11 @@ public class BL
             throw new BlAddEntityException($"cannot add drone id:", ex);
         }
     }
+    /// <summary>
+    /// find a drone by id and return it from BL
+    /// </summary>
+    /// <param name="droneId"></param>
+    /// <returns></returns>
     public Drone FindDrone(int droneId)
     {
         try
@@ -450,10 +519,19 @@ public class BL
             throw new BlFindItemException($"cannot find drone {droneId}:", ex);
         }
     }
+    /// <summary>
+    /// return array of drones from BL
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<DroneToList> AllBlDrones()
     {
         return BlDrones;
     }
+    /// <summary>
+    /// change the drone model through BL
+    /// </summary>
+    /// <param name="droneId"></param>
+    /// <param name="newName"></param>
     public void UpdateDroneModel(int droneId, string newName)
     {
         try
@@ -467,6 +545,10 @@ public class BL
         }
 
     }
+    /// <summary>
+    /// connect a drone to charging at base-station throu BL
+    /// </summary>
+    /// <param name="droneId"></param>
     public void ChargeDrone(int droneId)
     {
         try
@@ -502,6 +584,11 @@ public class BL
             throw new BlUpdateEntityException($"cannot charge drone {droneId}:", ex);
         }
     }
+    /// <summary>
+    /// release a drone from charging through BL
+    /// </summary>
+    /// <param name="droneId"></param>
+    /// <param name="tSpanInCharge"></param>
     public void releaseDrone(int droneId, TimeSpan tSpanInCharge)
     {
         try
@@ -517,6 +604,11 @@ public class BL
             throw new BlUpdateEntityException($"cannot release drone {droneId}:", ex);
         }
     }
+    /// <summary>
+    /// schedule a drone for parcel delivery through BL
+    /// </summary>
+    /// <param name="parcelId">parcel id for deliver</param>
+    /// <param name="droneId">drone id for schedule</param>
     public void ScheduleDroneForParcel(int droneId)
     {
         try
@@ -563,6 +655,10 @@ public class BL
             throw new BlUpdateEntityException($"cannot schedule drone {droneId}:", ex);
         }
     }
+    /// <summary>
+    /// picking up a parcel by its drone through BL
+    /// </summary>
+    /// <param name="droneId"></param>
     public void PickingUpAParcel(int droneId)
     {
         try
@@ -587,6 +683,10 @@ public class BL
             throw new BlUpdateEntityException($"cannot pick up {droneId}:", ex);
         }
     }
+    /// <summary>
+    /// finish delivery of a parcel through BL
+    /// </summary>
+    /// <param name="droneId"></param>
     public void DeliverAParcel(int droneId)
     {
         try

@@ -1,5 +1,5 @@
-﻿using System;
-using IBL.BO;
+﻿using IBL.BO;
+using System;
 using System.Collections.Generic;
 namespace ConsoleUI_BL
 {
@@ -168,7 +168,7 @@ FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 8
                                     throw new InputException("WRONG INPUT");
                                 Console.WriteLine("---------------------------------");
                                 switch (choice2)
-                                    {
+                                {
                                     case 1:
                                         {
                                             Console.WriteLine("ENTER DRONE ID AND NEW MODEL FOR UPDATING:");
@@ -201,7 +201,7 @@ FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 8
                                             Console.ResetColor();
                                             break;
                                         }
-                                    case 6:
+                                    case 3:
                                         {
                                             Console.WriteLine("ENTER CUSTOMER ID FOR UPDATING:");
                                             Console.WriteLine("---------------------------------");
@@ -218,7 +218,7 @@ FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 8
                                             Console.ResetColor();
                                             break;
                                         }
-                                    case 7:
+                                    case 4:
                                         {
                                             Console.WriteLine("ENTER DRONE ID FOR CHARGING:\t");
                                             Console.WriteLine("---------------------------------");
