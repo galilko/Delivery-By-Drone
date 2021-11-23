@@ -17,7 +17,7 @@ public class BL
     internal static double BatteryChargeRate;
     internal static BL b;
     List<DroneToList> BlDrones;
-    #region BL Constractor
+    #region BL Constructor
     public BL()
     {
         BlDrones = new();
@@ -116,7 +116,7 @@ public class BL
     /// <summary>
     /// adding a new parcel into list through BL
     /// </summary>
-    /// <param name="myParcel">myParcel to add</param>
+    /// <param name="myParcel">Parcel to add</param>
     public void AddParcel(Parcel myParcel)
     {
         try
@@ -553,6 +553,7 @@ public class BL
     {
         try
         {
+            MyDal.FindDrone(droneId);
             if (BlDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)
                 throw new BlUpdateEntityException("The chosen drone isn't free");
             else
@@ -593,6 +594,7 @@ public class BL
     {
         try
         {
+            MyDal.FindDrone(droneId);
             if (BlDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Maintenance)
                 throw new BlUpdateEntityException("The chosen drone isn't in charge");
             MyDal.ReleaseDroneFromCharge(droneId);
@@ -707,6 +709,7 @@ public class BL
                         BlDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseHeavy * myParcel.TransportDistance;
                     BlDrones.Find(x => x.Id == droneId).CurrentLocation = myParcel.DeliveryDestinationLocation;
                     BlDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Free;
+                    BlDrones.Find(x => x.Id == droneId).TransferdParcelsCount++;
                     return;
                 }
             }

@@ -8,9 +8,15 @@ namespace IBL.BO
 {
     class LocationFuncs
     {
-        internal static double DistanceBetweenTwoLocations(Location l1, Location l2)
+        /// <summary>
+        /// return the distance between two points
+        /// </summary>
+        /// <param name="l1">point 1</param>
+        /// <param name="l2">point 2</param>
+        /// <returns> double distance</returns>
+        internal static double DistanceBetweenTwoLocations(Location p1, Location p2)
         {
-            return Math.Sqrt(Math.Pow(l1.Latitude - l2.Latitude, 2) + Math.Pow(l1.Longitude - l2.Longitude, 2));
+            return Math.Sqrt(Math.Pow(p1.Latitude - p2.Latitude, 2) + Math.Pow(p1.Longitude - p2.Longitude, 2));
         }
 
         internal static Location ClosestBaseStationLocation(List<IDAL.DO.BaseStation> BaseStations, Location MyLocation)
