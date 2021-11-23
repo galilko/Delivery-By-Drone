@@ -7,7 +7,7 @@ using IBL.BO;
 
 
 
-public class BL
+public class BL : IBL.IBL
 {
     IDAL.IDal MyDal;
     internal static double BatteryUseFREE;
@@ -100,14 +100,14 @@ public class BL
                             Longitude = rand.NextDouble() * (35.89927249423983 - 34.26371323423407) + 34.26371323423407
                         };
                     }
-                        double distanceWithoutParcel = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, LocationFuncs.ClosestBaseStationLocation(BaseStations, myDrone.CurrentLocation));//מרחק בין יעד לתחנה קרובה
-                        double minBattery = distanceWithoutParcel * BatteryUseFREE;// בלי חבילה עליו
-                        myDrone.BatteryStatus = rand.NextDouble() * (100 - minBattery) + minBattery;
+                    double distanceWithoutParcel = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, LocationFuncs.ClosestBaseStationLocation(BaseStations, myDrone.CurrentLocation));//מרחק בין יעד לתחנה קרובה
+                    double minBattery = distanceWithoutParcel * BatteryUseFREE;// בלי חבילה עליו
+                    myDrone.BatteryStatus = rand.NextDouble() * (100 - minBattery) + minBattery;
 
                 }
                 myDrone.TransferdParcelsCount = Parcels.Where(x => x.DroneId == myDrone.Id).Count();
             }
-                BlDrones.Add(myDrone);
+            BlDrones.Add(myDrone);
 
         }
     }
@@ -208,7 +208,7 @@ public class BL
     public IEnumerable<ParcelToList> NoneScheduledParcels()
     {
         var myList = AllBlParcels().Where(x => x.Status == ParcelStatus.Defined).ToList();
-        if(myList.Count == 0)
+        if (myList.Count == 0)
             throw new BlViewItemsListException("None-Scheduled Parcels list is empty");
         return myList;
     }
@@ -268,7 +268,7 @@ public class BL
     /// </summary>
     /// <returns> return array of base-stations through BL</returns>
     public IEnumerable<BaseStationToList> AllBlBaseStations()
-    { 
+    {
         List<BaseStationToList> myList = new();
         try
         {
@@ -539,7 +539,7 @@ public class BL
             MyDal.UpdateDroneModel(droneId, newName);
             BlDrones.Find(x => x.Id == droneId).Model = newName;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw new BlUpdateEntityException($"cannot update drone {droneId}:", ex);
         }
@@ -701,9 +701,9 @@ public class BL
                     DroneToList myDrone = BlDrones.Find(x => x.Id == droneId);
                     ParcelInTransfer myParcel = Converter.ConvertDalParcelToBlParcelInTranfer(item, MyDal.AllCustomers().ToList());
                     MyDal.DeliverAParcel(item.Id);
-                    if(myParcel.Weight == WeightCategories.Light)
+                    if (myParcel.Weight == WeightCategories.Light)
                         BlDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseLight * myParcel.TransportDistance;
-                    else if(myParcel.Weight == WeightCategories.Medium)
+                    else if (myParcel.Weight == WeightCategories.Medium)
                         BlDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseMedium * myParcel.TransportDistance;
                     else if (myParcel.Weight == WeightCategories.Heavy)
                         BlDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseHeavy * myParcel.TransportDistance;
