@@ -116,7 +116,7 @@ public class BL
     /// <summary>
     /// adding a new parcel into list through BL
     /// </summary>
-    /// <param name="myParcel"></param>
+    /// <param name="myParcel">myParcel to add</param>
     public void AddParcel(Parcel myParcel)
     {
         try
@@ -138,8 +138,8 @@ public class BL
     /// <summary>
     /// find a parcel by id and return it through BL
     /// </summary>
-    /// <param name="parcelId"></param>
-    /// <returns></returns>
+    /// <param name="parcelId">parcelId to find</param>
+    /// <returns>returns the parcel that asked</returns>
     public Parcel FindParcel(int parcelId)
     {
         try
@@ -176,7 +176,7 @@ public class BL
     /// <summary>
     /// return array of parcels through BL
     /// </summary>
-    /// <returns></returns>
+    /// <returns>returns the list of all parcels</returns>
     public IEnumerable<ParcelToList> AllBlParcels()
     {
         List<ParcelToList> myList = new();
@@ -202,9 +202,9 @@ public class BL
         return myList;
     }
     /// <summary>
-    /// return a list with all the parcels that defined
+    /// search after all parcels that defined
     /// </summary>
-    /// <returns></returns>
+    /// <returns>return a list with all the parcels that defined</returns>
     public IEnumerable<ParcelToList> NoneScheduledParcels()
     {
         var myList = AllBlParcels().Where(x => x.Status == ParcelStatus.Defined).ToList();
@@ -217,7 +217,7 @@ public class BL
     /// <summary>
     /// adding a new base atation into list through BL
     /// </summary>
-    /// <param name="myBaseStation"></param>
+    /// <param name="myBaseStation">myBasestion to add</param>
     public void AddBaseStation(BaseStation myBaseStation)
     {
         try
@@ -233,7 +233,7 @@ public class BL
     /// <summary>
     /// find a base-station by id and return it through BL
     /// </summary>
-    /// <param name="baseStationId"></param>
+    /// <param name="baseStationId"> base-stationId to find</param>
     /// <returns></returns>
     public BaseStation FindBaseStation(int baseStationId)
     {
@@ -264,9 +264,9 @@ public class BL
 
     }
     /// <summary>
-    /// return array of base-stations throu BL
+    /// takes all base-station in data-layer
     /// </summary>
-    /// <returns></returns>
+    /// <returns> return array of base-stations through BL</returns>
     public IEnumerable<BaseStationToList> AllBlBaseStations()
     { 
         List<BaseStationToList> myList = new();
@@ -290,9 +290,9 @@ public class BL
         return myList;
     }
     /// <summary>
-    /// reurn list on free slots on base station from BL
+    /// chacks in every base-station for free slots
     /// </summary>
-    /// <returns></returns>
+    /// <returns>reurn list on free slots on base station from BL</returns>
     public IEnumerable<BaseStationToList> FreeSlotsBaseStations()
     {
         try
@@ -310,9 +310,9 @@ public class BL
     /// <summary>
     /// change the name and the number of slots in base station through BL
     /// </summary>
-    /// <param name="baseStationId"></param>
-    /// <param name="newName"></param>
-    /// <param name="slotsCount"></param>
+    /// <param name="baseStationId">baseStationId for identified the base-station</param>
+    /// <param name="newName">newName to replace the old one</param>
+    /// <param name="slotsCount">newCount to replace the number of the old slots</param>
     public void UpdateBaseStation(int baseStationId, string newName, int slotsCount)
     {
         try
@@ -329,7 +329,7 @@ public class BL
     /// <summary>
     /// adding a new customer into list through BL
     /// </summary>
-    /// <param name="myCustomer"></param>
+    /// <param name="myCustomer">myCustomer to add</param>
     public void AddCustomer(Customer myCustomer)
     {
         try
@@ -344,8 +344,8 @@ public class BL
     /// <summary>
     /// find a customer by id and return it through BL
     /// </summary>
-    /// <param name="customerId"></param>
-    /// <returns></returns>
+    /// <param name="customerId">customerId to find</param>
+    /// <returns>return if he find one that matching</returns>
     public Customer FindCustomer(int customerId)
     {
         try
@@ -398,9 +398,9 @@ public class BL
         }
     }
     /// <summary>
-    /// return array of customers through BL 
+    /// takes all customers from data base 
     /// </summary>
-    /// <returns></returns>
+    /// <returns> return array of customers through BL </returns>
     public IEnumerable<CustomerToList> AllBlCustomers()
     {
         List<CustomerToList> myList = new();
@@ -429,9 +429,9 @@ public class BL
     /// <summary>
     /// change the name and the phon number
     /// </summary>
-    /// <param name="customerId"></param>
-    /// <param name="newName"></param>
-    /// <param name="newPhone"></param>
+    /// <param name="customerId">customerId for identified the customer</param>
+    /// <param name="newName">newName to change</param>
+    /// <param name="newPhone">newPhone to change</param>
     public void UpdateCustomer(int customerId, string newName, string newPhone)
     {
         try
@@ -448,8 +448,8 @@ public class BL
     /// <summary>
     /// adding a new drone into list through BL
     /// </summary>
-    /// <param name="myDrone"></param>
-    /// <param name="baseStationId"></param>
+    /// <param name="myDrone">myDrone to add</param>
+    /// <param name="baseStationId">baseStationId to set the myDrone there</param>
     public void AddDrone(DroneToList myDrone, int baseStationId)
     {
         try
@@ -476,8 +476,8 @@ public class BL
     /// <summary>
     /// find a drone by id and return it from BL
     /// </summary>
-    /// <param name="droneId"></param>
-    /// <returns></returns>
+    /// <param name="droneId">droneId to find</param>
+    /// <returns>returns if he find one</returns>
     public Drone FindDrone(int droneId)
     {
         try
@@ -520,9 +520,9 @@ public class BL
         }
     }
     /// <summary>
-    /// return array of drones from BL
+    /// collect all drones from data base
     /// </summary>
-    /// <returns></returns>
+    /// <returns>return array of drones from BL</returns>
     public IEnumerable<DroneToList> AllBlDrones()
     {
         return BlDrones;
@@ -530,8 +530,8 @@ public class BL
     /// <summary>
     /// change the drone model through BL
     /// </summary>
-    /// <param name="droneId"></param>
-    /// <param name="newName"></param>
+    /// <param name="droneId">droneId to be identified the drone</param>
+    /// <param name="newName">newName to change</param>
     public void UpdateDroneModel(int droneId, string newName)
     {
         try
@@ -548,7 +548,7 @@ public class BL
     /// <summary>
     /// connect a drone to charging at base-station throu BL
     /// </summary>
-    /// <param name="droneId"></param>
+    /// <param name="droneId"> to connect</param>
     public void ChargeDrone(int droneId)
     {
         try
@@ -587,8 +587,8 @@ public class BL
     /// <summary>
     /// release a drone from charging through BL
     /// </summary>
-    /// <param name="droneId"></param>
-    /// <param name="tSpanInCharge"></param>
+    /// <param name="droneId">droneId to release</param>
+    /// <param name="tSpanInCharge">tSpanInCharge to calculate the amount of charge</param>
     public void releaseDrone(int droneId, TimeSpan tSpanInCharge)
     {
         try
@@ -658,7 +658,7 @@ public class BL
     /// <summary>
     /// picking up a parcel by its drone through BL
     /// </summary>
-    /// <param name="droneId"></param>
+    /// <param name="droneId">droneId to Recognize </param>
     public void PickingUpAParcel(int droneId)
     {
         try
@@ -686,7 +686,7 @@ public class BL
     /// <summary>
     /// finish delivery of a parcel through BL
     /// </summary>
-    /// <param name="droneId"></param>
+    /// <param name="droneId">droneId to Recognize</param>
     public void DeliverAParcel(int droneId)
     {
         try
