@@ -15,7 +15,7 @@ namespace ConsoleUI_BL
             string msg;
             int choice1 = 0, choice2 = 1;
             bool properConversion;
-            BL myBl = new();
+            IBL.BL myBl = new();
             do
             {
                 try

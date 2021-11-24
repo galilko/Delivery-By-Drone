@@ -12,7 +12,7 @@ namespace IBL
         void AddParcel(Parcel myParcel);
         IEnumerable<BaseStationToList> AllBlBaseStations();
         IEnumerable<CustomerToList> AllBlCustomers();
-        IEnumerable<DroneToList> AllBlDrones();
+        IEnumerable<DroneToList> AllBlDrones(Func<DroneToList,bool> predicate =null);
         IEnumerable<ParcelToList> AllBlParcels();
         void ChargeDrone(int droneId);
         void DeliverAParcel(int droneId);

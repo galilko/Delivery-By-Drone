@@ -13,7 +13,7 @@ namespace IBL.BO
     }
     public enum DroneStatusCategories
     {
-        [Description("free")]
+        [Description("free to get a Parcel")]
         Free = 0,
         [Description("maintenance")]
         Maintenance = 1,
