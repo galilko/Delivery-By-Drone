@@ -9,7 +9,8 @@
     <StackPanel >
         <Button x:Name="btnAddDrone" Content="הוסף רחפן" Margin="5" Click="btnAddDrone_Click"/>
         <Button x:Name="btnListDrone" Content="הצג רחפנים" Margin="5,20,5,5" Click="btnListDrone_Click"/>
-        
-        
+        <Grid Height="100"/>
+
+
     </StackPanel>
 </Window>

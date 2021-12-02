@@ -128,7 +128,7 @@ namespace IBL
                 myParcel.Requested = DateTime.Now;
                 myParcel.Scheduled = myParcel.PickedUp = myParcel.Delivered = DateTime.MinValue;
                 myParcel.DroneAtParcel = new DroneAtParcel();
-                MyDal.AddParcel(Converter.ConvertBlParcelToDalParcel(myParcel));
+                MyDal.AddParcel(Converter.ConvertBlParcelToDalParcel(myParcel)); // convert myparcel to store it in data layer
             }
             catch (Exception ex)
             {
@@ -144,6 +144,7 @@ namespace IBL
         {
             try
             {
+                //extract the parcel from data layer and fit the details to the BL layer 
                 IDAL.DO.Parcel dalParcel = MyDal.FindParcel(parcelId);
                 Parcel blParcel = new()
                 {
@@ -179,7 +180,7 @@ namespace IBL
         /// <returns>returns the list of all parcels</returns>
         public IEnumerable<ParcelToList> AllBlParcels()
         {
-            List<ParcelToList> myList = new();
+            List<ParcelToList> myList = new(); //takes all parcels from myDal end set them on myList
             try
             {
                 foreach (var item in MyDal.AllParcels())
@@ -199,6 +200,7 @@ namespace IBL
             }
             if (myList.Count == 0)
                 throw new BlViewItemsListException("Parcel list is empty");
+
             return myList;
         }
         /// <summary>
@@ -207,7 +209,7 @@ namespace IBL
         /// <returns>return a list with all the parcels that defined</returns>
         public IEnumerable<ParcelToList> NoneScheduledParcels()
         {
-            var myList = AllBlParcels().Where(x => x.Status == ParcelStatus.Defined).ToList();
+            var myList = AllBlParcels().Where(x => x.Status == ParcelStatus.Defined).ToList(); // set on myList all parcels that defined and returns myList
             if (myList.Count == 0)
                 throw new BlViewItemsListException("None-Scheduled Parcels list is empty");
             return myList;
@@ -222,7 +224,7 @@ namespace IBL
         {
             try
             {
-                MyDal.AddBaseStation(Converter.ConvertBlBsToDalBs(myBaseStation));
+                MyDal.AddBaseStation(Converter.ConvertBlBsToDalBs(myBaseStation));// use with AddBaseStation from mydal to set basestation from the user to datasorce
             }
             catch (Exception ex)
             {
@@ -242,11 +244,11 @@ namespace IBL
                 IDAL.DO.BaseStation dalBs = MyDal.FindBaseStation(baseStationId);
                 BaseStation blBs = new();
                 blBs.DronesInCharge = new();
-                blBs.Id = dalBs.Id;
+                blBs.Id = dalBs.Id;                                                                 // find the wanted BaseStation and fit him to BL BaseStation
                 blBs.Name = dalBs.Name;
                 blBs.BSLocation = new Location(dalBs.Lattitude, dalBs.Longitude);
                 blBs.FreeChargeSlots = dalBs.FreeChargeSlots;
-                List<IDAL.DO.DroneCharge> myList = MyDal.GetListOfInChargeDrones().Where(x => x.StationId == baseStationId).ToList();
+                List<IDAL.DO.DroneCharge> myList = MyDal.GetListOfInChargeDrones().Where(x => x.StationId == baseStationId).ToList(); //update the blBs.DronesInCharge with all the drones that chargeing on the BaseStation that found 
                 foreach (var item in myList)
                 {
                     blBs.DronesInCharge.Add(new DroneInCharge()
@@ -272,7 +274,7 @@ namespace IBL
             List<BaseStationToList> myList = new();
             try
             {
-                foreach (var item in MyDal.AllBaseStations())
+                foreach (var item in MyDal.AllBaseStations()) //takes all BlBaseStations from myDal end set them on myList
                     myList.Add(new BaseStationToList()
                     {
                         Id = item.Id,
@@ -292,12 +294,12 @@ namespace IBL
         /// <summary>
         /// chacks in every base-station for free slots
         /// </summary>
-        /// <returns>reurn list on free slots on base station from BL</returns>
+        /// <returns>reurn list of free slots on base station from BL</returns>
         public IEnumerable<BaseStationToList> FreeSlotsBaseStations()
         {
             try
             {
-                var myList = AllBlBaseStations().Where(x => x.FreeChargeSlots > 0).ToList();
+                var myList = AllBlBaseStations().Where(x => x.FreeChargeSlots > 0).ToList(); //creat a list of all base station that have free slots
                 if (myList.Count == 0)
                     throw new BlViewItemsListException("None-Scheduled Parcels list is empty");
                 return myList;
@@ -350,7 +352,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Customer dalCustomer = MyDal.FindCustomer(customerId);
+                IDAL.DO.Customer dalCustomer = MyDal.FindCustomer(customerId); //find the customer data layer throwgh id and fit the details to BL layer
                 Customer blCustomer = new()
                 {
                     Id = dalCustomer.Id,
@@ -358,7 +360,7 @@ namespace IBL
                     CustomerLocation = new Location(dalCustomer.Lattitude, dalCustomer.Longitude),
                     PhoneNumber = dalCustomer.Phone
                 };
-                foreach (var item in MyDal.AllParcels().Where(x => x.SenderId == customerId))
+                foreach (var item in MyDal.AllParcels().Where(x => x.SenderId == customerId)) // creat a list into  blCustomer of all the parcel that he hever send and all the details of hevry parcel
                 {
                     blCustomer.ParcelFromCustomerList = new List<ParcelAtCustomer>();
                     blCustomer.ParcelFromCustomerList.Add(new ParcelAtCustomer()
@@ -374,7 +376,7 @@ namespace IBL
                         }
                     });
                 }
-                foreach (var item in MyDal.AllParcels().Where(x => x.TargetId == customerId))
+                foreach (var item in MyDal.AllParcels().Where(x => x.TargetId == customerId))//creat a list into  blCustomer of all the parcel that he hever have received and all the details of hevry parcel
                 {
                     blCustomer.ParcelToCustomerList = new List<ParcelAtCustomer>();
                     blCustomer.ParcelToCustomerList.Add(new ParcelAtCustomer()
@@ -390,7 +392,7 @@ namespace IBL
                         }
                     });
                 }
-                return blCustomer;
+                return blCustomer;  // returns the updeted customer 
             }
             catch (Exception ex)
             {
@@ -409,7 +411,7 @@ namespace IBL
                 foreach (var item in MyDal.AllCustomers())
                     myList.Add(new CustomerToList()
                     {
-                        Id = item.Id,
+                        Id = item.Id,                                                  //extarct all customers from data layer and fit them to a list on BL 
                         Name = item.Name,
                         PhoneNumber = item.Phone,
                         SentAndSuppliedParcels = MyDal.AllParcels().Where(x => x.SenderId == item.Id && x.Delivered != DateTime.MinValue).Count(),
@@ -454,17 +456,17 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.BaseStation bs = MyDal.FindBaseStation(baseStationId);
+                IDAL.DO.BaseStation bs = MyDal.FindBaseStation(baseStationId);                              // luoking if the base station exsist
                 if (bs.Equals(null))
                     throw new BaseStationBLException($"Base station {baseStationId} doesn't found");
                 else
                 {
                     Random rand = new();
-                    myDrone.BatteryStatus = rand.NextDouble() * 20 + 20;
+                    myDrone.BatteryStatus = rand.NextDouble() * 20 + 20;                                    // put valus in to myDrone and insert to a list in BL
                     myDrone.Status = DroneStatusCategories.Maintenance;
                     myDrone.CurrentLocation = new Location(bs.Lattitude, bs.Longitude);
                     myDrone.TransferdParcelsCount = 0;
-                    MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone));
+                    MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone));     // set the new drone in data layer
                     blDrones.Add(myDrone);
                 }
             }
@@ -486,18 +488,18 @@ namespace IBL
                 Drone drone = new()
                 {
                     Id = myDrone.Id,
-                    Model = myDrone.Model,
+                    Model = myDrone.Model,                                             //finds a dron by id from list that in BL and set the details on Drone show
                     Weight = myDrone.Weight,
                     BatteryStatus = myDrone.BatteryStatus,
                     Status = myDrone.Status,
                     CurrentLocation = myDrone.CurrentLocation
                 };
-                if (drone.Status == DroneStatusCategories.Delivery)
+                if (drone.Status == DroneStatusCategories.Delivery)                      //if the drone executing delivery uptate the details of ParcelInTransfer 
                 {
-                    IDAL.DO.Parcel dalParcel = MyDal.AllParcels().First(x => x.DroneId == droneId && x.Delivered == DateTime.MinValue);
+                    IDAL.DO.Parcel dalParcel = MyDal.AllParcels().First(x => x.DroneId == droneId && x.Delivered == DateTime.MinValue); // find the parcel that the drone delivering
                     ParcelInTransfer parcelInTransfer = new()
                     {
-                        Id = dalParcel.Id,
+                        Id = dalParcel.Id,                                                                                                 // update the details in  ParcelInTransfer 
                         Sender = new CustomerAtParcel() { Id = dalParcel.SenderId, Name = MyDal.FindCustomer(dalParcel.SenderId).Name },
                         Reciever = new CustomerAtParcel() { Id = dalParcel.TargetId, Name = MyDal.FindCustomer(dalParcel.TargetId).Name },
                         Weight = (WeightCategories)dalParcel.Weight,
@@ -505,8 +507,8 @@ namespace IBL
                         DeliveryDestinationLocation = new() { Latitude = MyDal.FindCustomer(dalParcel.TargetId).Lattitude, Longitude = MyDal.FindCustomer(dalParcel.TargetId).Longitude },
                         Priority = (Priorities)dalParcel.Priority,
                     };
-                    parcelInTransfer.TransportDistance = LocationFuncs.DistanceBetweenTwoLocations(parcelInTransfer.CollectionLocation, parcelInTransfer.DeliveryDestinationLocation);
-                    if (dalParcel.PickedUp == DateTime.MinValue)
+                    parcelInTransfer.TransportDistance = LocationFuncs.DistanceBetweenTwoLocations(parcelInTransfer.CollectionLocation, parcelInTransfer.DeliveryDestinationLocation); // use in Distance calculation function that creat for calculat distance between two locations
+                    if (dalParcel.PickedUp == DateTime.MinValue) // update the status of  parcelInTransfer to be false if the parcel not pickup or true if are pickup                                                                                                                      
                         parcelInTransfer.Status = false;
                     else
                         parcelInTransfer.Status = true;
@@ -542,7 +544,7 @@ namespace IBL
         {
             try
             {
-                MyDal.UpdateDroneModel(droneId, newName);
+                MyDal.UpdateDroneModel(droneId, newName);   // change the model of a dron in data layer by dron id
                 blDrones.Find(x => x.Id == droneId).Model = newName;
             }
             catch (Exception ex)
@@ -560,17 +562,17 @@ namespace IBL
             try
             {
                 MyDal.FindDrone(droneId);
-                if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)
+                if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)    // check befor that the drone are free
                     throw new BlUpdateEntityException("The chosen drone isn't free");
                 else
                 {
-                    DroneToList myDrone = blDrones.Find(x => x.Id == droneId);
+                    DroneToList myDrone = blDrones.Find(x => x.Id == droneId);// find the drone that wonted to charge and creat a list of all base station that sorted from the nearest base station to the farthest from the current location of the dron
                     List<IDAL.DO.BaseStation> dalBsList = MyDal.AllBaseStations().OrderBy(x => LocationFuncs.DistanceBetweenTwoLocations(new Location(x.Lattitude, x.Longitude), (myDrone.CurrentLocation))).ToList();
                     foreach (var baseStation in dalBsList)
                     {
-                        double batteryNeed = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, new Location(baseStation.Lattitude, baseStation.Longitude)) * BatteryUseFREE;
-                        if (myDrone.BatteryStatus > batteryNeed)
-                            if (baseStation.FreeChargeSlots > 0)
+                        double batteryNeed = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, new Location(baseStation.Lattitude, baseStation.Longitude)) * BatteryUseFREE; //batteryNeed is the total calculation between the distance multiplied with the use of battery when the drone free
+                        if (myDrone.BatteryStatus > batteryNeed)    //if the battery of the drone enough
+                            if (baseStation.FreeChargeSlots > 0) // if the base station free  update the details ChargeDrone at base station and the drone details 
                             {
                                 MyDal.ChargeDrone(myDrone.Id, baseStation.Id);
                                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Maintenance;
@@ -578,7 +580,7 @@ namespace IBL
                                 blDrones.Find(x => x.Id == droneId).CurrentLocation = new Location(baseStation.Lattitude, baseStation.Longitude);
                                 return;
                             }
-                            else
+                            else //continue to the next base station
                                 continue;
                         else
                             throw new BlUpdateEntityException($"There isn't enough battery to arrive to the closest base station");
@@ -601,9 +603,9 @@ namespace IBL
             try
             {
                 MyDal.FindDrone(droneId);
-                if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Maintenance)
+                if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Maintenance) // check if the drone are Maintenance
                     throw new BlUpdateEntityException("The chosen drone isn't in charge");
-                MyDal.ReleaseDroneFromCharge(droneId);
+                MyDal.ReleaseDroneFromCharge(droneId);                                                                //updat the details in the drone 
                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Free;
                 blDrones.Find(x => x.Id == droneId).BatteryStatus = Math.Min(blDrones.Find(x => x.Id == droneId).BatteryStatus + tSpanInCharge.TotalHours * BatteryChargeRate, 100.0);
             }
@@ -622,31 +624,31 @@ namespace IBL
             try
             {
                 MyDal.FindDrone(droneId);
-                DroneToList myDrone = blDrones.Find(x => x.Id == droneId);
+                DroneToList myDrone = blDrones.Find(x => x.Id == droneId);                               // check if the dron are free
                 if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)
                     throw new BlUpdateEntityException($"Drone {droneId} isn't free");
                 else
-                {
+                {                                                                                           // make a list parcels of all parcels from emergency to normal that their whight or equal or smaller then the drone can carry
                     List<IDAL.DO.Parcel> parcels = MyDal.NoneScheduledParcels().OrderByDescending(x => x.Priority).Where(x => x.Weight <= (IDAL.DO.WeightCategories)myDrone.Weight).OrderByDescending(x => x.Weight).ToList();
                     parcels = parcels.OrderBy(x => LocationFuncs.DistanceBetweenTwoLocations(new Location() { Latitude = MyDal.FindCustomer(x.SenderId).Lattitude, Longitude = MyDal.FindCustomer(x.SenderId).Longitude }, myDrone.CurrentLocation)).ToList();
-                    if (parcels.Count > 0)
+                    if (parcels.Count > 0)                                       // sorted the parcels list that created from the nearest parcel to the drone location to The farthest
                     {
                         foreach (var item in parcels)
                         {
-                            ParcelInTransfer myParcel = Converter.ConvertDalParcelToBlParcelInTranfer(item, MyDal.AllCustomers().ToList());
+                            ParcelInTransfer myParcel = Converter.ConvertDalParcelToBlParcelInTranfer(item, MyDal.AllCustomers().ToList()); //set the details of the parcel in ParcelInTransfer show
                             //Location sourceLocation = new Location() { Latitude = MyDal.FindCustomer(item.SenderId).Lattitude, Longitude = MyDal.FindCustomer(item.SenderId).Longitude };
                             //Location targetLocation = new Location() { Latitude = MyDal.FindCustomer(item.TargetId).Lattitude, Longitude = MyDal.FindCustomer(item.TargetId).Longitude };
-                            double distanceToSource = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, myParcel.CollectionLocation);
-                            double distanceToBase = LocationFuncs.DistanceBetweenTwoLocations(myParcel.DeliveryDestinationLocation, LocationFuncs.ClosestBaseStationLocation(MyDal.AllBaseStations().ToList(), myParcel.DeliveryDestinationLocation));
-                            double batteryNeedToBase = BatteryUseFREE * (distanceToSource + distanceToBase);
+                            double distanceToSource = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, myParcel.CollectionLocation); //calculate the distance between drone to parcel location  
+                            double distanceToBase = LocationFuncs.DistanceBetweenTwoLocations(myParcel.DeliveryDestinationLocation, LocationFuncs.ClosestBaseStationLocation(MyDal.AllBaseStations().ToList(), myParcel.DeliveryDestinationLocation)); // calculate the dustance between from delivery to the closest base station
+                            double batteryNeedToBase = BatteryUseFREE * (distanceToSource + distanceToBase); //calculate the total use of battery to make the delivery and to the base station
                             if (item.Weight == IDAL.DO.WeightCategories.Light)
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseLight;
-                            else if (item.Weight == IDAL.DO.WeightCategories.Medium)
+                            else if (item.Weight == IDAL.DO.WeightCategories.Medium)                       // every case of waight of parcel we do diferent calculat
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseMedium;
                             else if (item.Weight == IDAL.DO.WeightCategories.Heavy)
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseHeavy;
                             if (batteryNeedToBase < myDrone.BatteryStatus)
-                            {
+                            {                                                                     // if the battery of the drone enough to complit the delivering and get to the base station
                                 MyDal.ScheduleDroneForParcel(item.Id, myDrone.Id);
                                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Delivery;
                                 return;
@@ -674,7 +676,7 @@ namespace IBL
                 MyDal.FindDrone(droneId);
                 foreach (var item in MyDal.AllParcels())
                 {
-                    if (item.DroneId == droneId && item.Scheduled != DateTime.MinValue && item.PickedUp == DateTime.MinValue)
+                    if (item.DroneId == droneId && item.Scheduled != DateTime.MinValue && item.PickedUp == DateTime.MinValue)              // updat the details of the drone and the parcel and the battery of the drone and is location
                     {
                         DroneToList myDrone = blDrones.Find(x => x.Id == droneId);
                         ParcelInTransfer myParcel = Converter.ConvertDalParcelToBlParcelInTranfer(item, MyDal.AllCustomers().ToList());
@@ -699,7 +701,7 @@ namespace IBL
         {
             try
             {
-                MyDal.FindDrone(droneId);
+                MyDal.FindDrone(droneId);                                   //find the drone and find the parcels that he deliverd and canculat the values for the battery and the location of the drone
                 foreach (var item in MyDal.AllParcels())
                 {
                     if (item.DroneId == droneId && item.PickedUp != DateTime.MinValue && item.Delivered == DateTime.MinValue)
@@ -710,7 +712,7 @@ namespace IBL
                         if (myParcel.Weight == WeightCategories.Light)
                             blDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseLight * myParcel.TransportDistance;
                         else if (myParcel.Weight == WeightCategories.Medium)
-                            blDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseMedium * myParcel.TransportDistance;
+                            blDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseMedium * myParcel.TransportDistance;         // to every case of whight
                         else if (myParcel.Weight == WeightCategories.Heavy)
                             blDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseHeavy * myParcel.TransportDistance;
                         blDrones.Find(x => x.Id == droneId).CurrentLocation = myParcel.DeliveryDestinationLocation;
