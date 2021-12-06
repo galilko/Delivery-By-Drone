@@ -35,7 +35,7 @@ namespace PL
             DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
             this.txtUndefined.Text = status.ToString();
 
-            this.lstvDronesList.ItemsSource = bl.AllBlDrones(item => item.Status == status);
+            this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
         }
     }
 }
