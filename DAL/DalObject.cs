@@ -267,7 +267,7 @@ namespace DalObject
         /// return array of customers
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Customer> AllCustomers() => DataSource.CustomersList;
+        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate) => DataSource.CustomersList;
         /// <summary>
         /// return array of drones
         /// </summary>
@@ -277,14 +277,27 @@ namespace DalObject
         /// return array of base-stations
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BaseStation> AllBaseStations() => DataSource.BaseStationsList;
+        public IEnumerable<BaseStation> AllBaseStations(Func<BaseStation, bool> predicate = null)
+        {
+            if (predicate == null)
+                return DataSource.BaseStationsList.ToList();
+            else
+                return DataSource.BaseStationsList.Where(predicate);
+        }
         /// <summary>
         /// return array of parcels
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Parcel> AllParcels() => DataSource.ParcelsList;
+        public IEnumerable<Parcel> AllParcels(Func<Parcel, bool> predicate = null)
+        {
+            if (predicate == null)
+                return DataSource.ParcelsList.ToList();
+            else
+                return DataSource.ParcelsList.Where(predicate);
+        }
         #endregion
         #region others
+        
         /// <summary>
         /// return array of none-scheduled parcels
         /// </summary>
@@ -293,7 +306,7 @@ namespace DalObject
         {
             List<Parcel> tmpList = new();
             for (int i = 0; i < DataSource.ParcelsList.Count; i++)
-                if (DataSource.ParcelsList[i].Scheduled == DateTime.MinValue)
+                if (DataSource.ParcelsList[i].Scheduled == null)
                     tmpList.Add(DataSource.ParcelsList[i]);
             return tmpList;
         }
@@ -309,6 +322,7 @@ namespace DalObject
                     tmpList.Add(DataSource.BaseStationsList[i]);
             return tmpList;
         }
+        
         #endregion
         List<DroneCharge> IDal.GetListOfInChargeDrones()
         {

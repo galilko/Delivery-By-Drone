@@ -89,14 +89,14 @@ namespace DalObject
                         if (rand.Next(2) == 1)
                             parcel.Delivered = parcel.PickedUp + tSpan;
                         else
-                            parcel.Delivered = DateTime.MinValue;
+                            parcel.Delivered = null;
                     }
                     else
-                        parcel.PickedUp = parcel.Delivered = DateTime.MinValue;
+                        parcel.PickedUp = parcel.Delivered = null;
                 }
                 else
                 {
-                    parcel.Scheduled = parcel.PickedUp = parcel.Delivered = DateTime.MinValue;
+                    parcel.Scheduled = parcel.PickedUp = parcel.Delivered = null;
                     parcel.DroneId = 0;
                 }
                 ParcelsList.Add(parcel);

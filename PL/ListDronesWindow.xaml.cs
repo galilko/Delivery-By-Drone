@@ -23,19 +23,24 @@ namespace PL
         public ListDronesWindow(IBL.IBL bl)
         {
             this.bl = bl;
-
             InitializeComponent();
-
             this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories));
-          
+            this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories));
+            this.DronesListView.ItemsSource = bl.AllBlDrones();
         }
 
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
             this.txtUndefined.Text = status.ToString();
+            this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
+        }
 
-            this.lstvDronesList.ItemsSource = bl.AllBlDrones(item => item.Status == status);
+        private void cmbWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            WeightCategories weight = (WeightCategories)cmbWeight.SelectedItem;
+            this.txtUndefined.Text = weight.ToString();
+            this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
         }
     }
 }

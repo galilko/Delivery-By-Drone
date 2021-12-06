@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="ListDronesWindowxaml" Height="640" Width="800">
-    <Grid x:Name="mainGrid" >
+    <Grid x:Name="MainGrid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50*" />
             <RowDefinition Height="400*" />
         </Grid.RowDefinitions>
-        <Grid  x:Name="upGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+        <Grid  x:Name="UpGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -19,11 +19,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtUndefined" Text="TBD !!" ToolTip="לא יודע" FontSize="20"
+            <TextBox x:Name="txtUndefined" Text="TBD !!" ToolTip="לא יודע" FontSize="20" Grid.Column="0"
                      VerticalAlignment="Center"  HorizontalAlignment="Center" Margin="5,5,5,5" />
             <ComboBox x:Name="cmbStatus" Grid.Column="1" Text="Choose status:"
                       IsEditable="True" IsReadOnly="True" ToolTip="Choose status:"
                        Width="auto" SelectionChanged="cmbStatus_SelectionChanged"/>
+            <ComboBox x:Name="cmbWeight" Grid.Column="2" Text="Choose weight:"
+                      IsEditable="True" IsReadOnly="True" ToolTip="Choose weight:"
+                       Width="auto" SelectionChanged="cmbWeight_SelectionChanged" />
         </Grid>
         <ListView x:Name="DronesListView" Grid.Row="1" />
     </Grid>

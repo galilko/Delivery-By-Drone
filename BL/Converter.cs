@@ -67,7 +67,7 @@ namespace IBL.BO
             pit.Reciever = new() { Id = target.Id, Name = target.Name };
             pit.Weight = (WeightCategories)parcel.Weight;
             pit.Priority = (Priorities)parcel.Priority;
-            if (parcel.PickedUp == DateTime.MinValue)
+            if (parcel.PickedUp == null)
                 pit.Status = false;
             else
                 pit.Status = true;
@@ -79,11 +79,11 @@ namespace IBL.BO
 
         internal static ParcelStatus CalculateParcelStatus(IDAL.DO.Parcel parcel)
         {
-            if (parcel.Delivered != DateTime.MinValue)
+            if (parcel.Delivered != null)
                 return ParcelStatus.Delivered;
-            else if (parcel.PickedUp != DateTime.MinValue)
+            else if (parcel.PickedUp != null)
                 return ParcelStatus.PickedUp;
-            else if (parcel.Scheduled != DateTime.MinValue)
+            else if (parcel.Scheduled != null)
                 return ParcelStatus.Scheduled;
             else
                 return ParcelStatus.Defined;

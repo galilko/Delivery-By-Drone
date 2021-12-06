@@ -20,11 +20,9 @@ namespace PL
     public partial class MainWindow : Window
     {
         IBL.IBL theBL;
-
         public MainWindow()
         {
             theBL = new IBL.BL();
-
             InitializeComponent();
         }
 
