@@ -7,42 +7,57 @@
         mc:Ignorable="d"
         Title="DroneWindow" Height="450" Width="800">
     <Grid x:Name="MainGrid">
-        <Grid x:Name="droneGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+        <Grid x:Name="droneGrid" Visibility="Visible" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="238*"/>
+                <ColumnDefinition Width="187*"/>
+                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="235*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
-            <Label Content="Drone Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-            <TextBox x:Name="DroneIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0"
-                     Text="{Binding Id, Mode=OneWayToSource, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
-                     VerticalAlignment="Center" Width="120" TextChanged="DroneIdTextBox_TextChanged"/>
-            <Label Content="Drone Model:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
-            <TextBox x:Name="DroneModelTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding Model, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Weight Category:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-            <ComboBox x:Name="cmbWeight" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2"
+            <Label Content="Drone Id:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Center" Margin="21,0,0,0" FontFamily="Showcard Gothic" Height="25" Width="69"/>
+            <TextBox x:Name="DroneIdTextBox" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="1" Text="{Binding Id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                     MaxLength="7" VerticalAlignment="Center" Width="120" TextChanged="DroneIdTextBox_TextChanged"/>
+            <Label Content="Drone Model:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Margin="21,0,0,0" FontFamily="Showcard Gothic" Height="25" Width="96"/>
+            <TextBox x:Name="DroneModelTextBox" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="2" Text="{Binding Model, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Weight Category:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="24" Width="142" Margin="20,0,0,0"/>
+            <ComboBox x:Name="cmbWeight" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="3"
                       SelectedItem="{Binding Weight}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Bus Station Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
-            <TextBox x:Name="BusStationTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" VerticalAlignment="Center" Width="120"/>
+            <Label Content="Bus Station Id:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" Grid.Row="4" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="25" Width="103"/>
+            <ComboBox x:Name="cmbBaseStation" Text="Choose Base Station:" Grid.Column="2" HorizontalAlignment="Center" Height="23" Margin="0,14,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120"/>
             <Button x:Name="btnCancelAddDrone" Content="Cancel" Grid.Row="5" Height="23" Width="80"
-                    HorizontalAlignment="Center" Background="IndianRed" Margin="0,10,0,0" VerticalAlignment="Top" Click="btnCancelAddDrone_Click"/>
+                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold"  VerticalAlignment="Center" Click="btnCancelAddDrone_Click" Grid.Column="1">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White"/>
+                    <GradientStop Color="LightBlue" Offset="1"/>
+                </LinearGradientBrush>
+            </Button.Background>
+            </Button>
             <Button x:Name="btnAddDrone" Content="Add Drone" Grid.Row="5" Height="23" Width="80"
-                    HorizontalAlignment="Center" Background="LightGreen" Margin="0,10,0,0" VerticalAlignment="Top" Click="btnAddDrone_Click" Grid.Column="1"/>
-            <Label x:Name="idLabel" Content="" Grid.Column="2" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.516,0.05"/>
+                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Click="btnAddDrone_Click" Grid.Column="2">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White"/>
+                        <GradientStop Color="LightBlue" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Label Content="Adding New Drone" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="52" Width="244" FontFamily="Showcard Gothic"/>
 
         </Grid>
         <Grid x:Name="MethodsDroneGrid" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1.9*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -52,13 +67,12 @@
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0" ItemHeight="auto" Orientation="Vertical" Grid.RowSpan="6" Width="auto" Height="auto" Margin="0,1,266,71" Grid.ColumnSpan="2">
-                <Label FontSize="24" >Manage Chosen Drone</Label>
-                <Expander x:Name="UpdateExpander" Header="Update Model for this Drone" DockPanel.Dock="Top" Margin="5,5,5,5">
+                <Label FontSize="24" FontFamily="Comic Sans MS">Manage Chosen Drone</Label>
+                <Expander x:Name="UpdateExpander" Header="Update Model for this Drone" DockPanel.Dock="Top" FontFamily="Comic Sans MS" Margin="5,5,5,5">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFEAE0E0" Offset="0.004"/>
-                            <GradientStop Color="#FFECEDBB" Offset="1"/>
-                            <GradientStop Color="#FFD4D7B1" Offset="0.5"/>
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="LightBlue" Offset="1"/>
                         </LinearGradientBrush>
                     </Expander.Background>
                     <StackPanel Orientation="Horizontal">
@@ -67,17 +81,30 @@
                         <Button x:Name="btnUpdateModelToDrone" Margin="45,0,0,0" Content="Update" Height="19" Click="btnUpdateModelToDrone_Click" />
                     </StackPanel>
                 </Expander>
-                <Expander x:Name="ChargeReleaseExp" Header="Charge/Realease Drone" DockPanel.Dock="Top" Margin="5,0,5,5" Expanded="ChargeReleaseExp_Expanded">
+                <Expander x:Name="ChargeReleaseExp" Header="Charge/Realease Drone" FontFamily="Comic Sans MS" Margin="5,0,5,5" Expanded="ChargeReleaseExp_Expanded">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFEAE0E0" Offset="0.004"/>
-                            <GradientStop Color="#FFECEDBB" Offset="1"/>
-                            <GradientStop Color="#FFD4D7B1" Offset="0.5"/>
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="LightBlue" Offset="1"/>
                         </LinearGradientBrush>
                     </Expander.Background>
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
-                        <Button x:Name="btnChargeDrone" Visibility="Collapsed" Padding="5" Content="Charge Drone" BorderBrush="#FF707070" Click="btnChargeDrone_Click" />
-                        <Expander x:Name="ReleaseExp" Visibility="Collapsed" Header="Release Drone" Width="190" Margin="0,5,0,0" Padding="5" BorderBrush="#FF707070" Background="#FFDDDDDD" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
+                        <Button x:Name="btnChargeDrone" Visibility="Collapsed" Padding="5" Content="Charge Drone" BorderBrush="#FF707070" Click="btnChargeDrone_Click">
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="White"/>
+                                    <GradientStop Color="LightBlue" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                        </Button>
+                        <Expander x:Name="ReleaseExp" Visibility="Collapsed" Header="Release Drone" Width="190" Margin="0,5,0,0" Padding="5" BorderBrush="#FF707070" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
+                            <Expander.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="White" Offset="0.004"/>
+                                    <GradientStop Color="#FFEDEDE6" Offset="1"/>
+                                    <GradientStop Color="LightBlue" Offset="0.5"/>
+                                </LinearGradientBrush>
+                            </Expander.Background>
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Time In Charge:"/>
                                 <ComboBox x:Name="cmbHours" IsEditable="True" IsReadOnly="True" Text="h" Width="38"/>
@@ -85,36 +112,42 @@
                                 <ComboBox x:Name="cmbMins" IsEditable="True" IsReadOnly="True" Text="m" Width="38"/>
                             </StackPanel>
                         </Expander>
-                            <Button x:Name="btnReleaseDrone" Visibility="Collapsed" Padding="5" Margin="0,5,0,0" Content="Charge Drone" BorderBrush="#FF707070" Click="btnReleaseDrone_Click" />
+                        <Button x:Name="btnReleaseDrone" Visibility="Collapsed" Padding="5" Margin="0,5,0,0" Content="Release Drone" BorderBrush="#FF707070" Click="btnReleaseDrone_Click" >
+                            <Button.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="White" Offset="0.004"/>
+                                    <GradientStop Color="#FFEDEDE6" Offset="1"/>
+                                    <GradientStop Color="LightBlue" Offset="0.5"/>
+                                </LinearGradientBrush>
+                            </Button.Background>
+                        </Button>
                     </StackPanel>
                 </Expander>
-                <Expander Header="Manage Drone Delivery" DockPanel.Dock="Top" Margin="5,0,5,5">
+                <Expander Header="Manage Drone Delivery" FontFamily="Comic Sans MS" Margin="5,0,5,5">
                     <Expander.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#FFEAE0E0" Offset="0.004"/>
-                            <GradientStop Color="#FFECEDBB" Offset="1"/>
-                            <GradientStop Color="#FFD4D7B1" Offset="0.5"/>
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="LightBlue" Offset="1"/>
                         </LinearGradientBrush>
                     </Expander.Background>
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
-                        <Button x:Name="btnScheduleDrone" Margin="2,2,2,2" Content="Schedule Drone to parcel" />
-                        <Button x:Name="btnPickudUpDrone" Margin="2,0,2,2" Content="Picked Up Parcel" />
-                        <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" />
+                        <Button x:Name="btnScheduleDrone" Margin="2,2,2,2" Content="Schedule Drone to parcel" Click="btnScheduleDrone_Click" />
+                        <Button x:Name="btnPickudUpDrone" Margin="2,0,2,2" Content="Picked Up Parcel" Click="btnPickudUpDrone_Click" />
+                        <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" Click="btnDeliveredDrone_Click" />
                     </StackPanel>
                 </Expander>
-                <Button x:Name="btnClose" Content="Exit Drone Management" Height="21" DockPanel.Dock="Top" Margin="5,0,5,5">
+                <Button x:Name="btnClose" Content="Exit Drone Management" FontFamily="Comic Sans MS" Height="21" DockPanel.Dock="Top" Margin="5,0,5,5" Click="btnClose_Click">
                     <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FFEAE0E0" Offset="0.004"/>
-                                <GradientStop Color="#FFECEDBB" Offset="1"/>
-                                <GradientStop Color="#FFD4D7B1" Offset="0.5"/>
-                            </LinearGradientBrush>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="LightBlue" Offset="1"/>
+                        </LinearGradientBrush>
                     </Button.Background>
                 </Button>
             </WrapPanel>
-            <StackPanel Orientation="Vertical" Grid.RowSpan="2" Grid.Column="2">
-            <Label FontSize="24" Grid.Column="2" >Drone Details</Label>
-            <Label x:Name="lblDroneDetails" Content=""/>
+            <StackPanel Orientation="Vertical" Grid.RowSpan="4" Grid.Column="1">
+                <Label FontSize="24" Grid.Column="1" FontFamily="Comic Sans MS">Drone Details</Label>
+                <Label x:Name="lblDroneDetails" Content="" FontFamily="Comic Sans MS"/>
             </StackPanel>
         </Grid>
     </Grid>

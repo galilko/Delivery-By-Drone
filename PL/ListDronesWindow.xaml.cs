@@ -67,21 +67,19 @@ namespace PL
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl).Show();
+            new DroneWindow(bl).ShowDialog();
         }
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = ((FrameworkElement)e.OriginalSource).DataContext;
-            var myItem = item as DroneToList;
+            var item = this.DronesListView.SelectedItem;
             if (item != null)
             {
-                //Here you have your item
+                var myItem = item as DroneToList;
+                DroneToList dtl = myItem;
+                new DroneWindow(bl, dtl).ShowDialog();
+                this.DronesListView.Items.Refresh();
             }
-            //ListViewItem item = sender as ListViewItem;
-            DroneToList dtl = myItem;
-            new DroneWindow(bl, dtl).Show();
-
         }
 
         private void btnResetWeight_Click(object sender, RoutedEventArgs e)
@@ -96,6 +94,11 @@ namespace PL
             cmbStatus.SelectedIndex = -1;
             cmbStatus.Text = "Choose weight:";
             txtStatusSort.Text = "";
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

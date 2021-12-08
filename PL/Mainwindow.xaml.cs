@@ -28,12 +28,12 @@ namespace PL
 
         private void btnListDrone_Click(object sender, RoutedEventArgs e)
         {
-            new ListDronesWindow(theBL).Show();
+            new ListDronesWindow(theBL).ShowDialog();
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(theBL).Show();
+            new DroneWindow(theBL).ShowDialog();
         }
     }
 }
