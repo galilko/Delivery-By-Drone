@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="ListDronesWindowxaml" Height="640" Width="800">
+        Title="ListDronesWindow" Height="640" Width="800">
     <Grid x:Name="MainGrid" >
         <Grid.RowDefinitions>
             <RowDefinition Height="50*" />
@@ -18,16 +18,25 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtUndefined" Text="TBD !!" ToolTip="לא יודע" FontSize="20" Grid.Column="0"
-                     VerticalAlignment="Center"  HorizontalAlignment="Center" Margin="5,5,5,5" />
+            <TextBox x:Name="txtStatusSort" Text="" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Top" Width="160" Height="35"
+                   BorderThickness="4" BorderBrush="CadetBlue"  FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="txtWeightSort" Text="" IsReadOnly="True" HorizontalAlignment="Center" VerticalAlignment="Top" Width="160" Height="35"
+                   BorderThickness="4" BorderBrush="CadetBlue" FontSize="14" Margin="0,31,0,0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <ComboBox x:Name="cmbStatus" Grid.Column="1" Text="Choose status:"
                       IsEditable="True" IsReadOnly="True" ToolTip="Choose status:"
-                       Width="auto" SelectionChanged="cmbStatus_SelectionChanged"/>
+                       Width="auto" SelectionChanged="cmbStatus_SelectionChanged" Margin="20,10,20,36"/>
             <ComboBox x:Name="cmbWeight" Grid.Column="2" Text="Choose weight:"
                       IsEditable="True" IsReadOnly="True" ToolTip="Choose weight:"
-                       Width="auto" SelectionChanged="cmbWeight_SelectionChanged" />
+                       Width="auto" Height="auto" SelectionChanged="cmbWeight_SelectionChanged" Margin="20,10,20,36" />
+            <Button x:Name="btnAddDrone" Content="Add drone" Grid.Column="3" Height="30" Width="80"
+                    HorizontalAlignment="Center" Margin="5,5,5,5" VerticalAlignment="Center" Click="btnAddDrone_Click"/>
+            <Button x:Name="btnClose" Content="Close Window" Grid.Column="4" Height="30" Width="80"
+                    HorizontalAlignment="Center" Margin="5,5,5,5" VerticalAlignment="Center" />
+            <Button x:Name="btnResetWeight" Content="Reset" Grid.Column="2" HorizontalAlignment="Center" Margin="0,39,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.79,-0.227" Width="80" Click="btnResetWeight_Click"/>
+            <Button x:Name="btnResetStatus" Content="Reset" Grid.Column="1" HorizontalAlignment="Center" Margin="0,39,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.79,-0.227" Width="80" Click="btnResetStatus_Click"/>
         </Grid>
-        <ListView x:Name="DronesListView" Grid.Row="1" />
+        <ListView x:Name="DronesListView" Grid.Row="1" MouseDoubleClick="DronesListView_MouseDoubleClick" />
     </Grid>
 </Window>

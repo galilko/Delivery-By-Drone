@@ -10,9 +10,7 @@ namespace IBL.BO
             string result = "";
             foreach (PropertyInfo item in t.GetType().GetProperties())
             {
-                result +=
-                    ($"{item.Name,-15} : {item.GetValue(t, null), -15}\n"
-                     );
+                result +=(String.Format("{0,-30}:{1, -15}\n", item.Name, item.GetValue(t, null)));
             }
             return result;
         }

@@ -44,6 +44,7 @@ namespace IBL
                 if (!myParcel.Equals(default(IDAL.DO.Parcel)))
                 {
                     myDrone.Status = DroneStatusCategories.Delivery;
+                    myDrone.TransferdParcel = myParcel.Id;
                     var Sender = Customers.Find(x => x.Id == myParcel.SenderId);
                     Location SenderLocation = new() { Latitude = Sender.Lattitude, Longitude = Sender.Lattitude };
                     if (myParcel.PickedUp == null)
@@ -105,7 +106,7 @@ namespace IBL
                         myDrone.BatteryStatus = rand.NextDouble() * (100 - minBattery) + minBattery;
 
                     }
-                    myDrone.TransferdParcelsCount = Parcels.Where(x => x.DroneId == myDrone.Id).Count();
+                    myDrone.TransferdParcel = Parcels.Find(x => x.DroneId == myDrone.Id && x.Delivered == null).Id;
                 }
                 blDrones.Add(myDrone);
 
@@ -491,7 +492,7 @@ namespace IBL
                     myDrone.BatteryStatus = rand.NextDouble() * 20 + 20;                                    // put valus in to myDrone and insert to a list in BL
                     myDrone.Status = DroneStatusCategories.Maintenance;
                     myDrone.CurrentLocation = new Location(bs.Lattitude, bs.Longitude);
-                    myDrone.TransferdParcelsCount = 0;
+                    myDrone.TransferdParcel = 0;
                     MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone));     // set the new drone in data layer
                     blDrones.Add(myDrone);
                 }
@@ -631,6 +632,8 @@ namespace IBL
                 MyDal.FindDrone(droneId);
                 if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Maintenance) // check if the drone are Maintenance
                     throw new BlUpdateEntityException("The chosen drone isn't in charge");
+                if(tSpanInCharge.TotalMinutes<0)
+                    throw new BlUpdateEntityException("The chosen time is invalid");
                 MyDal.ReleaseDroneFromCharge(droneId);                                                                //updat the details in the drone 
                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Free;
                 blDrones.Find(x => x.Id == droneId).BatteryStatus = Math.Min(blDrones.Find(x => x.Id == droneId).BatteryStatus + tSpanInCharge.TotalHours * BatteryChargeRate, 100.0);
@@ -662,8 +665,6 @@ namespace IBL
                         foreach (var item in parcels)
                         {
                             ParcelInTransfer myParcel = Converter.ConvertDalParcelToBlParcelInTranfer(item, MyDal.AllCustomers().ToList()); //set the details of the parcel in ParcelInTransfer show
-                            //Location sourceLocation = new Location() { Latitude = MyDal.FindCustomer(item.SenderId).Lattitude, Longitude = MyDal.FindCustomer(item.SenderId).Longitude };
-                            //Location targetLocation = new Location() { Latitude = MyDal.FindCustomer(item.TargetId).Lattitude, Longitude = MyDal.FindCustomer(item.TargetId).Longitude };
                             double distanceToSource = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, myParcel.CollectionLocation); //calculate the distance between drone to parcel location  
                             double distanceToBase = LocationFuncs.DistanceBetweenTwoLocations(myParcel.DeliveryDestinationLocation, LocationFuncs.ClosestBaseStationLocation(MyDal.AllBaseStations().ToList(), myParcel.DeliveryDestinationLocation)); // calculate the dustance between from delivery to the closest base station
                             double batteryNeedToBase = BatteryUseFREE * (distanceToSource + distanceToBase); //calculate the total use of battery to make the delivery and to the base station
@@ -677,6 +678,7 @@ namespace IBL
                             {                                                                     // if the battery of the drone enough to complit the delivering and get to the base station
                                 MyDal.ScheduleDroneForParcel(item.Id, myDrone.Id);
                                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Delivery;
+                                blDrones.Find(x => x.Id == droneId).TransferdParcel = myParcel.Id;
                                 return;
                             }
                         }
@@ -743,7 +745,7 @@ namespace IBL
                             blDrones.Find(x => x.Id == droneId).BatteryStatus -= BatteryUseHeavy * myParcel.TransportDistance;
                         blDrones.Find(x => x.Id == droneId).CurrentLocation = myParcel.DeliveryDestinationLocation;
                         blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Free;
-                        blDrones.Find(x => x.Id == droneId).TransferdParcelsCount++;
+                        blDrones.Find(x => x.Id == droneId).TransferdParcel = 0;
                         return;
                     }
                 }

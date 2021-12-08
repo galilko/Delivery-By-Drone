@@ -33,7 +33,7 @@ namespace PL
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new AddDroneWindow(theBL).Show();
+            new DroneWindow(theBL).Show();
         }
     }
 }

@@ -31,16 +31,71 @@ namespace PL
 
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.cmbStatus.SelectedIndex == -1)
+            {
+                if (this.cmbWeight.SelectedItem != null)
+                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == (WeightCategories)cmbWeight.SelectedItem);
+                else
+                    this.DronesListView.ItemsSource = bl.AllBlDrones();
+                return;
+            }
             DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
-            this.txtUndefined.Text = status.ToString();
-            this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
+            this.txtStatusSort.Text = status.ToString();
+            if (this.cmbWeight.SelectedItem != null)
+                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status && item.Weight == (WeightCategories)cmbWeight.SelectedItem);
+            else  
+                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
         }
 
         private void cmbWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.cmbWeight.SelectedIndex == -1)
+            {
+                if (this.cmbStatus.SelectedItem != null)
+                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
+                else
+                    this.DronesListView.ItemsSource = bl.AllBlDrones();
+                return;
+            }
             WeightCategories weight = (WeightCategories)cmbWeight.SelectedItem;
-            this.txtUndefined.Text = weight.ToString();
-            this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
+            this.txtWeightSort.Text = weight.ToString();
+            if(this.cmbStatus.SelectedItem != null)
+                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
+            else
+                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
+        }
+
+        private void btnAddDrone_Click(object sender, RoutedEventArgs e)
+        {
+            new DroneWindow(bl).Show();
+        }
+
+        private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = ((FrameworkElement)e.OriginalSource).DataContext;
+            var myItem = item as DroneToList;
+            if (item != null)
+            {
+                //Here you have your item
+            }
+            //ListViewItem item = sender as ListViewItem;
+            DroneToList dtl = myItem;
+            new DroneWindow(bl, dtl).Show();
+
+        }
+
+        private void btnResetWeight_Click(object sender, RoutedEventArgs e)
+        {
+            cmbWeight.SelectedIndex = -1;
+            cmbWeight.Text = "Choose weight:";
+            txtWeightSort.Text = "";
+        }
+
+        private void btnResetStatus_Click(object sender, RoutedEventArgs e)
+        {
+            cmbStatus.SelectedIndex = -1;
+            cmbStatus.Text = "Choose weight:";
+            txtStatusSort.Text = "";
         }
     }
 }
