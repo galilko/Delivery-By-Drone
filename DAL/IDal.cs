@@ -10,10 +10,10 @@ namespace IDAL
         void AddCustomer(Customer newCustomer);
         void AddDrone(Drone newDrone);
         void AddParcel(Parcel newParcel);
-        IEnumerable<BaseStation> AllBaseStations();
-        IEnumerable<Customer> AllCustomers();
+        IEnumerable<BaseStation> AllBaseStations(Func<BaseStation, bool> predicate = null);
+        IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null);
         IEnumerable<Drone> AllDrones();
-        IEnumerable<Parcel> AllParcels();
+        IEnumerable<Parcel> AllParcels(Func<Parcel, bool> predicate = null);
         void ChargeDrone(int droneId, int baseStationId);
         void DeliverAParcel(int parcelId);
         BaseStation FindBaseStation(int id);

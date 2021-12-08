@@ -14,7 +14,17 @@ namespace IBL.BO
         public double BatteryStatus { get; set; }
         public DroneStatusCategories Status { get; set; }
         public Location CurrentLocation { get; set; }
-        public int TransferdParcelsCount { get; set; }
-        public override string ToString() => ToolStringClass.ToStringProperty(this);
+        public int TransferdParcel { get; set; }
+        public override string ToString()
+        {
+            string result = String.Format("{0,-25}{1,-5}{2,-15}\n", "Id", ":", Id);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Model", ":", Model);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Weight", ":", Weight);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Battery Status", ":", BatteryStatus);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Status", ":", Status);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Current Location", ":", CurrentLocation);
+            result += String.Format("{0,-25}{1,-5}{2,-15}\n", "Parcel In Tranfer", ":", TransferdParcel);
+            return result;
+        }
     }
 }

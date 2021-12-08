@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Mainwindow" Height="300" Width="200">
-    <StackPanel >
-        <Button x:Name="btnAddDrone" Content="הוסף רחפן" Margin="5" Click="btnAddDrone_Click"/>
-        <Button x:Name="btnListDrone" Content="הצג רחפנים" Margin="5,20,5,5" Click="btnListDrone_Click"/>
+    <StackPanel>
+        <Button x:Name="btnAddDrone" Content="Add drone" Margin="5" Click="btnAddDrone_Click"/>
+        <Button x:Name="btnListDrone" Content="Show drones" Margin="5,20,5,5" Click="btnListDrone_Click"/>
         <Grid Height="100"/>
 
 
