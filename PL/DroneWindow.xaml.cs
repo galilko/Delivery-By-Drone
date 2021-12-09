@@ -111,7 +111,11 @@ namespace PL
                 DroneIdTextBox.BorderBrush = Brushes.Gray;
             }
         }
-
+        /// <summary>
+        /// eccepts the model from the textBox and takes the id and put them on UpdateDroneModel to update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnUpdateModelToDrone_Click(object sender, RoutedEventArgs e)
         {
             bl.UpdateDroneModel(dtl.Id, NewModelTextBox.Text);

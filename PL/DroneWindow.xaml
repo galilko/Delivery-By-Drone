@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneWindow" Height="450" Width="800">
+        Title="Drone Window" Height="450" Width="800">
     <Grid x:Name="MainGrid">
         <Grid x:Name="droneGrid" Visibility="Visible" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
@@ -31,7 +31,7 @@
             <Label Content="Weight Category:" Grid.Column="1" HorizontalAlignment="Left" Grid.Row="3" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="24" Width="142" Margin="20,0,0,0"/>
             <ComboBox x:Name="cmbWeight" Grid.Column="2" HorizontalAlignment="Center" Height="23" Grid.Row="3"
                       SelectedItem="{Binding Weight}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Bus Station Id:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" Grid.Row="4" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="25" Width="103"/>
+            <Label Content="Base Station Id:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" Grid.Row="4" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="25" Width="103"/>
             <ComboBox x:Name="cmbBaseStation" Text="Choose Base Station:" Grid.Column="2" HorizontalAlignment="Center" Height="23" Margin="0,14,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120"/>
             <Button x:Name="btnCancelAddDrone" Content="Cancel" Grid.Row="5" Height="23" Width="80"
                     HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold"  VerticalAlignment="Center" Click="btnCancelAddDrone_Click" Grid.Column="1">
