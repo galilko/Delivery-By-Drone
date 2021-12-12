@@ -24,7 +24,10 @@ namespace PL
         DroneToList newDrone;
         IBL.IBL bl;
         private DroneToList dtl;
-
+        /// <summary>
+        /// ctor of add drone window
+        /// </summary>
+        /// <param name="theBl"></param>
         public DroneWindow(IBL.IBL theBl)
         {
             bl = theBl;
@@ -39,7 +42,11 @@ namespace PL
                 this.cmbBaseStation.Items.Add(bl.AllBlBaseStations().ToList()[i].Id);
             }
         }
-
+        /// <summary>
+        /// ctor of drone's methods window
+        /// </summary>
+        /// <param name="theBl"></param>
+        /// <param name="myDrone"></param>
         public DroneWindow(IBL.IBL theBl, DroneToList myDrone) 
         {
             this.dtl = myDrone;
@@ -49,27 +56,31 @@ namespace PL
             this.droneGrid.Visibility = Visibility.Hidden;
             this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
         }
-
+        /// <summary>
+        /// handle adding drone burron click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             bool flag = int.TryParse(this.DroneIdTextBox.Text, out int x);
-            if (!flag || !Regex.IsMatch(DroneIdTextBox.Text, "^[1-9][0-9]{6}$"))
+            if (!flag || !Regex.IsMatch(DroneIdTextBox.Text, "^[1-9][0-9]{6}$")) //handle invalid input to drone id
             {
                 MessageBox.Show($"Invalid Drone Id '{DroneIdTextBox.Text}'", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 DroneIdTextBox.Clear();
                 return;
             }
-            if (this.DroneModelTextBox.Text == "")
+            if (this.DroneModelTextBox.Text == "") //handle invalid input to drone model
             {
                 MessageBox.Show($"You must enter drone model", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if (this.cmbWeight.SelectedItem == null)
+            if (this.cmbWeight.SelectedItem == null) //handle invalid input to drone weight
             {
                 MessageBox.Show($"You must choose weight category", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            if (this.cmbBaseStation.SelectedItem == null)
+            if (this.cmbBaseStation.SelectedItem == null) //handle invalid input to base station
             {
                 MessageBox.Show($"You must choose Base Station", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -94,12 +105,20 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        /// <summary>
+        /// handle close add drone window button click 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnCancelAddDrone_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
+        /// <summary>
+        /// handle design of drone id text box if is invalid input
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DroneIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (DroneIdTextBox.Text.Length != 0 && !Regex.IsMatch(DroneIdTextBox.Text, "^[1-9][0-9]{6}$"))
@@ -112,7 +131,7 @@ namespace PL
             }
         }
         /// <summary>
-        /// eccepts the model from the textBox and takes the id and put them on UpdateDroneModel to update
+        /// handle update model of drone button-click
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -124,7 +143,11 @@ namespace PL
             this.NewModelTextBox.Text = "";
             this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
         }
-
+        /// <summary>
+        /// handle charge drone button-click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnChargeDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -146,21 +169,11 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void ReleaseExp_Expanded(object sender, RoutedEventArgs e)
-        {
-            for (int i = 0; i <= 24; i++)
-                this.cmbHours.Items.Add($"{ i: 00}");
-            for (int i = 0; i <= 60; i++)
-                this.cmbMins.Items.Add($"{ i: 00}");
-            this.btnReleaseDrone.Visibility = Visibility.Visible;
-        }
-
-        private void ReleaseExp_Collapsed(object sender, RoutedEventArgs e)
-        {
-            this.btnReleaseDrone.Visibility = Visibility.Collapsed;
-        }
-
+        /// <summary>
+        /// handle charge drone button-click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnReleaseDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -186,6 +199,18 @@ namespace PL
             }
         }
 
+        private void ReleaseExp_Expanded(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i <= 24; i++)
+                this.cmbHours.Items.Add($"{ i: 00}");
+            for (int i = 0; i <= 60; i++)
+                this.cmbMins.Items.Add($"{ i: 00}");
+            this.btnReleaseDrone.Visibility = Visibility.Visible;
+        }
+        private void ReleaseExp_Collapsed(object sender, RoutedEventArgs e)
+        {
+            this.btnReleaseDrone.Visibility = Visibility.Collapsed;
+        }
         private void ChargeReleaseExp_Expanded(object sender, RoutedEventArgs e)
         {
             if (this.dtl.Status == DroneStatusCategories.Free)
@@ -194,6 +219,11 @@ namespace PL
                 this.ReleaseExp.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// handle schedule drone button-click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnScheduleDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -213,7 +243,11 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+        /// <summary>
+        /// handle pick up drone button-click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPickudUpDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -233,7 +267,11 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        /// <summary>
+        /// handle delivered drone button-click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnDeliveredDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -253,7 +291,11 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        /// <summary>
+        /// handle close methods of drone window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

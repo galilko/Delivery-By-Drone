@@ -20,15 +20,22 @@ namespace PL
     public partial class ListDronesWindow : Window
     {
         IBL.IBL bl;
+        /// <summary>
+        ///  ctor of window that present listview of all drones
+        /// </summary>
         public ListDronesWindow(IBL.IBL bl)
         {
             this.bl = bl;
             InitializeComponent();
-            this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories));
-            this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories));
-            this.DronesListView.ItemsSource = bl.AllBlDrones();
+            this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories)); //import cmb options from enum of Statuses
+            this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories)); //import cmb options from enum of Weights
+            this.DronesListView.ItemsSource = bl.AllBlDrones(); //import all drones to listview
         }
-
+        /// <summary>
+        /// update the drones list view according to combobox of statuses
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cmbStatus.SelectedIndex == -1)
@@ -46,7 +53,11 @@ namespace PL
             else  
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
         }
-
+        /// <summary>
+        /// update the drones list view according to combobox of weights
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmbWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (this.cmbWeight.SelectedIndex == -1)
@@ -64,12 +75,20 @@ namespace PL
             else
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
         }
-
+        /// <summary>
+        /// handle of openning "add drone" window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             new DroneWindow(bl).ShowDialog();
         }
-
+        /// <summary>
+        /// handle event of double-click on some drone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = this.DronesListView.SelectedItem;
@@ -77,25 +96,38 @@ namespace PL
             {
                 var myItem = item as DroneToList;
                 DroneToList dtl = myItem;
+                // send the chosen drone to new methods window
                 new DroneWindow(bl, dtl).ShowDialog();
                 this.DronesListView.Items.Refresh();
             }
         }
-
+        /// <summary>
+        /// handle click on reset weight sort
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnResetWeight_Click(object sender, RoutedEventArgs e)
         {
             cmbWeight.SelectedIndex = -1;
             cmbWeight.Text = "Choose weight:";
             txtWeightSort.Text = "";
         }
-
+        /// <summary>
+        /// handle click on reset status sort
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnResetStatus_Click(object sender, RoutedEventArgs e)
         {
             cmbStatus.SelectedIndex = -1;
             cmbStatus.Text = "Choose weight:";
             txtStatusSort.Text = "";
         }
-
+        /// <summary>
+        /// handle close window button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param> 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
