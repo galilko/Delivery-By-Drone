@@ -8,6 +8,9 @@ namespace IDAL
 {
     public static class DalFactory
     {
-        DalApi GetDal()
+        public static DalApi GetDal()
+        {
+
+        }
     }
 }
