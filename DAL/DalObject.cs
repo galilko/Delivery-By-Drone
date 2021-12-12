@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IDAL;
-using IDAL.DO;
+using DO;
 
 namespace DalObject
 {
-    public class DalObject : IDAL.IDal
+    public class DalObject : IDAL.DalApi
     {
         public double[] GetBatteryUse()
         {
@@ -267,7 +267,7 @@ namespace DalObject
         /// return array of customers
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate) => DataSource.CustomersList;
+        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null) => DataSource.CustomersList;
         /// <summary>
         /// return array of drones
         /// </summary>
@@ -324,7 +324,7 @@ namespace DalObject
         }
         
         #endregion
-        List<DroneCharge> IDal.GetListOfInChargeDrones()
+        List<DroneCharge> DalApi.GetListOfInChargeDrones()
         {
             return DataSource.DroneChargeList;
         }
@@ -333,7 +333,7 @@ namespace DalObject
         /// </summary>
         /// <param name="droneId"></param>
         /// <param name="newName"></param>
-        void IDal.UpdateDroneModel(int droneId, string newName)
+        void DalApi.UpdateDroneModel(int droneId, string newName)
         {
             if (!DataSource.DronesList.Exists(x => x.Id == droneId))
                 throw new DroneException($"Drone {droneId} doesn't exists");
@@ -354,7 +354,7 @@ namespace DalObject
         /// <param name="baseStationId"></param>
         /// <param name="newName"></param>
         /// <param name="slotsCount"></param>
-        void IDal.UpdateBaseStation(int baseStationId, string newName, int slotsCount)
+        void DalApi.UpdateBaseStation(int baseStationId, string newName, int slotsCount)
         {
             if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId))
                 throw new BaseStationException($"Base Station {baseStationId} doesn't exists");
@@ -376,7 +376,7 @@ namespace DalObject
         /// <param name="customerId"></param>
         /// <param name="newName"></param>
         /// <param name="newPhone"></param>
-        void IDal.UpdateCustomer(int customerId, string newName, string newPhone)
+        void DalApi.UpdateCustomer(int customerId, string newName, string newPhone)
         {
             if (!DataSource.CustomersList.Exists(x => x.Id == customerId))
                 throw new CustomerException($"Customer {customerId} doesn't exist");

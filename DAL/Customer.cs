@@ -3,32 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDAL;
 
-namespace IDAL
+namespace DO
 {
-    namespace DO
+    public struct Customer
     {
-        public struct Customer
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public double Lattitude { get; set; }
+        public double Longitude { get; set; }
+        public override string ToString()
         {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Phone { get; set; }
-            public double Lattitude { get; set; }
-            public double Longitude { get; set; }
-            public override string ToString()
-            {
-                string str = "";
-                str += $"Id:\t\t {Id}\n";
-                str += $"Name:\t\t {Name}\n";
-                str += $"Phone:\t\t {Phone}\n";
-                str += $"Lattitude:\t {Converter.LatitudeToSexadecimal(Lattitude)}\n";
-                str += $"Longitude:\t {Converter.LongitudeToSexadecimal(Longitude)}\n";
-                return str;
-            }
-           
+            string str = "";
+            str += $"Id:\t\t {Id}\n";
+            str += $"Name:\t\t {Name}\n";
+            str += $"Phone:\t\t {Phone}\n";
+            str += $"Lattitude:\t {Converter.LatitudeToSexadecimal(Lattitude)}\n";
+            str += $"Longitude:\t {Converter.LongitudeToSexadecimal(Longitude)}\n";
+            return str;
         }
     }
 }
+
 
 /*
 # You have decimal degrees (-73.9874°) instead of degrees, minutes, and seconds (-73° 59’ 14.64")

@@ -1,10 +1,9 @@
-﻿using IDAL.DO;
+﻿using DO;
 using System;
 using System.Collections.Generic;
-
 namespace IDAL
 {
-    public interface IDal
+    public interface DalApi
     {
         void AddBaseStation(BaseStation newBaseStation);
         void AddCustomer(Customer newCustomer);

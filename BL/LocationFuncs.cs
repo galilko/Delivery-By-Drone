@@ -19,7 +19,7 @@ namespace IBL.BO
             return Math.Sqrt(Math.Pow(p1.Latitude - p2.Latitude, 2) + Math.Pow(p1.Longitude - p2.Longitude, 2));
         }
 
-        internal static Location ClosestBaseStationLocation(List<IDAL.DO.BaseStation> BaseStations, Location MyLocation)
+        internal static Location ClosestBaseStationLocation(List<DO.BaseStation> BaseStations, Location MyLocation)
         {
             Location ClosestLocation = new Location();
             double MinDistance = double.MaxValue;
