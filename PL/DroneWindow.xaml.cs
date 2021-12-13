@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IBL.BO;
+using BO;
 
 namespace PL
 {
@@ -22,13 +22,13 @@ namespace PL
     public partial class DroneWindow : Window
     {
         DroneToList newDrone;
-        IBL.IBL bl;
+        BlApi.IBL bl;
         private DroneToList dtl;
         /// <summary>
         /// ctor of add drone window
         /// </summary>
         /// <param name="theBl"></param>
-        public DroneWindow(IBL.IBL theBl)
+        public DroneWindow(BlApi.IBL theBl)
         {
             bl = theBl;
             newDrone = new DroneToList();
@@ -47,7 +47,7 @@ namespace PL
         /// </summary>
         /// <param name="theBl"></param>
         /// <param name="myDrone"></param>
-        public DroneWindow(IBL.IBL theBl, DroneToList myDrone) 
+        public DroneWindow(BlApi.IBL theBl, DroneToList myDrone) 
         {
             this.dtl = myDrone;
             this.bl = theBl;

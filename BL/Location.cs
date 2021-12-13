@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL.BO
+namespace BO
 {
     public class Location
     {
@@ -16,7 +16,7 @@ namespace IBL.BO
             Latitude = latitude;
             Longitude = longitude;
         }
-        public override string ToString() => $"(Latitude: {IDAL.Converter.LatitudeToSexadecimal(Latitude)} , Longitude: {IDAL.Converter.LongitudeToSexadecimal(Longitude)})";
+        public override string ToString() => $"(Latitude: {DalApi.Converter.LatitudeToSexadecimal(Latitude)} , Longitude: {DalApi.Converter.LongitudeToSexadecimal(Longitude)})";
 
        /* internal double CalcDistance(Location senderLocation)
         {

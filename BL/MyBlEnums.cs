@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace IBL.BO
+namespace BO
 {
     public enum WeightCategories
     {

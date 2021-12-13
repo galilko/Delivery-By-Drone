@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using IBL;
+using BlApi;
 namespace PL
 {
     /// <summary>
@@ -19,10 +19,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        IBL.IBL theBL;
+        BlApi.IBL theBL;
         public MainWindow()
         {
-            theBL = new IBL.BL();
+            theBL = BlApi.BlFactory.GetBL();
+            //BlApi.BL();
             InitializeComponent();
         }
 

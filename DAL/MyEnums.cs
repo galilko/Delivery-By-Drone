@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace IDAL
-{
+
     namespace DO
     {
         public enum WeightCategories
@@ -32,4 +31,4 @@ namespace IDAL
         {
         }
     }
-}
+

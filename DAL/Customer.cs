@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DalApi;
 
-namespace IDAL
-{
     namespace DO
     {
         public struct Customer
@@ -28,7 +27,6 @@ namespace IDAL
            
         }
     }
-}
 
 /*
 # You have decimal degrees (-73.9874°) instead of degrees, minutes, and seconds (-73° 59’ 14.64")

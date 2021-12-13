@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace IBL.BO
+namespace BO
 {
     public class ToolStringClass
     {

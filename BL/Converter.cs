@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BO;
 
-namespace IBL.BO
+namespace BlApi
 {
     public class Converter
     {
-        internal static IDAL.DO.Drone ConvertBlDroneToDalDrone(DroneToList myDrone)
+        internal static DO.Drone ConvertBlDroneToDalDrone(DroneToList myDrone)
         {
-            return new IDAL.DO.Drone()
+            return new DO.Drone()
             {
                 Id = myDrone.Id,
-                MaxWeight = (IDAL.DO.WeightCategories)myDrone.Weight,
+                MaxWeight = (DO.WeightCategories)myDrone.Weight,
                 Model = myDrone.Model
             };
         }
 
-        internal static IDAL.DO.BaseStation ConvertBlBsToDalBs(BaseStation myBaseStation)
+        internal static DO.BaseStation ConvertBlBsToDalBs(BaseStation myBaseStation)
         {
-            return new IDAL.DO.BaseStation()
+            return new DO.BaseStation()
             {
                 Id = myBaseStation.Id,
                 Name = myBaseStation.Name,
@@ -30,9 +31,9 @@ namespace IBL.BO
             };
         }
 
-        internal static IDAL.DO.Customer ConvertBlCustomerToDalCustomer(Customer myCustomer)
+        internal static DO.Customer ConvertBlCustomerToDalCustomer(Customer myCustomer)
         {
-            return new IDAL.DO.Customer()
+            return new DO.Customer()
             {
                 Id = myCustomer.Id,
                 Name = myCustomer.Name,
@@ -42,15 +43,15 @@ namespace IBL.BO
             };
         }
 
-        internal static IDAL.DO.Parcel ConvertBlParcelToDalParcel(Parcel myParcel)
+        internal static DO.Parcel ConvertBlParcelToDalParcel(Parcel myParcel)
         {
-            return new IDAL.DO.Parcel()
+            return new DO.Parcel()
             {
                 SenderId = myParcel.Sender.Id,
                 TargetId = myParcel.Target.Id,
                 DroneId = myParcel.DroneAtParcel.Id,
-                Priority = (IDAL.DO.Priorities)myParcel.Priority,
-                Weight = (IDAL.DO.WeightCategories)myParcel.Weight,
+                Priority = (DO.Priorities)myParcel.Priority,
+                Weight = (DO.WeightCategories)myParcel.Weight,
                 Requested = myParcel.Requested,
                 Scheduled = myParcel.Scheduled,
                 PickedUp = myParcel.PickedUp,
@@ -58,12 +59,12 @@ namespace IBL.BO
             };
         }
 
-        internal static ParcelInTransfer ConvertDalParcelToBlParcelInTranfer(IDAL.DO.Parcel parcel, List<IDAL.DO.Customer> customerList)
+        internal static ParcelInTransfer ConvertDalParcelToBlParcelInTranfer(DO.Parcel parcel, List<DO.Customer> customerList)
         {
             ParcelInTransfer pit = new() { Id = parcel.Id };
-            IDAL.DO.Customer sender = customerList.Find(x => x.Id == parcel.SenderId);
+            DO.Customer sender = customerList.Find(x => x.Id == parcel.SenderId);
             pit.Sender = new() { Id = sender.Id, Name = sender.Name }; 
-            IDAL.DO.Customer target = customerList.Find(x => x.Id == parcel.TargetId);
+            DO.Customer target = customerList.Find(x => x.Id == parcel.TargetId);
             pit.Reciever = new() { Id = target.Id, Name = target.Name };
             pit.Weight = (WeightCategories)parcel.Weight;
             pit.Priority = (Priorities)parcel.Priority;
@@ -77,7 +78,7 @@ namespace IBL.BO
             return pit;
         }
 
-        internal static ParcelStatus CalculateParcelStatus(IDAL.DO.Parcel parcel)
+        internal static ParcelStatus CalculateParcelStatus(DO.Parcel parcel)
         {
             if (parcel.Delivered != null)
                 return ParcelStatus.Delivered;

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL;
-using IDAL.DO;
+using DalApi;
+using DO;
 
 namespace DalObject
 {
-    public class DalObject : IDAL.IDal
+    sealed class DalObject : DalApi.IDal
     {
         public double[] GetBatteryUse()
         {
@@ -16,11 +16,14 @@ namespace DalObject
                 DataSource.Config.BatteryUseMedium, DataSource.Config.BatteryUseHeavy, DataSource.Config.BatteryChargeRate};
         }
 
-        #region ctor
-        public DalObject()
+        #region singleton
+        static readonly DalObject instance = new DalObject();
+        static DalObject() { }
+        DalObject()
         {
             DataSource.Initialize();
         }
+        internal static DalObject Instance { get => instance; }
         #endregion
         #region Update methods
         /// <summary>

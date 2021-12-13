@@ -1,4 +1,4 @@
-﻿using IBL.BO;
+﻿using BO;
 using System;
 using System.Collections.Generic;
 namespace ConsoleUI_BL
@@ -15,7 +15,7 @@ namespace ConsoleUI_BL
             string msg;
             int choice1 = 0, choice2 = 1;
             bool properConversion;
-            IBL.BL myBl = new();
+            BlApi.IBL myBl = BlApi.BlFactory.GetBL();
             do
             {
                 try
