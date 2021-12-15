@@ -1,6 +1,5 @@
-﻿using System;
-using DalApi.DO;
-using DalObject;
+﻿using DO;
+using System;
 using System.Collections.Generic;
 
 namespace ConsoleUI
@@ -13,9 +12,10 @@ namespace ConsoleUI
         }
         static void Main(string[] args)
         {
-            int choice1 = 0, choice2 = 1; 
+
+            int choice1 = 0, choice2 = 1;
             bool properConversion;
-            DalObject.DalObject dal = new DalObject.DalObject();
+            DalApi.IDal dal = DalApi.DalFactory.GetDal();
             do
             {
                 Console.WriteLine(@"---------------------------------
@@ -30,7 +30,8 @@ FOR EXIT PRESS 5
                 properConversion = int.TryParse(Console.ReadLine(), out choice1);
                 switch (choice1)
                 {
-                    case 1:{
+                    case 1:
+                        {
                             Console.WriteLine(@"---------------------------------
 FOR ADDING A BASE STATION PRESS 1
 FOR ADDING A DRONE PRESS 2
@@ -41,72 +42,59 @@ FOR ADDING A PARCEL PRESS 4
                             Console.WriteLine("---------------------------------");
                             switch (choice2)
                             {
-                                case 1:{
-                                        BaseStation myBaseStation = new();
+                                case 1:
+                                    {
                                         Console.WriteLine("ENTER BASE-STATION DETAILS\n" +
                                             "---------------------------------");
                                         Console.Write("ID:\t\t");
                                         int.TryParse(Console.ReadLine(), out int id);
-                                        myBaseStation.Id = id;
                                         Console.Write("Name:\t");
-                                        myBaseStation.Name = Console.ReadLine();
+                                        string name = Console.ReadLine();
                                         Console.Write("Latitude:\t");
                                         double.TryParse(Console.ReadLine(), out double latitude);
-                                        myBaseStation.Lattitude = latitude;
                                         Console.Write("Longitude:\t");
                                         double.TryParse(Console.ReadLine(), out double longitude);
-                                        myBaseStation.Longitude = longitude;
                                         Console.Write("Number of free charger slots:\t");
                                         int.TryParse(Console.ReadLine(), out int freeSlots);
-                                        myBaseStation.FreeChargeSlots = freeSlots;
+                                        BaseStation myBaseStation = new() { Id = id, Name = name, Lattitude = latitude, Longitude = longitude, FreeChargeSlots = freeSlots };
                                         dal.AddBaseStation(myBaseStation);
                                         break;
                                     }
-                                case 2:{
-                                        Drone myDrone = new();
+                                case 2:
+                                    {
                                         Console.WriteLine("ENTER DRONE DETAILS\n" +
                                             "---------------------------------");
                                         Console.Write("Id:\t");
                                         int.TryParse(Console.ReadLine(), out int id);
-                                        myDrone.Id = id;
                                         Console.Write("Model:\t");
-                                        myDrone.Model = Console.ReadLine();
+                                        string model = Console.ReadLine();
                                         Console.Write("Weight category [1-Light|2-Medium|3-Heavy]:\t");
                                         int.TryParse(Console.ReadLine(), out int weightCat);
-                                        myDrone.MaxWeight = (WeightCategories)weightCat;
-                                        /*Console.Write("Status:\t");
-                                        if (!Enum.TryParse(Console.ReadLine(), out DroneStatusCategories status))
-                                        {
-                                            Console.WriteLine("---------------------------------\n" +
-                                                "ERROR - invalid status category");
-                                            break;
-                                        }
-                                        Console.Write("Battery:\t");
-                                        double.TryParse(Console.ReadLine(), out double battery);*/
+                                        WeightCategories maxWeight = (WeightCategories)weightCat;
+                                        Drone myDrone = new() { Id = id, Model = model, MaxWeight = maxWeight };
                                         dal.AddDrone(myDrone);
                                         break;
                                     }
-                                case 3:{
-                                        Customer myCustomer = new();
+                                case 3:
+                                    {
                                         Console.WriteLine("ENTER CUSTOMER DETAILS\n" +
                                            "---------------------------------");
                                         Console.Write("Id:\t");
                                         int.TryParse(Console.ReadLine(), out int id);
-                                        myCustomer.Id = id;
                                         Console.Write("Name:\t");
-                                        myCustomer.Name = Console.ReadLine();
+                                        string name = Console.ReadLine();
                                         Console.Write("Phone:\t");
-                                        myCustomer.Phone = Console.ReadLine();
+                                        string phone = Console.ReadLine();
                                         Console.Write("Latitude:\t");
                                         double.TryParse(Console.ReadLine(), out double latitude);
-                                        myCustomer.Lattitude = latitude;
                                         Console.Write("Longitude:\t");
                                         double.TryParse(Console.ReadLine(), out double longitude);
-                                        myCustomer.Longitude = longitude;
+                                        Customer myCustomer = new() { Id = id, Name = name, Phone = phone, Lattitude = latitude, Longitude = longitude };
                                         dal.AddCustomer(myCustomer);
                                         break;
                                     }
-                                case 4:{
+                                case 4:
+                                    {
                                         Parcel myParcel = new();
                                         Console.WriteLine("ENTER PARCEL DETAILS\n" +
                                           "---------------------------------");
@@ -130,7 +118,8 @@ FOR ADDING A PARCEL PRESS 4
                             }
                             break;
                         }
-                    case 2:{
+                    case 2:
+                        {
                             Console.WriteLine(@"-------------------------------
 FOR ASSINGING A PARCEL TO A DRONE PRESS 1
 FOR PICK UP A PARCEL BY DRONE PRESS 2
@@ -169,7 +158,7 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                     }
                                 case 4:
                                     {
-                                        List<BaseStation> myList =(List<BaseStation>) dal.FreeSlotsBaseStations();
+                                        List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
                                         if (myList.Count <= 0)
                                             Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
                                         else
@@ -200,7 +189,8 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                             }
                             break;
                         }
-                    case 3:{
+                    case 3:
+                        {
                             Console.WriteLine(@"---------------------------------
 FOR VIEWING A BASE STATION PRESS 1
 FOR VIEWING A DRONE PRESS 2
@@ -211,7 +201,8 @@ FOR VIEWING A PARCEL PRESS 4
                             Console.WriteLine("---------------------------------");
                             switch (choice2)
                             {
-                                case 1:{
+                                case 1:
+                                    {
                                         Console.Write("ENTER BASE-STATION ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int baseStationId);
                                         Console.WriteLine("---------------------------------");
@@ -223,7 +214,8 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.Write(myBase.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                         Console.ResetColor(); break;
                                     }
-                                case 2:{
+                                case 2:
+                                    {
                                         Console.Write("ENTER DRONE ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int droneId);
                                         Console.WriteLine("---------------------------------");
@@ -235,7 +227,8 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.WriteLine(myDrone.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                         Console.ResetColor(); break;
                                     }
-                                case 3:{
+                                case 3:
+                                    {
                                         Console.Write("ENTER CUSTOMER ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int customerId);
                                         Console.WriteLine("---------------------------------");
@@ -248,7 +241,8 @@ FOR VIEWING A PARCEL PRESS 4
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 4:{
+                                case 4:
+                                    {
                                         Console.Write("ENTER PARCEL ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int parcelId);
                                         Console.WriteLine("---------------------------------");
@@ -265,7 +259,8 @@ FOR VIEWING A PARCEL PRESS 4
                             }
                             break;
                         }
-                    case 4:{
+                    case 4:
+                        {
                             Console.WriteLine(@"---------------------------------
 FOR VIEWING ALL BASE-STATIONS PRESS 1
 FOR VIEWING ALL DRONES PRESS 2
@@ -278,27 +273,32 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                             Console.WriteLine("---------------------------------");
                             switch (choice2)
                             {
-                                case 1:{
+                                case 1:
+                                    {
                                         ((List<BaseStation>)dal.AllBaseStations()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 2:{
+                                case 2:
+                                    {
                                         ((List<Drone>)dal.AllDrones()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 3:{
+                                case 3:
+                                    {
                                         ((List<Customer>)dal.AllCustomers()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 4:{
+                                case 4:
+                                    {
                                         ((List<Parcel>)dal.AllParcels()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 5:{
+                                case 5:
+                                    {
                                         List<Parcel> myList = (List<Parcel>)dal.NoneScheduledParcels();
                                         if (myList.Count > 0)
                                             myList.ForEach(myPrint);
@@ -307,9 +307,10 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                                         Console.ResetColor();
                                         break;
                                     }
-                                case 6:{
+                                case 6:
+                                    {
                                         List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
-                                        if(myList.Count > 0)
+                                        if (myList.Count > 0)
                                             myList.ForEach(myPrint);
                                         else
                                             Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
@@ -322,7 +323,8 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                             break;
 
                         }
-                    case 5:{
+                    case 5:
+                        {
                             Console.WriteLine("---------------------------------\nGOOD-BYE");
                             break;
                         }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BO;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Windows.Data;
+
 namespace PL
 {
     /// <summary>
@@ -20,6 +15,7 @@ namespace PL
     public partial class ListDronesWindow : Window
     {
         BlApi.IBL bl;
+        ObservableCollection<DroneToList> obsDronesCollection;
         /// <summary>
         ///  ctor of window that present listview of all drones
         /// </summary>
@@ -29,7 +25,9 @@ namespace PL
             InitializeComponent();
             this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories)); //import cmb options from enum of Statuses
             this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories)); //import cmb options from enum of Weights
-            this.DronesListView.ItemsSource = bl.AllBlDrones(); //import all drones to listview
+            obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>) bl.AllBlDrones());
+
+            this.DataGridDrones.DataContext = obsDronesCollection; //import all drones to listview
         }
         /// <summary>
         /// update the drones list view according to combobox of statuses
@@ -41,17 +39,17 @@ namespace PL
             if (this.cmbStatus.SelectedIndex == -1)
             {
                 if (this.cmbWeight.SelectedItem != null)
-                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == (WeightCategories)cmbWeight.SelectedItem);
+                    this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Weight == (WeightCategories)cmbWeight.SelectedItem);
                 else
-                    this.DronesListView.ItemsSource = bl.AllBlDrones();
+                    this.DataGridDrones.ItemsSource = bl.AllBlDrones();
                 return;
             }
             DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
             this.txtStatusSort.Text = status.ToString();
             if (this.cmbWeight.SelectedItem != null)
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status && item.Weight == (WeightCategories)cmbWeight.SelectedItem);
-            else  
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
+                this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Status == status && item.Weight == (WeightCategories)cmbWeight.SelectedItem);
+            else
+                this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Status == status);
         }
         /// <summary>
         /// update the drones list view according to combobox of weights
@@ -63,17 +61,17 @@ namespace PL
             if (this.cmbWeight.SelectedIndex == -1)
             {
                 if (this.cmbStatus.SelectedItem != null)
-                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
+                    this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
                 else
-                    this.DronesListView.ItemsSource = bl.AllBlDrones();
+                    this.DataGridDrones.ItemsSource = bl.AllBlDrones();
                 return;
             }
             WeightCategories weight = (WeightCategories)cmbWeight.SelectedItem;
             this.txtWeightSort.Text = weight.ToString();
-            if(this.cmbStatus.SelectedItem != null)
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
+            if (this.cmbStatus.SelectedItem != null)
+                this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
             else
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
+                this.DataGridDrones.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
         }
         /// <summary>
         /// handle of openning "add drone" window
@@ -83,22 +81,24 @@ namespace PL
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             new DroneWindow(bl).ShowDialog();
+            obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>)bl.AllBlDrones()); //import all drones to listview
+            DataGridDrones.DataContext = obsDronesCollection;
         }
         /// <summary>
-        /// handle event of double-click on some drone
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+            /// handle event of double-click on some drone
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+        private void DataGridDrones_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = this.DronesListView.SelectedItem;
+            var item = this.DataGridDrones.SelectedItem;
             if (item != null)
             {
                 var myItem = item as DroneToList;
                 DroneToList dtl = myItem;
                 // send the chosen drone to new methods window
                 new DroneWindow(bl, dtl).ShowDialog();
-                this.DronesListView.Items.Refresh();
+                this.DataGridDrones.Items.Refresh();
             }
         }
         /// <summary>

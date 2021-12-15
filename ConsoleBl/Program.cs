@@ -1,7 +1,7 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-namespace ConsoleUI_BL
+namespace ConsoleBL
 {
     class Program
     {

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace DO
 {
     [Serializable]
-    internal class BaseStationException : Exception
+    public class BaseStationException : Exception
     {
         public BaseStationException()
         {
@@ -24,7 +24,7 @@ namespace DO
     }
 
     [Serializable]
-    internal class CustomerException : Exception
+    public class CustomerException : Exception
     {
         public CustomerException()
         {
@@ -44,7 +44,7 @@ namespace DO
     }
 
     [Serializable]
-    internal class ParcelException : Exception
+    public class ParcelException : Exception
     {
         public ParcelException()
         {
@@ -64,7 +64,7 @@ namespace DO
     }
 
     [Serializable]
-    internal class DroneException : Exception
+    public class DroneException : Exception
     {
         public DroneException()
         {

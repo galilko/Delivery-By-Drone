@@ -1,16 +1,12 @@
-﻿using System;
+﻿using DO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using DO;
 
-namespace DalObject
+namespace Dal
 {
     class DataSource
     {
-   
+
         internal static List<Parcel> ParcelsList = new List<Parcel>();
         internal static List<Customer> CustomersList = new List<Customer>();
         internal static List<BaseStation> BaseStationsList = new List<BaseStation>();
@@ -27,7 +23,7 @@ namespace DalObject
             internal static double BatteryChargeRate { get { return 20.5; } }
         }
 
-        static Random _R = new Random();
+        static Random _R = new Random(DateTime.Now.Millisecond);
         static T RandomEnumValue<T>()
         {
             var v = Enum.GetValues(typeof(T));
@@ -36,7 +32,7 @@ namespace DalObject
 
         public static void Initialize()
         {
-            Random rand = new Random();
+            Random rand = new Random(DateTime.Now.Millisecond);
             //initialize drones
             for (int i = 0; i < 20; i++)
             {
@@ -75,7 +71,7 @@ namespace DalObject
                     SenderId = CustomersList[i].Id,
                     TargetId = CustomersList[9 - i].Id,
                     Weight = RandomEnumValue<WeightCategories>(),
-                    Priority = (Priorities)rand.Next(1,4),
+                    Priority = (Priorities)rand.Next(1, 4),
                     Requested = DateTime.Now
                 };
 
@@ -101,7 +97,7 @@ namespace DalObject
                 }
                 ParcelsList.Add(parcel);
             }
-            
+
         }
 
     }

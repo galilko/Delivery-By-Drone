@@ -1,12 +1,8 @@
 {
   "profiles": {
-    "ConsoleUI": {
+    "PL": {
       "commandName": "Project",
       "workingDirectory": "$(SolutionDir)"
-    },
-    "WSL": {
-      "commandName": "WSL2",
-      "distributionName": ""
     }
   }
 }

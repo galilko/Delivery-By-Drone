@@ -30,6 +30,6 @@ namespace DalApi
         List<DroneCharge> GetListOfInChargeDrones();
         void UpdateDroneModel(int droneId, string newName);
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
-        
+
     }
 }

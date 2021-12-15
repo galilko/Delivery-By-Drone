@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BlApi;
+﻿using System.Windows;
 namespace PL
 {
     /// <summary>
@@ -23,8 +10,8 @@ namespace PL
         public MainWindow()
         {
             theBL = BlApi.BlFactory.GetBL();
-            //BlApi.BL();
             InitializeComponent();
+            gif.Source = new System.Uri(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\giphy.gif");
         }
 
         private void btnListDrone_Click(object sender, RoutedEventArgs e)
@@ -36,5 +23,14 @@ namespace PL
         {
             new DroneWindow(theBL).ShowDialog();
         }
+        private void gif_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            gif.Visibility = Visibility.Collapsed;
+            btnAddDrone.Visibility = btnListDrone.Visibility = Visibility.Visible;
+            //gif.Position = new System.TimeSpan(0, 0, 1);
+            //gif.Play();
+        }
     }
+
+
 }

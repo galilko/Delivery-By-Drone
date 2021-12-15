@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace ConsoleUI_BL
+namespace ConsoleBL
 {
     [Serializable]
     internal class InputException : Exception

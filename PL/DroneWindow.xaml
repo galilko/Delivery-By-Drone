@@ -1,4 +1,4 @@
-﻿<Window x:Class="PL.DroneWindow"
+﻿<Window xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  x:Class="PL.DroneWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,6 +6,13 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Drone Window" Height="450" Width="800">
+    <Window.Resources>
+      
+        <LinearGradientBrush x:Key="myLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="White"/>
+            <GradientStop Color="LightBlue" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Resources>
     <Grid x:Name="MainGrid">
         <Grid x:Name="droneGrid" Visibility="Visible" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
             <Grid.ColumnDefinitions>
@@ -33,23 +40,13 @@
                       SelectedItem="{Binding Weight}" VerticalAlignment="Center" Width="120"/>
             <Label Content="Base Station Id:" Grid.Column="1" HorizontalAlignment="Left" Margin="26,0,0,0" Grid.Row="4" VerticalAlignment="Center" FontFamily="Showcard Gothic" Height="25" Width="103"/>
             <ComboBox x:Name="cmbBaseStation" Text="Choose Base Station:" Grid.Column="2" HorizontalAlignment="Center" Height="23" Margin="0,14,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120"/>
-            <Button x:Name="btnCancelAddDrone" Content="Cancel" Grid.Row="5" Height="23" Width="80"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold"  VerticalAlignment="Center" Click="btnCancelAddDrone_Click" Grid.Column="1">
-            <Button.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="White"/>
-                    <GradientStop Color="LightBlue" Offset="1"/>
-                </LinearGradientBrush>
-            </Button.Background>
+            <Button x:Name="btnCancelAddDrone" Content="Cancel" Grid.Row="5" Height="23" Width="80" Background="{StaticResource ResourceKey= myLinearGradientBrush}"
+                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold"
+                    VerticalAlignment="Center" Click="btnCancelAddDrone_Click" Grid.Column="1">
+
             </Button>
             <Button x:Name="btnAddDrone" Content="Add Drone" Grid.Row="5" Height="23" Width="80"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Click="btnAddDrone_Click" Grid.Column="2">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="White"/>
-                        <GradientStop Color="LightBlue" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="14" FontWeight="Bold" Background="{StaticResource ResourceKey= myLinearGradientBrush}" VerticalAlignment="Center" Click="btnAddDrone_Click" Grid.Column="2">
             </Button>
             <Label Content="Adding New Drone" Grid.Column="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="52" Width="244" FontFamily="Showcard Gothic"/>
 
@@ -68,13 +65,7 @@
 
             <WrapPanel Grid.Row="0" ItemHeight="auto" Orientation="Vertical" Grid.RowSpan="6" Width="auto" Height="auto" Margin="0,1,266,71" Grid.ColumnSpan="2">
                 <Label FontSize="24" FontFamily="Comic Sans MS">Manage Chosen Drone</Label>
-                <Expander x:Name="UpdateExpander" Header="Update Model for this Drone" DockPanel.Dock="Top" FontFamily="Comic Sans MS" Margin="5,5,5,5">
-                    <Expander.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="White"/>
-                            <GradientStop Color="LightBlue" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Expander.Background>
+                <Expander x:Name="UpdateExpander" Header="Update Model for this Drone" Background="{StaticResource ResourceKey= myLinearGradientBrush}" DockPanel.Dock="Top" FontFamily="Comic Sans MS" Margin="5,5,5,5">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Model:" />
                         <TextBox x:Name="NewModelTextBox" Width="100" Height="20"/>
@@ -89,22 +80,8 @@
                         </LinearGradientBrush>
                     </Expander.Background>
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
-                        <Button x:Name="btnChargeDrone" Visibility="Collapsed" Padding="5" Content="Charge Drone" BorderBrush="#FF707070" Click="btnChargeDrone_Click">
-                            <Button.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="White"/>
-                                    <GradientStop Color="LightBlue" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Button.Background>
-                        </Button>
-                        <Expander x:Name="ReleaseExp" Visibility="Collapsed" Header="Release Drone" Width="190" Margin="0,5,0,0" Padding="5" BorderBrush="#FF707070" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
-                            <Expander.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="White" Offset="0.004"/>
-                                    <GradientStop Color="#FFEDEDE6" Offset="1"/>
-                                    <GradientStop Color="LightBlue" Offset="0.5"/>
-                                </LinearGradientBrush>
-                            </Expander.Background>
+                        <Button x:Name="btnChargeDrone" Visibility="Collapsed" Background="{StaticResource ResourceKey= myLinearGradientBrush}" Padding="5" Content="Charge Drone" BorderBrush="#FF707070" Click="btnChargeDrone_Click"/>
+                        <Expander x:Name="ReleaseExp" Visibility="Collapsed" Header="Release Drone" Background="{StaticResource ResourceKey= myLinearGradientBrush}" Width="190" Margin="0,5,0,0" Padding="5" BorderBrush="#FF707070" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="Time In Charge:"/>
                                 <ComboBox x:Name="cmbHours" IsEditable="True" IsReadOnly="True" Text="h" Width="38"/>
@@ -112,38 +89,17 @@
                                 <ComboBox x:Name="cmbMins" IsEditable="True" IsReadOnly="True" Text="m" Width="38"/>
                             </StackPanel>
                         </Expander>
-                        <Button x:Name="btnReleaseDrone" Visibility="Collapsed" Padding="5" Margin="0,5,0,0" Content="Release Drone" BorderBrush="#FF707070" Click="btnReleaseDrone_Click" >
-                            <Button.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="White" Offset="0.004"/>
-                                    <GradientStop Color="#FFEDEDE6" Offset="1"/>
-                                    <GradientStop Color="LightBlue" Offset="0.5"/>
-                                </LinearGradientBrush>
-                            </Button.Background>
-                        </Button>
+                        <Button x:Name="btnReleaseDrone" Background="{StaticResource ResourceKey= myLinearGradientBrush}" Visibility="Collapsed" Padding="5" Margin="0,5,0,0" Content="Release Drone" BorderBrush="#FF707070" Click="btnReleaseDrone_Click" />
                     </StackPanel>
                 </Expander>
-                <Expander Header="Manage Drone Delivery" FontFamily="Comic Sans MS" Margin="5,0,5,5">
-                    <Expander.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="White"/>
-                            <GradientStop Color="LightBlue" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Expander.Background>
+                <Expander Background="{StaticResource ResourceKey= myLinearGradientBrush}" Header="Manage Drone Delivery" FontFamily="Comic Sans MS" Margin="5,0,5,5">
                     <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
                         <Button x:Name="btnScheduleDrone" Margin="2,2,2,2" Content="Schedule Drone to parcel" Click="btnScheduleDrone_Click" />
                         <Button x:Name="btnPickudUpDrone" Margin="2,0,2,2" Content="Picked Up Parcel" Click="btnPickudUpDrone_Click" />
                         <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" Click="btnDeliveredDrone_Click" />
                     </StackPanel>
                 </Expander>
-                <Button x:Name="btnClose" Content="Exit Drone Management" FontFamily="Comic Sans MS" Height="21" DockPanel.Dock="Top" Margin="5,0,5,5" Click="btnClose_Click">
-                    <Button.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="White"/>
-                            <GradientStop Color="LightBlue" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                </Button>
+                <Button x:Name="btnClose" Content="Exit Drone Management" Background="{StaticResource ResourceKey= myLinearGradientBrush}" FontFamily="Comic Sans MS" Height="21" DockPanel.Dock="Top" Margin="5,0,5,5" Click="btnClose_Click"/>
             </WrapPanel>
             <StackPanel Orientation="Vertical" Grid.RowSpan="4" Grid.Column="1">
                 <Label FontSize="24" Grid.Column="1" FontFamily="Comic Sans MS">Drone Details</Label>

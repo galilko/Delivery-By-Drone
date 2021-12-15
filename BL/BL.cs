@@ -1,9 +1,7 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BO;
 
 namespace BlApi
 {
@@ -17,14 +15,27 @@ namespace BlApi
         internal static double BatteryChargeRate;
         List<DroneToList> blDrones;
 
-        #region BL singleton Constructor
-        static readonly BL instance = new BL();
-        static BL() { }
-        internal static BL Instance { get => instance; }
-        BL()
+        #region thread-safe BL singleton
+        static readonly object padlock = new object();
+        static BL instance = null;
+        internal static BL Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new BL();
+                    }
+                    return instance;
+                }
+            }
+        }
+        private BL()
         {
             blDrones = new();
-            MyDal = DalApi.DalFactory.GetDal("A");
+            MyDal = DalApi.DalFactory.GetDal();
             //אחוזים לק"מ
             BatteryUseFREE = MyDal.GetBatteryUse()[0];
             BatteryUseLight = MyDal.GetBatteryUse()[1];
@@ -32,7 +43,7 @@ namespace BlApi
             BatteryUseHeavy = MyDal.GetBatteryUse()[3];
             //אחוזים לשעה
             BatteryChargeRate = MyDal.GetBatteryUse()[4];
-            Random rand = new Random();
+            Random rand = new Random(DateTime.Now.Millisecond);
             List<DO.Drone> Drones = (List<DO.Drone>)MyDal.AllDrones();
             List<DO.Parcel> Parcels = (List<DO.Parcel>)MyDal.AllParcels();
             List<DO.Customer> Customers = (List<DO.Customer>)MyDal.AllCustomers();
@@ -216,7 +227,7 @@ namespace BlApi
             List<ParcelToList> myList = new(); //takes all parcels from myDal end set them on myList
             try
             {
-                foreach (var item in MyDal.AllParcels(x=>x.Scheduled==null))
+                foreach (var item in MyDal.AllParcels(x => x.Scheduled == null))
                     myList.Add(new ParcelToList()
                     {
                         Id = item.Id,
@@ -321,7 +332,7 @@ namespace BlApi
             List<BaseStationToList> myList = new();
             try
             {
-                foreach (var item in MyDal.AllBaseStations(x=>x.FreeChargeSlots > 0)) //takes all BlBaseStations from myDal end set them on myList
+                foreach (var item in MyDal.AllBaseStations(x => x.FreeChargeSlots > 0)) //takes all BlBaseStations from myDal end set them on myList
                     myList.Add(new BaseStationToList()
                     {
                         Id = item.Id,
@@ -491,7 +502,7 @@ namespace BlApi
                     throw new BaseStationBLException($"Base station {baseStationId} doesn't found");
                 else
                 {
-                    Random rand = new();
+                    Random rand = new(DateTime.Now.Millisecond);
                     myDrone.BatteryStatus = rand.NextDouble() * 20 + 20;                                    // put valus in to myDrone and insert to a list in BL
                     myDrone.Status = DroneStatusCategories.Maintenance;
                     myDrone.CurrentLocation = new Location(bs.Lattitude, bs.Longitude);
@@ -635,7 +646,7 @@ namespace BlApi
                 MyDal.FindDrone(droneId);
                 if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Maintenance) // check if the drone are Maintenance
                     throw new BlUpdateEntityException("The chosen drone isn't in charge");
-                if(tSpanInCharge.TotalMinutes<0)
+                if (tSpanInCharge.TotalMinutes < 0)
                     throw new BlUpdateEntityException("The chosen time is invalid");
                 MyDal.ReleaseDroneFromCharge(droneId);                                                                //updat the details in the drone 
                 blDrones.Find(x => x.Id == droneId).Status = DroneStatusCategories.Free;

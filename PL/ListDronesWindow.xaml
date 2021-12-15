@@ -66,26 +66,20 @@
                 </Button.Background>
             </Button>
         </Grid>
-        <ListView x:Name="DronesListView" Grid.Row="1"
+        
+        <DataGrid x:Name="DataGridDrones" AutoGenerateColumns="False" ItemsSource="{Binding}" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   BorderBrush="#FF65654A" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
-                  MouseDoubleClick="DronesListView_MouseDoubleClick" >
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
+                  MouseDoubleClick="DataGridDrones_MouseDoubleClick" IsReadOnly="True" AlternationCount="2" AlternatingRowBackground="LightBlue">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="0.3*"/>
+                <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="0.3*"/>
+                <DataGridTextColumn Header="Weight" Binding="{Binding Weight}" Width="0.3*"/>
+                <DataGridTextColumn Header="Battery Status" Binding="{Binding BatteryStatus, StringFormat={}{0:#.##}}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                <DataGridTextColumn Header="Current Parcel" Binding="{Binding TransferdParcel}"/>
+                <DataGridTextColumn Header="Current Location" Binding="{Binding CurrentLocation}" Width="*"/>
+            </DataGrid.Columns>
 
-                    <Setter Property="BorderBrush" Value="DarkGray"/>
-                    <Setter Property="BorderThickness" Value="3"/>
-                    <Setter Property="Background">
-                        <Setter.Value>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="White"/>
-                                <GradientStop Color="LightBlue" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Margin" Value="5,5,5,0"/>
-                    <Setter Property="Padding" Value="15"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
+        </DataGrid>
     </Grid>
 </Window>

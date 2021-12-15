@@ -1,12 +1,10 @@
-﻿using System;
+﻿using DalApi;
+using DO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DalApi;
-using DO;
 
-namespace DalObject
+namespace Dal
 {
     sealed class DalObject : DalApi.IDal
     {
@@ -15,16 +13,34 @@ namespace DalObject
             return new double[5] { DataSource.Config.BatteryUseFREE, DataSource.Config.BatteryUseLight,
                 DataSource.Config.BatteryUseMedium, DataSource.Config.BatteryUseHeavy, DataSource.Config.BatteryChargeRate};
         }
-
-        #region singleton
+        #region thread-safe DalObject singleton
+        private DalObject() { DataSource.Initialize(); }
+        static readonly object padlock = new object ();  
+        static DalObject instance = null;
+        internal static DalObject Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                        if (instance == null)
+                        {
+                            instance = new DalObject();
+                        }
+                        return instance;
+                    }
+            }
+        }
+        #endregion
+        /*#region singleton
         static readonly DalObject instance = new DalObject();
         static DalObject() { }
-        DalObject()
+        private DalObject()
         {
             DataSource.Initialize();
         }
         internal static DalObject Instance { get => instance; }
-        #endregion
+        #endregion*/
         #region Update methods
         /// <summary>
         /// schedule a drone for parcel delivery
@@ -160,10 +176,10 @@ namespace DalObject
         /// <param name="freeSlots"></param> 
         public void AddBaseStation(BaseStation newBaseStation)
         {
-            
-                if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
-                    throw new BaseStationException($"Base Station {newBaseStation.Id} is already exist");
-                DataSource.BaseStationsList.Add(newBaseStation);
+
+            if (DataSource.BaseStationsList.Exists(item => item.Id == newBaseStation.Id))
+                throw new BaseStationException($"Base Station {newBaseStation.Id} is already exist");
+            DataSource.BaseStationsList.Add(newBaseStation);
         }
         #endregion
         #region Add Drone
@@ -300,7 +316,7 @@ namespace DalObject
         }
         #endregion
         #region others
-        
+
         /// <summary>
         /// return array of none-scheduled parcels
         /// </summary>
@@ -325,7 +341,7 @@ namespace DalObject
                     tmpList.Add(DataSource.BaseStationsList[i]);
             return tmpList;
         }
-        
+
         #endregion
         List<DroneCharge> IDal.GetListOfInChargeDrones()
         {
@@ -342,7 +358,7 @@ namespace DalObject
                 throw new DroneException($"Drone {droneId} doesn't exists");
             for (int i = 0; i < DataSource.DronesList.Count; i++)
             {
-                if(DataSource.DronesList[i].Id == droneId)
+                if (DataSource.DronesList[i].Id == droneId)
                 {
                     Drone myDrone = DataSource.DronesList[i];
                     myDrone.Model = newName;
@@ -367,7 +383,7 @@ namespace DalObject
                 {
                     BaseStation myBaseStation = DataSource.BaseStationsList[i];
                     myBaseStation.FreeChargeSlots = slotsCount == 0 ? myBaseStation.FreeChargeSlots : slotsCount - DataSource.DroneChargeList.Where(x => x.StationId == baseStationId).Count();
-                    myBaseStation.Name = string.IsNullOrEmpty(newName)? myBaseStation.Name : newName;
+                    myBaseStation.Name = string.IsNullOrEmpty(newName) ? myBaseStation.Name : newName;
                     DataSource.BaseStationsList[i] = myBaseStation;
                     return;
                 }

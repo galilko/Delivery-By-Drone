@@ -1,6 +1,6 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
-using BO;
 
 namespace BlApi
 {
@@ -12,7 +12,7 @@ namespace BlApi
         void AddParcel(Parcel myParcel);
         IEnumerable<BaseStationToList> AllBlBaseStations();
         IEnumerable<CustomerToList> AllBlCustomers();
-        IEnumerable<DroneToList> AllBlDrones(Func<DroneToList,bool> predicate =null);
+        IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null);
         IEnumerable<ParcelToList> AllBlParcels();
         void ChargeDrone(int droneId);
         void DeliverAParcel(int droneId);

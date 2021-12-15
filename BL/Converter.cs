@@ -1,9 +1,5 @@
-﻿using System;
+﻿using BO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BO;
 
 namespace BlApi
 {
@@ -63,7 +59,7 @@ namespace BlApi
         {
             ParcelInTransfer pit = new() { Id = parcel.Id };
             DO.Customer sender = customerList.Find(x => x.Id == parcel.SenderId);
-            pit.Sender = new() { Id = sender.Id, Name = sender.Name }; 
+            pit.Sender = new() { Id = sender.Id, Name = sender.Name };
             DO.Customer target = customerList.Find(x => x.Id == parcel.TargetId);
             pit.Reciever = new() { Id = target.Id, Name = target.Name };
             pit.Weight = (WeightCategories)parcel.Weight;

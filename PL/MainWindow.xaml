@@ -5,12 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Main window" Height="300" Width="200">
-    <StackPanel>
-        <Button x:Name="btnAddDrone" Content="Add drone" Margin="5" Click="btnAddDrone_Click"/>
-        <Button x:Name="btnListDrone" Content="Show drones" Margin="5,20,5,5" Click="btnListDrone_Click"/>
-        <Grid Height="100"/>
+        Title="Main window" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="FlatButtonStyle">
+        <Setter Property="Background" Value="#FF6176A6"/>
+        <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="50"/>
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="FontFamily" Value="Comic Sans MS"/>
+            <Setter Property="Height" Value="100"/>
+        <Setter Property="Template">
+                <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border BorderThickness="3" BorderBrush="White"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="20">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    </Window.Resources>
+    
+    <Grid Background="#FF8CDBF3" Opacity="2">
+        <Border>
+            <MediaElement x:Name="gif" Visibility="Visible" MediaEnded="gif_MediaEnded" UnloadedBehavior="Manual" Source="giphy.gif" LoadedBehavior="Play" Stretch="Fill" Position="00:00:00" />
+        </Border>
 
-
-    </StackPanel>
+        <Button x:Name="btnAddDrone" Style="{StaticResource FlatButtonStyle}" Visibility="Collapsed" Content="USER"  Click="btnAddDrone_Click" Margin="416,131,24,143"/>
+        <Button x:Name="btnListDrone"  Style="{StaticResource FlatButtonStyle}" Visibility="Collapsed" Content="ADMIN" Click="btnListDrone_Click" Margin="25,131,415,143"/>
+    </Grid>
 </Window>
