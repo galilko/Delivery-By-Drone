@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Main window" Height="450" Width="800">
@@ -28,11 +29,8 @@
     </Style>
     </Window.Resources>
     
-    <Grid Background="#FF8CDBF3" Opacity="2">
-        <Border>
-            <MediaElement x:Name="gif" Visibility="Visible" MediaEnded="gif_MediaEnded" UnloadedBehavior="Manual" Source="giphy.gif" LoadedBehavior="Play" Stretch="Fill" Position="00:00:00" />
-        </Border>
-
+    <Grid Background="#FF8CDBF3">
+        <Image x:Name="gif" gif:ImageBehavior.AnimatedSource="Images/giphy.gif" gif:ImageBehavior.RepeatBehavior="4x" gif:ImageBehavior.AnimationSpeedRatio="6" gif:ImageBehavior.AnimationCompleted="gif_AnimationCompleted"/>
         <Button x:Name="btnAddDrone" Style="{StaticResource FlatButtonStyle}" Visibility="Collapsed" Content="USER"  Click="btnAddDrone_Click" Margin="416,131,24,143"/>
         <Button x:Name="btnListDrone"  Style="{StaticResource FlatButtonStyle}" Visibility="Collapsed" Content="ADMIN" Click="btnListDrone_Click" Margin="25,131,415,143"/>
     </Grid>

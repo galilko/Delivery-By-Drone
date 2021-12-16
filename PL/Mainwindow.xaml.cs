@@ -11,7 +11,6 @@ namespace PL
         {
             theBL = BlApi.BlFactory.GetBL();
             InitializeComponent();
-            gif.Source = new System.Uri(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\giphy.gif");
         }
 
         private void btnListDrone_Click(object sender, RoutedEventArgs e)
@@ -23,13 +22,21 @@ namespace PL
         {
             new DroneWindow(theBL).ShowDialog();
         }
-        private void gif_MediaEnded(object sender, RoutedEventArgs e)
+
+        private void gif_AnimationCompleted(object sender, RoutedEventArgs e)
         {
             gif.Visibility = Visibility.Collapsed;
             btnAddDrone.Visibility = btnListDrone.Visibility = Visibility.Visible;
             //gif.Position = new System.TimeSpan(0, 0, 1);
             //gif.Play();
         }
+        /*  private void gif_MediaEnded(object sender, RoutedEventArgs e)
+ {
+     gif.Visibility = Visibility.Collapsed;
+     btnAddDrone.Visibility = btnListDrone.Visibility = Visibility.Visible;
+     //gif.Position = new System.TimeSpan(0, 0, 1);
+     //gif.Play();
+ }*/
     }
 
 
