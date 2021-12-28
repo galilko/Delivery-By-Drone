@@ -7,6 +7,10 @@
     "WSL": {
       "commandName": "WSL2",
       "distributionName": ""
+    },
+    "ConsoleDal": {
+      "commandName": "Project",
+      "workingDirectory": "$(SolutionDir)"
     }
   }
 }
