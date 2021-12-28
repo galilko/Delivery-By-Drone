@@ -14,21 +14,21 @@ namespace DalApi
         IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null);
         IEnumerable<Drone> AllDrones();
         IEnumerable<Parcel> AllParcels(Func<Parcel, bool> predicate = null);
-        void ChargeDrone(int droneId, int baseStationId);
+        void ChargeDrone(int? droneId, int baseStationId);
         void DeliverAParcel(int parcelId);
         BaseStation FindBaseStation(int id);
-        Customer FindCustomer(int id);
-        Drone FindDrone(int id);
+        Customer FindCustomer(int? id);
+        Drone FindDrone(int? id);
         Parcel FindParcel(int id);
         IEnumerable<BaseStation> FreeSlotsBaseStations();
         IEnumerable<Parcel> NoneScheduledParcels();
         void PickingUpAParcel(int parcelId);
-        void ReleaseDroneFromCharge(int droneId);
-        void ScheduleDroneForParcel(int parcelId, int droneId);
+        void ReleaseDroneFromCharge(int? droneId);
+        void ScheduleDroneForParcel(int parcelId, int? droneId);
         double[] GetBatteryUse();
-        void UpdateCustomer(int customerId, string newName, string newPhone);
+        void UpdateCustomer(int? customerId, string newName, string newPhone);
         List<DroneCharge> GetListOfInChargeDrones();
-        void UpdateDroneModel(int droneId, string newName);
+        void UpdateDroneModel(int? droneId, string newName);
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
 
     }

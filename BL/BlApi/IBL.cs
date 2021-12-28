@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace BlApi
 {
     public interface IBL
@@ -14,19 +15,19 @@ namespace BlApi
         IEnumerable<CustomerToList> AllBlCustomers();
         IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null);
         IEnumerable<ParcelToList> AllBlParcels();
-        void ChargeDrone(int droneId);
-        void DeliverAParcel(int droneId);
+        void ChargeDrone(int? droneId);
+        void DeliverAParcel(int? droneId);
         BaseStation FindBaseStation(int baseStationId);
-        Customer FindCustomer(int customerId);
-        Drone FindDrone(int droneId);
+        Customer FindCustomer(int? customerId);
+        Drone FindDrone(int? droneId);
         Parcel FindParcel(int parcelId);
         IEnumerable<BaseStationToList> FreeSlotsBaseStations();
         IEnumerable<ParcelToList> NoneScheduledParcels();
-        void PickingUpAParcel(int droneId);
-        void releaseDrone(int droneId, TimeSpan tSpanInCharge);
-        void ScheduleDroneForParcel(int droneId);
+        void PickingUpAParcel(int? droneId);
+        void releaseDrone(int? droneId, TimeSpan tSpanInCharge);
+        void ScheduleDroneForParcel(int? droneId);
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
-        void UpdateCustomer(int customerId, string newName, string newPhone);
-        void UpdateDroneModel(int droneId, string newName);
+        void UpdateCustomer(int? customerId, string newName, string newPhone);
+        void UpdateDroneModel(int? droneId, string newName);
     }
 }

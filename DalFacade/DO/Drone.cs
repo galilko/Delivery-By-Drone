@@ -2,7 +2,7 @@
 {
     public struct Drone
     {
-        public int Id { get; init; }
+        public int? Id { get; init; }
         public string Model { get; set; }
         public WeightCategories MaxWeight { get; set; }
         public override string ToString()

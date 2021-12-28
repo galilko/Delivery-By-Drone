@@ -30,13 +30,26 @@ namespace PL
             this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories)); //import cmb options from enum of Weights
             obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>) bl.AllBlDrones());
             this.DronesListView.DataContext = obsDronesCollection; //import all drones to listview
-            obsBSCollection = new ObservableCollection<BaseStationToList>((List<BaseStationToList>) bl.AllBlBaseStations());
-            this.BSListView.DataContext = obsBSCollection; //import all base-stations to listview
+            //obsBSCollection = new ObservableCollection<BaseStationToList>((List<BaseStationToList>) bl.AllBlBaseStations());
+            this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
             obsCustomersCollection = new ObservableCollection<CustomerToList>((List<CustomerToList>) bl.AllBlCustomers());
             this.CustomersListView.DataContext = obsCustomersCollection; //import all customers to listview
             obsParcelsCollection = new ObservableCollection<ParcelToList>((List<ParcelToList>) bl.AllBlParcels());
             this.ParcelsListView.DataContext = obsParcelsCollection; //import all customers to listview
 
+        }
+
+
+        /// <summary>
+        /// handle close window button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param> 
+        private void Close_OnClick(object sender, RoutedEventArgs e)
+        {
+            var mw = new MainWindow();
+            Close();
+            mw.ShowDialog();
         }
 
         #region Drones
@@ -56,7 +69,6 @@ namespace PL
                 return;
             }
             DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
-            this.txtStatusSort.Text = status.ToString();
             if (this.cmbWeight.SelectedItem != null)
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status && item.Weight == (WeightCategories)cmbWeight.SelectedItem);
             else
@@ -78,7 +90,6 @@ namespace PL
                 return;
             }
             WeightCategories weight = (WeightCategories)cmbWeight.SelectedItem;
-            this.txtWeightSort.Text = weight.ToString();
             if (this.cmbStatus.SelectedItem != null)
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
             else
@@ -91,15 +102,16 @@ namespace PL
         /// <param name="e"></param>
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl).ShowDialog();
-            obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>)bl.AllBlDrones()); //import all drones to listview
-            DronesListView.DataContext = obsDronesCollection;
+            
+            var dw = new DroneWindow(bl);
+            dw.ShowDialog();
+            this.DronesListView.Items.Refresh();
         }
         /// <summary>
-            /// handle event of double-click on some drone
-            /// </summary>
-            /// <param name="sender"></param>
-            /// <param name="e"></param>
+        /// handle event of double-click on some drone
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = this.DronesListView.SelectedItem;
@@ -108,7 +120,8 @@ namespace PL
                 var myItem = item as DroneToList;
                 DroneToList dtl = myItem;
                 // send the chosen drone to new methods window
-                new DroneWindow(bl, dtl).ShowDialog();
+                var dw = new DroneWindow(bl, dtl);
+                dw.ShowDialog();
                 this.DronesListView.Items.Refresh();
             }
         }
@@ -121,7 +134,6 @@ namespace PL
         {
             cmbWeight.SelectedIndex = -1;
             cmbWeight.Text = "Choose weight:";
-            txtWeightSort.Text = "";
         }
         /// <summary>
         /// handle click on reset status sort
@@ -132,23 +144,132 @@ namespace PL
         {
             cmbStatus.SelectedIndex = -1;
             cmbStatus.Text = "Choose weight:";
-            txtStatusSort.Text = "";
         }
-        /// <summary>
-        /// handle close window button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param> 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
+        private void StatusGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DronesListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void WeightGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DronesListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Weight");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void CancelGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DronesListView.ItemsSource);
+            view.GroupDescriptions.Clear();
         }
         #endregion
 
+        #region Base Stations
 
+        private void FreeSlotsGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(BSListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("FreeChargeSlots");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void CancelBSGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(BSListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+        }
+        
+        private void BSListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = this.BSListView.SelectedItem;
+            if (item != null)
+            {
+                var myItem = item as BaseStationToList;
+                BaseStationToList bstl = myItem;
+                // send the chosen bs to new methods window
+                var bsw = new BaseStationWindow(bl, bstl);
+                bsw.ShowDialog();
+                this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
+            }
+        }
+
+        private void btnAddBaseStation_Click(object sender, RoutedEventArgs e)
+        {
+            new BaseStationWindow(bl).ShowDialog();
+            this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
+        }
+
+
+        #endregion
+
+        #region Customer
+        private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            new CustomerWindow(bl).ShowDialog();
+            this.CustomersListView.DataContext = bl.AllBlCustomers(); //import all base-stations to listview
+        }
+
+        private void CustomersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var item = this.CustomersListView.SelectedItem;
+            if (item != null)
+            {
+                var myItem = item as CustomerToList;
+                CustomerToList ctl = myItem;
+                // send the chosen bs to new methods window
+                var cw = new CustomerWindow(bl, ctl);
+                cw.ShowDialog();
+                this.CustomersListView.DataContext = bl.AllBlCustomers(); //import all base-stations to listview
+            }
+        }
+        #endregion
+
+        #region Parcels
+        private void ParcelsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void SenderGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("SenderName");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void RecieverGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("TargetName");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+
+        private void CancelParcelGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+        }
+        #endregion
+
+        private void cmbParcelStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void PStatusGrouping_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
+            view.GroupDescriptions.Clear();
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
+            view.GroupDescriptions.Add(groupDescription);
+        }
     }
 }

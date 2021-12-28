@@ -13,7 +13,7 @@ namespace BO
         /// <returns> double distance</returns>
         internal static double DistanceBetweenTwoLocations(Location p1, Location p2)
         {
-            return Math.Sqrt(Math.Pow(p1.Latitude - p2.Latitude, 2) + Math.Pow(p1.Longitude - p2.Longitude, 2));
+            return Math.Sqrt(Math.Pow((double)p1.Latitude - (double)p2.Latitude, 2) + Math.Pow((double)p1.Longitude - (double)p2.Longitude, 2));
         }
 
         internal static Location ClosestBaseStationLocation(List<DO.BaseStation> BaseStations, Location MyLocation)

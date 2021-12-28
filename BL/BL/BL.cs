@@ -5,15 +5,15 @@ using System.Linq;
 
 namespace BlApi
 {
-    sealed public class BL : IBL
+    sealed internal class BL : IBL
     {
-        DalApi.IDal MyDal;
-        internal static double BatteryUseFREE;
-        internal static double BatteryUseLight;
-        internal static double BatteryUseMedium;
-        internal static double BatteryUseHeavy;
-        internal static double BatteryChargeRate;
-        List<DroneToList> blDrones;
+        private DalApi.IDal MyDal;
+        private static double BatteryUseFREE;
+        private static double BatteryUseLight;
+        private static double BatteryUseMedium;
+        private static double BatteryUseHeavy;
+        private static double BatteryChargeRate;
+        private List<DroneToList> blDrones;
 
         #region thread-safe BL singleton
         static readonly object padlock = new object();
@@ -48,7 +48,7 @@ namespace BlApi
             List<DO.Parcel> Parcels = (List<DO.Parcel>)MyDal.AllParcels();
             List<DO.Customer> Customers = (List<DO.Customer>)MyDal.AllCustomers();
             List<DO.BaseStation> BaseStations = (List<DO.BaseStation>)MyDal.AllBaseStations();
-            foreach (var item in Drones)
+            foreach (var item in Drones.ToList())
             {
                 DroneToList myDrone = new();
                 myDrone.Id = item.Id;
@@ -90,8 +90,9 @@ namespace BlApi
                     if (myDrone.Status == DroneStatusCategories.Maintenance)
                     {
                         DO.BaseStation randomBS = BaseStations[rand.Next(BaseStations.Count)];
-                        myDrone.CurrentLocation = new Location(randomBS.Lattitude, randomBS.Longitude);
+                        myDrone.CurrentLocation = new Location() { Latitude = randomBS.Lattitude, Longitude = randomBS.Longitude };
                         myDrone.BatteryStatus = rand.NextDouble() * 20;
+                        MyDal.ChargeDrone(item.Id, randomBS.Id);
                     }
 
                     if (myDrone.Status == DroneStatusCategories.Free)
@@ -312,7 +313,7 @@ namespace BlApi
                         Id = item.Id,
                         Name = item.Name,
                         FreeChargeSlots = item.FreeChargeSlots,
-                        BusyChargeSlots = 0
+                        BusyChargeSlots = MyDal.GetListOfInChargeDrones().Where(x=>x.StationId==item.Id).Count()
                     });
             }
             catch (Exception ex)
@@ -389,7 +390,7 @@ namespace BlApi
         /// </summary>
         /// <param name="customerId">customerId to find</param>
         /// <returns>return if he find one that matching</returns>
-        public Customer FindCustomer(int customerId)
+        public Customer FindCustomer(int? customerId)
         {
             try
             {
@@ -475,7 +476,7 @@ namespace BlApi
         /// <param name="customerId">customerId for identified the customer</param>
         /// <param name="newName">newName to change</param>
         /// <param name="newPhone">newPhone to change</param>
-        public void UpdateCustomer(int customerId, string newName, string newPhone)
+        public void UpdateCustomer(int? customerId, string newName, string newPhone)
         {
             try
             {
@@ -521,7 +522,7 @@ namespace BlApi
         /// </summary>
         /// <param name="droneId">droneId to find</param>
         /// <returns>returns if he find one</returns>
-        public Drone FindDrone(int droneId)
+        public Drone FindDrone(int? droneId)
         {
             try
             {
@@ -581,7 +582,7 @@ namespace BlApi
         /// </summary>
         /// <param name="droneId">droneId to be identified the drone</param>
         /// <param name="newName">newName to change</param>
-        public void UpdateDroneModel(int droneId, string newName)
+        public void UpdateDroneModel(int? droneId, string newName)
         {
             try
             {
@@ -598,7 +599,7 @@ namespace BlApi
         /// connect a drone to charging at base-station throu BL
         /// </summary>
         /// <param name="droneId"> to connect</param>
-        public void ChargeDrone(int droneId)
+        public void ChargeDrone(int? droneId)
         {
             try
             {
@@ -639,7 +640,7 @@ namespace BlApi
         /// </summary>
         /// <param name="droneId">droneId to release</param>
         /// <param name="tSpanInCharge">tSpanInCharge to calculate the amount of charge</param>
-        public void releaseDrone(int droneId, TimeSpan tSpanInCharge)
+        public void releaseDrone(int? droneId, TimeSpan tSpanInCharge)
         {
             try
             {
@@ -662,7 +663,7 @@ namespace BlApi
         /// </summary>
         /// <param name="parcelId">parcel id for deliver</param>
         /// <param name="droneId">drone id for schedule</param>
-        public void ScheduleDroneForParcel(int droneId)
+        public void ScheduleDroneForParcel(int? droneId)
         {
             try
             {
@@ -711,7 +712,7 @@ namespace BlApi
         /// picking up a parcel by its drone through BL
         /// </summary>
         /// <param name="droneId">droneId to Recognize </param>
-        public void PickingUpAParcel(int droneId)
+        public void PickingUpAParcel(int? droneId)
         {
             try
             {
@@ -739,7 +740,7 @@ namespace BlApi
         /// finish delivery of a parcel through BL
         /// </summary>
         /// <param name="droneId">droneId to Recognize</param>
-        public void DeliverAParcel(int droneId)
+        public void DeliverAParcel(int? droneId)
         {
             try
             {

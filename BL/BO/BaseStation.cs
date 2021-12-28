@@ -4,10 +4,10 @@ namespace BO
 {
     public class BaseStation
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Name { get; set; }
         public Location BSLocation { get; set; }
-        public int FreeChargeSlots { get; set; }
+        public int? FreeChargeSlots { get; set; }
         public List<DroneInCharge> DronesInCharge { get; set; }
         public override string ToString()
         {

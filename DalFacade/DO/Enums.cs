@@ -22,7 +22,7 @@ namespace DO
         [Description("emergency")]
         Emergency
     }
-    class MyEnums
+    class Enums
     {
     }
 }

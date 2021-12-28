@@ -4,7 +4,7 @@ namespace BO
 {
     public class DroneToList
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Model { get; set; }
         public WeightCategories Weight { get; set; }
         public double BatteryStatus { get; set; }

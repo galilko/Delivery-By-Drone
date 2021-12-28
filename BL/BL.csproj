@@ -10,12 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="BL\" />
-    <Folder Include="BlApi\" />
-    <Folder Include="BO\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DalFacade\DalFacade.csproj" />
     <ProjectReference Include="..\DalObject\DalObject.csproj" />
   </ItemGroup>

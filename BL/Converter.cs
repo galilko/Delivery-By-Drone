@@ -19,11 +19,11 @@ namespace BlApi
         {
             return new DO.BaseStation()
             {
-                Id = myBaseStation.Id,
+                Id = (int)myBaseStation.Id,
                 Name = myBaseStation.Name,
-                Lattitude = myBaseStation.BSLocation.Latitude,
-                Longitude = myBaseStation.BSLocation.Longitude,
-                FreeChargeSlots = myBaseStation.FreeChargeSlots
+                Lattitude = (double)myBaseStation.BSLocation.Latitude,
+                Longitude = (double)myBaseStation.BSLocation.Longitude,
+                FreeChargeSlots = (int)myBaseStation.FreeChargeSlots
             };
         }
 
@@ -34,8 +34,8 @@ namespace BlApi
                 Id = myCustomer.Id,
                 Name = myCustomer.Name,
                 Phone = myCustomer.PhoneNumber,
-                Lattitude = myCustomer.CustomerLocation.Latitude,
-                Longitude = myCustomer.CustomerLocation.Longitude
+                Lattitude = (double)myCustomer.CustomerLocation.Latitude,
+                Longitude = (double)myCustomer.CustomerLocation.Longitude
             };
         }
 

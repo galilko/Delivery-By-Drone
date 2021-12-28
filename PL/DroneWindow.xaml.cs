@@ -1,4 +1,5 @@
 ﻿using BO;
+using BlApi;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,9 +26,11 @@ namespace PL
             bl = theBl;
             newDrone = new DroneToList();
             InitializeComponent();
+            this.Width = 400;
+            this.Height = 500;
             this.MethodsDroneGrid.Visibility = Visibility.Collapsed;
-            this.droneGrid.Visibility = Visibility.Visible;
-            this.droneGrid.DataContext = newDrone;
+            this.AddDroneGrid.Visibility = Visibility.Visible;
+            this.AddDroneGrid.DataContext = newDrone;
             this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories));
             for (int i = 0; i < bl.AllBlBaseStations().ToList().Count; i++)
             {
@@ -45,8 +48,18 @@ namespace PL
             this.bl = theBl;
             InitializeComponent();
             this.MethodsDroneGrid.Visibility = Visibility.Visible;
-            this.droneGrid.Visibility = Visibility.Hidden;
-            this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+            this.AddDroneGrid.Visibility = Visibility.Hidden;
+            var currentDrone = bl.FindDrone(dtl.Id);
+            var currentParcel = currentDrone.CurrentParcel;
+            this.MethodsDroneGrid.DataContext = currentDrone;
+            if (currentParcel != null)
+            {
+                this.btnParcel.DataContext = currentParcel;
+                btnParcel.IsEnabled = true;
+            }
+            else
+                this.btnParcel.Content = "None";
+
         }
         /// <summary>
         /// handle adding drone burron click
@@ -82,8 +95,11 @@ namespace PL
                 int baseStationId = (int)this.cmbBaseStation.SelectedItem;
                 bl.AddDrone(newDrone, baseStationId);
                 newDrone = new DroneToList();
-                this.droneGrid.DataContext = newDrone;
+                this.AddDroneGrid.DataContext = newDrone;
                 MessageBox.Show("Drone was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                var ldw = new ListDronesWindow(bl);
+                Close();
+                ldw.ShowDialog();
             }
             catch (Exception ex)
             {
@@ -104,7 +120,9 @@ namespace PL
         /// <param name="e"></param>
         private void btnCancelAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            var ldw = new ListDronesWindow(bl);
+            Close();
+            ldw.ShowDialog();
         }
         /// <summary>
         /// handle design of drone id text box if is invalid input
@@ -133,7 +151,7 @@ namespace PL
             MessageBox.Show($"Model of Drone {dtl.Id} was changed to '{dtl.Model}'", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             this.UpdateExpander.IsExpanded = false;
             this.NewModelTextBox.Text = "";
-            this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+            this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
         }
         /// <summary>
         /// handle charge drone button-click
@@ -146,7 +164,8 @@ namespace PL
             {
                 bl.ChargeDrone(dtl.Id);
                 MessageBox.Show($"Drone {dtl.Id} was charged successfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+                this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
+                this.btnParcel.DataContext = bl.FindDrone(dtl.Id).CurrentParcel;
                 this.btnChargeDrone.Visibility = Visibility.Collapsed;
                 this.ReleaseExp.Visibility = Visibility.Visible;
             }
@@ -174,7 +193,8 @@ namespace PL
                 bl.releaseDrone(dtl.Id, tSpan);
                 this.ReleaseExp.IsExpanded = false;
                 MessageBox.Show($"Drone {dtl.Id} was released successfully after {tSpan.Hours:00}:{tSpan.Minutes:00} hours", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+                this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
+                this.btnParcel.DataContext = bl.FindDrone(dtl.Id).CurrentParcel;
                 this.btnChargeDrone.Visibility = Visibility.Visible;
                 this.ReleaseExp.Visibility = Visibility.Collapsed;
                 this.cmbHours.SelectedIndex = this.cmbMins.SelectedIndex = -1;
@@ -221,7 +241,8 @@ namespace PL
             try
             {
                 bl.ScheduleDroneForParcel(dtl.Id);
-                this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+                this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
+                this.btnParcel.DataContext = bl.FindDrone(dtl.Id).CurrentParcel;
                 MessageBox.Show("Drone as Scheduled to parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -245,7 +266,8 @@ namespace PL
             try
             {
                 bl.PickingUpAParcel(dtl.Id);
-                this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+                this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
+                this.btnParcel.DataContext = bl.FindDrone(dtl.Id).CurrentParcel;
                 MessageBox.Show("Drone Pickud-Up the parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -269,7 +291,8 @@ namespace PL
             try
             {
                 bl.DeliverAParcel(dtl.Id);
-                this.lblDroneDetails.Content = bl.FindDrone(dtl.Id);
+                this.MethodsDroneGrid.DataContext = bl.FindDrone(dtl.Id);
+                this.btnParcel.DataContext = bl.FindDrone(dtl.Id).CurrentParcel;
                 MessageBox.Show("Drone Delivered the parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -288,9 +311,36 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            var ldw = new ListDronesWindow(bl);
+            Close();
+            ldw.ShowDialog();
+        }
+
+        private void Map_OnClick(object sender, RoutedEventArgs e)
+        {
+            /*
+            var longitude = dtl.CurrentLocation.Longitude;
+            var latitude = dtl.CurrentLocation.Latitude;
+            try
+            {
+                var googleMapsAddress = $"https://www.google.co.il//maps/@{longitude},{latitude},18z?hl=iw";
+
+
+                //var bingMapsAddress = $"https://www.bing.com/maps?cp={longitude}~{latitude}&lvl=18";
+
+                ShowMap.Source = new Uri(googleMapsAddress);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Can't load the map of station! \n" + ex.Message, "map Loading Error!");
+            }*/
+        }
+
+        private void btnParcel_Click(object sender, RoutedEventArgs e)
+        {
+            new ParcelDetailsWindow(bl.FindDrone(dtl.Id).CurrentParcel).ShowDialog();
         }
     }
 }

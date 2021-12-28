@@ -15,11 +15,14 @@ namespace PL
 
         private void btnListDrone_Click(object sender, RoutedEventArgs e)
         {
-            new ListDronesWindow(theBL).ShowDialog();
+            var lw = new LoginWindow(theBL);
+            Close();
+            lw.ShowDialog();
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
+            Close();
             new DroneWindow(theBL).ShowDialog();
         }
 
@@ -27,16 +30,13 @@ namespace PL
         {
             gif.Visibility = Visibility.Collapsed;
             btnAddDrone.Visibility = btnListDrone.Visibility = Visibility.Visible;
-            //gif.Position = new System.TimeSpan(0, 0, 1);
-            //gif.Play();
+            ButtonsBorder.Visibility = Visibility.Visible;
         }
-        /*  private void gif_MediaEnded(object sender, RoutedEventArgs e)
- {
-     gif.Visibility = Visibility.Collapsed;
-     btnAddDrone.Visibility = btnListDrone.Visibility = Visibility.Visible;
-     //gif.Position = new System.TimeSpan(0, 0, 1);
-     //gif.Play();
- }*/
+
+        private void Close_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 
 
