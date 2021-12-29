@@ -38,7 +38,7 @@ namespace PL
         {
             if (UserNameTextBox.Text == "admin" && PasswordBox.Password == "123")
             {
-                var ldw = new ListDronesWindow(bl);
+                var ldw = new ListsManagerWindow(bl);
                 Close();
                     ldw.ShowDialog();
             }

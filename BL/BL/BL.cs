@@ -191,12 +191,12 @@ namespace BlApi
             }
         }
         /// <summary>
-        /// return array of parcels through BL
+        /// return list of parcels through BL
         /// </summary>
         /// <returns>returns the list of all parcels</returns>
         public IEnumerable<ParcelToList> AllBlParcels()
         {
-            List<ParcelToList> myList = new(); //takes all parcels from myDal end set them on myList
+            List<ParcelToList> myList = new(); 
             try
             {
                 foreach (var item in MyDal.AllParcels())
@@ -218,6 +218,21 @@ namespace BlApi
                 throw new BlViewItemsListException("Parcel list is empty");
 
             return myList;
+        }
+        /// <summary>
+        /// return list of parcels through BL by Status
+        /// </summary>
+        /// <returns>returns the list of all parcels</returns>
+        public IEnumerable<ParcelToList> ParcelsByStatus(ParcelStatus myStatus)
+        {
+            try
+            {
+                return AllBlParcels().Where(x => x.Status == myStatus);
+            }
+            catch (Exception ex)
+            {
+                throw new BlViewItemsListException($"cannot show parcels list:", ex);
+            }
         }
         /// <summary>
         /// search after all parcels that defined
@@ -402,9 +417,9 @@ namespace BlApi
                     CustomerLocation = new Location(dalCustomer.Lattitude, dalCustomer.Longitude),
                     PhoneNumber = dalCustomer.Phone
                 };
+                blCustomer.ParcelFromCustomerList = new List<ParcelAtCustomer>();
                 foreach (var item in MyDal.AllParcels().Where(x => x.SenderId == customerId)) // creat a list into  blCustomer of all the parcel that he hever send and all the details of hevry parcel
                 {
-                    blCustomer.ParcelFromCustomerList = new List<ParcelAtCustomer>();
                     blCustomer.ParcelFromCustomerList.Add(new ParcelAtCustomer()
                     {
                         Id = item.Id,
@@ -418,9 +433,9 @@ namespace BlApi
                         }
                     });
                 }
+                blCustomer.ParcelToCustomerList = new List<ParcelAtCustomer>();
                 foreach (var item in MyDal.AllParcels().Where(x => x.TargetId == customerId))//creat a list into  blCustomer of all the parcel that he hever have received and all the details of hevry parcel
                 {
-                    blCustomer.ParcelToCustomerList = new List<ParcelAtCustomer>();
                     blCustomer.ParcelToCustomerList.Add(new ParcelAtCustomer()
                     {
                         Id = item.Id,

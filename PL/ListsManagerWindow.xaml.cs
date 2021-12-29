@@ -10,9 +10,9 @@ using System.Windows.Data;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for ListDronesWindowxaml.xaml
+    /// Interaction logic for ListsManagerWindow.xaml
     /// </summary>
-    public partial class ListDronesWindow : Window
+    public partial class ListsManagerWindow : Window
     {
         BlApi.IBL bl;
         ObservableCollection<DroneToList> obsDronesCollection;
@@ -20,14 +20,15 @@ namespace PL
         ObservableCollection<CustomerToList> obsCustomersCollection;
         ObservableCollection<ParcelToList> obsParcelsCollection;
         /// <summary>
-        ///  ctor of window that present listview of all drones
+        ///  ctor of window that present tabs of all listviews
         /// </summary>
-        public ListDronesWindow(BlApi.IBL bl)
+        public ListsManagerWindow(BlApi.IBL bl)
         {
             this.bl = bl;
             InitializeComponent();
             this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories)); //import cmb options from enum of Statuses
             this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories)); //import cmb options from enum of Weights
+            this.cmbParcelStatus.ItemsSource = Enum.GetValues(typeof(ParcelStatus)); //import cmb options from enum of Parcel status
             obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>) bl.AllBlDrones());
             this.DronesListView.DataContext = obsDronesCollection; //import all drones to listview
             //obsBSCollection = new ObservableCollection<BaseStationToList>((List<BaseStationToList>) bl.AllBlBaseStations());
@@ -233,7 +234,16 @@ namespace PL
         #region Parcels
         private void ParcelsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            var item = this.ParcelsListView.SelectedItem;
+            if (item != null)
+            {
+                var myItem = item as ParcelToList;
+                ParcelToList ptl = myItem;
+                // send the chosen bs to new methods window
+                var pw = new ParcelWindow(bl, ptl);
+                pw.ShowDialog();
+                this.ParcelsListView.DataContext = bl.AllBlParcels(); //import all parcels to listview
+            }
         }
 
         private void SenderGrouping_Checked(object sender, RoutedEventArgs e)
@@ -257,11 +267,13 @@ namespace PL
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
             view.GroupDescriptions.Clear();
         }
-        #endregion
 
         private void cmbParcelStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+                if (this.cmbParcelStatus.SelectedItem != null)
+                    this.ParcelsListView.ItemsSource = bl.ParcelsByStatus((ParcelStatus)cmbParcelStatus.SelectedItem);
+                else
+                    this.ParcelsListView.ItemsSource = bl.AllBlParcels();
         }
 
         private void PStatusGrouping_Checked(object sender, RoutedEventArgs e)
@@ -271,5 +283,19 @@ namespace PL
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Status");
             view.GroupDescriptions.Add(groupDescription);
         }
+
+        private void btnAddParcel_Click(object sender, RoutedEventArgs e)
+        {
+            new ParcelWindow(bl).ShowDialog();
+            this.ParcelsListView.DataContext = bl.AllBlParcels(); //import all parcels to listview
+        }
+
+        private void btnResetParcelStatus_Click(object sender, RoutedEventArgs e)
+        {
+            cmbParcelStatus.SelectedIndex = -1;
+            cmbParcelStatus.Text = "Choose status:";
+        }
+
+        #endregion
     }
 }

@@ -63,65 +63,13 @@ namespace PL
 
 
         /// <summary>
-        /// handle adding drone burron click
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-       /* private void btnAddDrone_Click(object sender, RoutedEventArgs e)
-        {
-            bool flag = int.TryParse(this.DroneIdTextBox.Text, out int x);
-            if (!flag || !Regex.IsMatch(DroneIdTextBox.Text, "^[1-9][0-9]{6}$")) //handle invalid input to drone id
-            {
-                MessageBox.Show($"Invalid Drone Id '{DroneIdTextBox.Text}'", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                DroneIdTextBox.Clear();
-                return;
-            }
-            if (this.DroneModelTextBox.Text == "") //handle invalid input to drone model
-            {
-                MessageBox.Show($"You must enter drone model", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (this.cmbWeight.SelectedItem == null) //handle invalid input to drone weight
-            {
-                MessageBox.Show($"You must choose weight category", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (this.cmbBaseStation.SelectedItem == null) //handle invalid input to base station
-            {
-                MessageBox.Show($"You must choose Base Station", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            try
-            {
-                int baseStationId = (int)this.cmbBaseStation.SelectedItem;
-                bl.AddDrone(newDrone, baseStationId);
-                newDrone = new DroneToList();
-                this.AddBsGrid.DataContext = newDrone;
-                MessageBox.Show("Drone was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                var ldw = new ListDronesWindow(bl);
-                Close();
-                ldw.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                string msg = $"{ex.Message}\n";
-                while (ex.InnerException != null)
-                {
-                    ex = ex.InnerException;
-                    msg += $"{ex.Message}\n";
-                }
-
-                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }*/
-        /// <summary>
         /// handle close add drone window button click 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnCancelAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            var ldw = new ListDronesWindow(bl);
+            var ldw = new ListsManagerWindow(bl);
             Close();
             ldw.ShowDialog();
         }

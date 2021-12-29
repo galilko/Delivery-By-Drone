@@ -97,7 +97,7 @@ namespace PL
                 newDrone = new DroneToList();
                 this.AddDroneGrid.DataContext = newDrone;
                 MessageBox.Show("Drone was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-                var ldw = new ListDronesWindow(bl);
+                var ldw = new ListsManagerWindow(bl);
                 Close();
                 ldw.ShowDialog();
             }
@@ -120,7 +120,7 @@ namespace PL
         /// <param name="e"></param>
         private void btnCancelAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            var ldw = new ListDronesWindow(bl);
+            var ldw = new ListsManagerWindow(bl);
             Close();
             ldw.ShowDialog();
         }
@@ -313,7 +313,7 @@ namespace PL
         /// <param name="e"></param>
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            var ldw = new ListDronesWindow(bl);
+            var ldw = new ListsManagerWindow(bl);
             Close();
             ldw.ShowDialog();
         }

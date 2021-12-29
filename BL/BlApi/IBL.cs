@@ -15,6 +15,7 @@ namespace BlApi
         IEnumerable<CustomerToList> AllBlCustomers();
         IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null);
         IEnumerable<ParcelToList> AllBlParcels();
+        IEnumerable<ParcelToList> ParcelsByStatus(ParcelStatus myStatus);
         void ChargeDrone(int? droneId);
         void DeliverAParcel(int? droneId);
         BaseStation FindBaseStation(int baseStationId);
