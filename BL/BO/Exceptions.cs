@@ -108,5 +108,25 @@ namespace BO
         }
     }
 
+    [Serializable]
+    internal class BlDeleteEntityException : Exception
+    {
+        public BlDeleteEntityException()
+        {
+        }
+
+        public BlDeleteEntityException(string message) : base(message)
+        {
+        }
+
+        public BlDeleteEntityException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected BlDeleteEntityException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+    }
+
 
 }

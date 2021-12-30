@@ -144,11 +144,11 @@
                         Foreground="#81d4fa"
                         />
                                     </StackPanel>
-                                    <Button x:Name="btnUpdateModelToDrone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Content="Update" Height="29" Margin="0,10,0,0" Click="btnUpdateModelToDrone_Click" />
+                                    <Button x:Name="btnUpdateBS" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Content="Update" Height="29" Margin="0,10,0,0" Click="btnUpdateBS_Click" />
                                 </StackPanel>
                             </Expander>
 
-                            <Button x:Name="btnDeleteDrone" Background="Transparent" BorderBrush="DarkGray"  Height="51">
+                            <Button x:Name="btnDeleteBS" Background="Transparent" BorderBrush="DarkGray" Click="btnDeleteBS_Click" Height="51">
                                 <StackPanel Orientation="Horizontal" Width="265">
                                     <materialDesign:PackIcon Kind="DeleteForever" Width="30" Height="30" Foreground="Red"/>
                                     <TextBlock Text="Delete Base Station" FontSize="16" Height="20" Margin="30,0,0,0"/>

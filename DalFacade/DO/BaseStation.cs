@@ -9,6 +9,7 @@ namespace DO
         public double Lattitude { get; set; }
         public double Longitude { get; set; }
         public int FreeChargeSlots { get; set; }
+        public bool IsActive { get; set; }
         public override string ToString()
         {
             string result = "";

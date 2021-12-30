@@ -94,7 +94,7 @@ namespace PL
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnUpdateModelToDrone_Click(object sender, RoutedEventArgs e)
+        private void btnUpdateBS_Click(object sender, RoutedEventArgs e)
         {
             bl.UpdateBaseStation(bstl.Id, BSNameTextBox.Text, Convert.ToInt32(SlotsCountTextBox.Text));
             MessageBox.Show($"Base Station {bstl.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -116,29 +116,7 @@ namespace PL
             Close();
         }
 
-        private void Map_OnClick(object sender, RoutedEventArgs e)
-        {
-            /*
-            var longitude = dtl.CurrentLocation.Longitude;
-            var latitude = dtl.CurrentLocation.Latitude;
-            try
-            {
-                var googleMapsAddress = $"https://www.google.co.il//maps/@{longitude},{latitude},18z?hl=iw";
-
-
-                //var bingMapsAddress = $"https://www.bing.com/maps?cp={longitude}~{latitude}&lvl=18";
-
-                ShowMap.Source = new Uri(googleMapsAddress);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can't load the map of station! \n" + ex.Message, "map Loading Error!");
-            }*/
-        }
-
-        private void btnParcel_Click(object sender, RoutedEventArgs e)
-        {
-        }
+       
 
         private void lvDronesInCharge_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -173,6 +151,11 @@ namespace PL
 
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void btnDeleteBS_Click(object sender, RoutedEventArgs e)
+        {
+            bl.DeleteBaseStation(bstl.Id);
         }
     }
 }

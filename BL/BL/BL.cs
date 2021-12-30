@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace BlApi
 {
@@ -54,10 +55,12 @@ namespace BlApi
                 myDrone.Id = item.Id;
                 myDrone.Model = item.Model;
                 myDrone.Weight = (WeightCategories)item.MaxWeight;
+                myDrone.IsActive = true;
                 var myParcel = Parcels.Find(x => x.DroneId == myDrone.Id && x.Delivered == null);
                 if (!myParcel.Equals(default(DO.Parcel)))
                 {
                     myDrone.Status = DroneStatusCategories.Delivery;
+                    myDrone.BatteryStatus = rand.NextDouble() * 50 + 50;
                     myDrone.TransferdParcel = myParcel.Id;
                     var Sender = Customers.Find(x => x.Id == myParcel.SenderId);
                     Location SenderLocation = new() { Latitude = Sender.Lattitude, Longitude = Sender.Lattitude };
@@ -272,13 +275,20 @@ namespace BlApi
         {
             try
             {
-                MyDal.AddBaseStation(Converter.ConvertBlBsToDalBs(myBaseStation));// use with AddBaseStation from mydal to set basestation from the user to datasorce
+                MyDal.AddBaseStation(new DO.BaseStation()
+                {
+                    Id = (int)myBaseStation.Id,
+                    Name = myBaseStation.Name,
+                    Lattitude = (double)myBaseStation.BSLocation.Latitude,
+                    Longitude = (double)myBaseStation.BSLocation.Longitude,
+                    FreeChargeSlots = (int)myBaseStation.FreeChargeSlots,
+                    IsActive = true
+                });// use with AddBaseStation from mydal to set basestation from the user to datasorce
             }
             catch (Exception ex)
             {
                 throw new BlAddEntityException($"cannot add base station {myBaseStation.Id}:", ex);
             }
-            myBaseStation.DronesInCharge = new List<DroneInCharge>();
         }
         /// <summary>
         /// find a base-station by id and return it through BL
@@ -338,6 +348,21 @@ namespace BlApi
             if (myList.Count == 0)
                 throw new BlViewItemsListException("Base-station list is empty");
             return myList;
+        }
+        /// <summary>
+        /// delete (inactivate) a base station by Id 
+        /// </summary>
+        /// <param name="id">base station Id</param>
+        public void DeleteBaseStation(int id)
+        {
+            try
+            {
+                MyDal.DeleteBaseStation(id);
+            }
+            catch (Exception ex)
+            {
+                throw new BlDeleteEntityException($"cannot delete base station {id}:", ex);
+            }
         }
         /// <summary>
         /// chacks in every base-station for free slots
@@ -578,6 +603,8 @@ namespace BlApi
                 throw new BlFindItemException($"cannot find drone {droneId}:", ex);
             }
         }
+
+
         /// <summary>
         /// collect all drones from data base
         /// </summary>
@@ -686,6 +713,7 @@ namespace BlApi
                 DroneToList myDrone = blDrones.Find(x => x.Id == droneId);                               // check if the dron are free
                 if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)
                     throw new BlUpdateEntityException($"Drone {droneId} isn't free");
+                //if()
                 else
                 {                                                                                           // make a list parcels of all parcels from emergency to normal that their whight or equal or smaller then the drone can carry
                     List<DO.Parcel> parcels = MyDal.NoneScheduledParcels().OrderByDescending(x => x.Priority).Where(x => x.Weight <= (DO.WeightCategories)myDrone.Weight).OrderByDescending(x => x.Weight).ToList();
@@ -786,7 +814,10 @@ namespace BlApi
                 throw new BlUpdateEntityException($"cannot pick up {droneId}:", ex);
             }
         }
+
+
         #endregion
+
     }
 }
 

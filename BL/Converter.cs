@@ -23,7 +23,8 @@ namespace BlApi
                 Name = myBaseStation.Name,
                 Lattitude = (double)myBaseStation.BSLocation.Latitude,
                 Longitude = (double)myBaseStation.BSLocation.Longitude,
-                FreeChargeSlots = (int)myBaseStation.FreeChargeSlots
+                FreeChargeSlots = (int)myBaseStation.FreeChargeSlots,
+                IsActive = true
             };
         }
 

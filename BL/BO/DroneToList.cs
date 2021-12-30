@@ -11,6 +11,8 @@ namespace BO
         public DroneStatusCategories Status { get; set; }
         public Location CurrentLocation { get; set; }
         public int TransferdParcel { get; set; }
+        public bool IsActive { get; set; }
+
         public override string ToString()
         {
             string result = String.Format("{0}\t\t\t{1}\t{2}\n", "Id", ":", Id);

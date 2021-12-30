@@ -20,6 +20,7 @@ namespace DalApi
         Customer FindCustomer(int? id);
         Drone FindDrone(int? id);
         Parcel FindParcel(int id);
+        void DeleteBaseStation(int id);
         IEnumerable<BaseStation> FreeSlotsBaseStations();
         IEnumerable<Parcel> NoneScheduledParcels();
         void PickingUpAParcel(int parcelId);

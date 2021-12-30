@@ -44,8 +44,8 @@ namespace Dal
                 });
             }
             //initialize base-stations
-            BaseStationsList.Add(new BaseStation() { Id = 1000, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 20 });
-            BaseStationsList.Add(new BaseStation() { Id = 1001, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 20 });
+            BaseStationsList.Add(new BaseStation() { Id = 1000, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 20, IsActive=true });
+            BaseStationsList.Add(new BaseStation() { Id = 1001, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 20, IsActive=true });
             //initialize customers
             String[] maleNames = { "Aaron", "Shoham", "Gal", "Yossef", "David", "Eyal", "Michael", "Matan", "Shaul", "Dvir" };
             String[] lastNames = { "Cohen", "Gabay", "Levi", "Weiss", "Miletzki" };

@@ -61,6 +61,26 @@ namespace Dal
             throw new BaseStationException($"base station {id} doesn't exist");
         }
         /// <summary>
+        /// find a base-station by id and return it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public void DeleteBaseStation(int id)
+        {
+            if (!DataSource.BaseStationsList.Exists(x => x.Id == id)) //if base station doesn't exist
+                throw new BaseStationException($"Base Station {id} doesn't exists");
+            for (int i = 0; i < DataSource.BaseStationsList.Count; i++)
+            {
+                if (DataSource.BaseStationsList[i].Id == id)
+                {
+                    BaseStation myBaseStation = DataSource.BaseStationsList[i];
+                    myBaseStation.IsActive = false;
+                    DataSource.BaseStationsList[i] = myBaseStation;
+                    return;
+                }
+            }
+        }
+        /// <summary>
         /// change the name and the number of slots in base station
         /// </summary>
         /// <param name="baseStationId"></param>
@@ -68,13 +88,13 @@ namespace Dal
         /// <param name="slotsCount"></param>
         public void UpdateBaseStation(int baseStationId, string newName, int slotsCount)
         {
-            if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId))
+            if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId)) //if base station doesn't exist
                 throw new BaseStationException($"Base Station {baseStationId} doesn't exists");
             for (int i = 0; i < DataSource.BaseStationsList.Count; i++)
             {
                 if (DataSource.BaseStationsList[i].Id == baseStationId)
                 {
-                    BaseStation myBaseStation = DataSource.BaseStationsList[i];
+                    BaseStation myBaseStation = DataSource.BaseStationsList[i]; 
                     myBaseStation.FreeChargeSlots = slotsCount == 0 ? myBaseStation.FreeChargeSlots : slotsCount - DataSource.DroneChargeList.Where(x => x.StationId == baseStationId).Count();
                     myBaseStation.Name = string.IsNullOrEmpty(newName) ? myBaseStation.Name : newName;
                     DataSource.BaseStationsList[i] = myBaseStation;
@@ -89,9 +109,9 @@ namespace Dal
         public IEnumerable<BaseStation> AllBaseStations(Func<BaseStation, bool> predicate = null)
         {
             if (predicate == null)
-                return DataSource.BaseStationsList.ToList();
+                return DataSource.BaseStationsList.Where(x=>x.IsActive == true).ToList();
             else
-                return DataSource.BaseStationsList.Where(predicate);
+                return DataSource.BaseStationsList.Where(predicate).Where(x=>x.IsActive==true).ToList();
         }
         #endregion
 
@@ -159,6 +179,8 @@ namespace Dal
                     for (int j = 0; j < DataSource.BaseStationsList.Count; j++)
                         if (DataSource.BaseStationsList[j].Id == baseStationId)
                         {
+                            if (DataSource.BaseStationsList[j].IsActive == false)
+                                throw new BaseStationException($"Base Station {baseStationId} isn't active");
                             DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
                             Drone myDrone = DataSource.DronesList[i];
                             BaseStation myBaseStation = DataSource.BaseStationsList[j];
