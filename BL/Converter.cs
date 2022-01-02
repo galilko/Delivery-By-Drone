@@ -36,7 +36,8 @@ namespace BlApi
                 Name = myCustomer.Name,
                 Phone = myCustomer.PhoneNumber,
                 Lattitude = (double)myCustomer.CustomerLocation.Latitude,
-                Longitude = (double)myCustomer.CustomerLocation.Longitude
+                Longitude = (double)myCustomer.CustomerLocation.Longitude,
+                IsActive = true
             };
         }
 

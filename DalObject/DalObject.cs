@@ -143,21 +143,6 @@ namespace Dal
                     return item;
             throw new DroneException($"Drone {id} doesn't exist");
         }
-        public void UpdateDroneModel(int? droneId, string newName)
-        {
-            if (!DataSource.DronesList.Exists(x => x.Id == droneId))
-                throw new DroneException($"Drone {droneId} doesn't exists");
-            for (int i = 0; i < DataSource.DronesList.Count; i++)
-            {
-                if (DataSource.DronesList[i].Id == droneId)
-                {
-                    Drone myDrone = DataSource.DronesList[i];
-                    myDrone.Model = newName;
-                    DataSource.DronesList[i] = myDrone;
-                    return;
-                }
-            }
-        }
         /// <summary>
         /// connect a drone to charging at base-station
         /// </summary>
@@ -168,6 +153,19 @@ namespace Dal
         /// </summary>
         /// <param name="droneId"></param>
         /// <param name="newName"></param>
+        public void DeleteDrone(int? id)
+        {
+            if (!DataSource.DronesList.Exists(x => x.Id == id))
+                throw new BaseStationException($"Base Station {id} doesn't exists");
+            for (int i = 0; i < DataSource.DronesList.Count; i++)
+            {
+                if (DataSource.DronesList[i].Id == id)
+                {
+                    DataSource.DronesList.Remove(DataSource.DronesList[i]);
+                    return;
+                }
+            }
+        }
         public void ChargeDrone(int? droneId, int baseStationId)
         {
             if (!DataSource.DronesList.Exists(item => item.Id == droneId))
@@ -244,6 +242,23 @@ namespace Dal
                     return item;
             throw new CustomerException($"Customer {id} doesn't exist");
         }
+
+        public void DeleteCustomer(int id)
+        {
+            if (!DataSource.CustomersList.Exists(x => x.Id == id)) //if base station doesn't exist
+                throw new CustomerException($"Customer {id} doesn't exists");
+            for (int i = 0; i < DataSource.CustomersList.Count; i++)
+            {
+                if (DataSource.CustomersList[i].Id == id)
+                {
+                    Customer myCustomer = DataSource.CustomersList[i];
+                    myCustomer.IsActive = false;
+                    DataSource.CustomersList[i] = myCustomer;
+                    return;
+                }
+            }
+        }
+
         /// <summary>
         /// change the name and the phon number
         /// </summary>
@@ -378,8 +393,16 @@ namespace Dal
         /// return List of customers
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate=null)
-        => DataSource.CustomersList;
+        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null)
+        {
+            if (predicate == null)
+                return DataSource.CustomersList.Where(x => x.IsActive == true).ToList();
+
+            return (from item in DataSource.CustomersList
+                    where item.IsActive is true
+                    where predicate(item)
+                    select item);
+        }
         /// <summary>
         /// return List of drones
         /// </summary>
@@ -432,5 +455,10 @@ namespace Dal
         {
             return DataSource.DroneChargeList;
         }
+        void IDal.UpdateDroneModel(int? droneId, string newName)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

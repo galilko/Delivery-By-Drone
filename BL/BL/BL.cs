@@ -511,6 +511,21 @@ namespace BlApi
             return myList;
         }
         /// <summary>
+        /// delete (inactivate) a customer by Id 
+        /// </summary>
+        /// <param name="id">base station Id</param>
+        public void DeleteCustomer(int id)
+        {
+            try
+            {
+                MyDal.DeleteCustomer(id);
+            }
+            catch (Exception ex)
+            {
+                throw new BlDeleteEntityException($"cannot delete customer {id}:", ex);
+            }
+        }
+        /// <summary>
         /// change the name and the phon number
         /// </summary>
         /// <param name="customerId">customerId for identified the customer</param>
@@ -548,6 +563,7 @@ namespace BlApi
                     myDrone.Status = DroneStatusCategories.Maintenance;
                     myDrone.CurrentLocation = new Location(bs.Lattitude, bs.Longitude);
                     myDrone.TransferdParcel = 0;
+                    myDrone.IsActive = true;
                     MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone));     // set the new drone in data layer
                     blDrones.Add(myDrone);
                 }
@@ -603,7 +619,22 @@ namespace BlApi
                 throw new BlFindItemException($"cannot find drone {droneId}:", ex);
             }
         }
-
+        /// <summary>
+        /// delete (inactivate) a drone by Id 
+        /// </summary>
+        /// <param name="id">base station Id</param>
+        public void DeleteDrone(int? id)
+        {
+            try
+            {
+                MyDal.DeleteDrone(id);
+                blDrones.Find(x => x.Id == id).IsActive = false;
+            }
+            catch (Exception ex)
+            {
+                throw new BlDeleteEntityException($"cannot delete drone {id}:", ex);
+            }
+        }
 
         /// <summary>
         /// collect all drones from data base
@@ -612,10 +643,10 @@ namespace BlApi
         public IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null)
         {
             if (predicate == null)
-                return blDrones;
+                return blDrones.Where(x=>x.IsActive == true).ToList();
 
-            //return blDrones.Where(predicate);
             return (from item in blDrones
+                    where item.IsActive is true
                     where predicate(item)
                     select item);
         }
@@ -713,7 +744,8 @@ namespace BlApi
                 DroneToList myDrone = blDrones.Find(x => x.Id == droneId);                               // check if the dron are free
                 if (blDrones.Find(x => x.Id == droneId).Status != DroneStatusCategories.Free)
                     throw new BlUpdateEntityException($"Drone {droneId} isn't free");
-                //if()
+                else if (blDrones.Find(x => x.Id == droneId).IsActive == false)
+                    throw new BlUpdateEntityException("The chosen drone isn't active");
                 else
                 {                                                                                           // make a list parcels of all parcels from emergency to normal that their whight or equal or smaller then the drone can carry
                     List<DO.Parcel> parcels = MyDal.NoneScheduledParcels().OrderByDescending(x => x.Priority).Where(x => x.Weight <= (DO.WeightCategories)myDrone.Weight).OrderByDescending(x => x.Weight).ToList();

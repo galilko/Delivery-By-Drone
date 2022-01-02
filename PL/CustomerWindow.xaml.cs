@@ -123,5 +123,10 @@ namespace PL
                 //dw.ShowDialog();
             }
         }
+
+        private void btnDeleteCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            bl.DeleteCustomer((int)ctl.Id);
+        }
     }
 }

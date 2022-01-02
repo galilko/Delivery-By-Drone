@@ -342,5 +342,10 @@ namespace PL
         {
             new ParcelDetailsWindow(bl.FindDrone(dtl.Id).CurrentParcel).ShowDialog();
         }
+
+        private void btnDeleteDrone_Click(object sender, RoutedEventArgs e)
+        {
+            bl.DeleteDrone(dtl.Id);
+        }
     }
 }

@@ -57,7 +57,8 @@ namespace Dal
                     Name = maleNames[rand.Next(maleNames.Length)] + " " + lastNames[rand.Next(lastNames.Length)],
                     Lattitude = rand.NextDouble() * (33.4188709641265 - 29.49970431757609) + 29.49970431757609,
                     Longitude = rand.NextDouble() * (35.89927249423983 - 34.26371323423407) + 34.26371323423407,
-                    Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1, "-")
+                    Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1, "-"),
+                    IsActive = true
                 }
                 );
             }

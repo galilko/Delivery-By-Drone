@@ -23,6 +23,8 @@ namespace BlApi
         Drone FindDrone(int? droneId);
         Parcel FindParcel(int parcelId);
         void DeleteBaseStation(int id);
+        void DeleteDrone(int? id);
+        void DeleteCustomer(int id);
         IEnumerable<BaseStationToList> FreeSlotsBaseStations();
         IEnumerable<ParcelToList> NoneScheduledParcels();
         void PickingUpAParcel(int? droneId);

@@ -136,7 +136,7 @@
                                             Height="29" Margin="0,10,0,0" Click="btnUpdateCustomer_Click"/>
                                 </StackPanel>
                             </Expander>
-                            <Button x:Name="btnDeleteCustomer" Background="Transparent" BorderBrush="DarkGray" Height="51">
+                            <Button x:Name="btnDeleteCustomer" Background="Transparent" BorderBrush="DarkGray" Height="51" Click="btnDeleteCustomer_Click">
                                 <StackPanel Orientation="Horizontal" Width="265">
                                     <materialDesign:PackIcon Kind="DeleteForever" Width="30" Height="30" Foreground="Red"/>
                                     <TextBlock Text="Delete Customer" FontSize="16" Height="20" Margin="30,0,0,0"/>

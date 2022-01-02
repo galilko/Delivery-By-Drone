@@ -141,7 +141,7 @@
                                     <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" Background="{StaticResource ResourceKey=myLinearGradientBrush}" FontFamily="Comic Sans MS" Click="btnDeliveredDrone_Click" />
                                 </StackPanel>
                             </Expander>
-                            <Button x:Name="btnDeleteDrone" Background="Transparent" BorderBrush="DarkGray" FontFamily="Comic Sans MS" Height="51">
+                            <Button x:Name="btnDeleteDrone" Background="Transparent" BorderBrush="DarkGray" FontFamily="Comic Sans MS" Height="51" Click="btnDeleteDrone_Click">
                                 <StackPanel Orientation="Horizontal" Width="265">
                                     <materialDesign:PackIcon Kind="DeleteForever" Width="30" Height="30" Foreground="Red"/>
                                     <TextBlock Text="Delete Drone" FontSize="16" Height="20" Margin="30,0,0,0"/>

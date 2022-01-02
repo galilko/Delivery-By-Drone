@@ -9,6 +9,7 @@ namespace DO
         public string Phone { get; set; }
         public double Lattitude { get; set; }
         public double Longitude { get; set; }
+        public bool IsActive { get; set; }
         public override string ToString()
         {
             string str = "";
