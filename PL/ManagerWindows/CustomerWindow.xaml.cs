@@ -126,7 +126,25 @@ namespace PL
 
         private void btnDeleteCustomer_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteCustomer((int)ctl.Id);
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete Customer?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    bl.DeleteCustomer((int)ctl.Id);
+                    MessageBox.Show("Customer was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = $"{ex.Message}\n";
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    msg += $"{ex.Message}\n";
+                }
+                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

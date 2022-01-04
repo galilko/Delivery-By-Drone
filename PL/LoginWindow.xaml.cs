@@ -20,10 +20,13 @@ namespace PL
     public partial class LoginWindow : Window
     {
         BlApi.IBL bl;
-        public LoginWindow(BlApi.IBL bl)
+        bool isManager;
+        public LoginWindow(BlApi.IBL bl, bool isManager)
         {
             this.bl = bl;
+            this.isManager = isManager;
             InitializeComponent();
+            PasswordPanel.Visibility = isManager? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -36,15 +39,31 @@ namespace PL
 
         private void UIElement_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (UserNameTextBox.Text == "admin" && PasswordBox.Password == "123")
+            if (isManager)
             {
-                var ldw = new ListsManagerWindow(bl);
-                Close();
+                if (UserNameTextBox.Text == "admin" && PasswordBox.Password == "123")
+                {
+                    var ldw = new ListsManagerWindow(bl);
+                    Close();
                     ldw.ShowDialog();
+                }
+                else
+                {
+                    WrongPassword.Text = "username or password are incorrect";
+                }
             }
             else
             {
-                WrongPassword.Text = "username or password are incorrect";
+                if (int.TryParse(UserNameTextBox.Text, out int customerId))
+                {
+                    BO.Customer loggedCustomer = bl.FindCustomer(customerId);
+                    if (!loggedCustomer.Equals(default(BO.Customer)))
+                    {
+                        var uw = new UserWindow(bl, customerId);
+                        Close();
+                        uw.ShowDialog();
+                    }
+                }
             }
         }
 

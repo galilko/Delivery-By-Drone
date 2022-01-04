@@ -28,10 +28,11 @@ namespace DalApi
         void ScheduleDroneForParcel(int parcelId, int? droneId);
         double[] GetBatteryUse();
         void UpdateCustomer(int? customerId, string newName, string newPhone);
-        List<DroneCharge> GetListOfInChargeDrones();
+        IEnumerable<DroneCharge> GetListOfInChargeDrones();
         void UpdateDroneModel(int? droneId, string newName);
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
         void DeleteDrone(int? id);
         void DeleteCustomer(int id);
+        void DeleteParcel(int id);
     }
 }

@@ -72,7 +72,7 @@ namespace Dal
                     SenderId = CustomersList[i].Id,
                     TargetId = CustomersList[9 - i].Id,
                     Weight = RandomEnumValue<WeightCategories>(),
-                    Priority = (Priorities)rand.Next(1, 4),
+                    Priority = (Priorities)rand.Next(3),
                     Requested = DateTime.Now
                 };
 

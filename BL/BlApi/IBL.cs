@@ -1,5 +1,6 @@
 ﻿using BO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -16,6 +17,8 @@ namespace BlApi
         IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null);
         IEnumerable<ParcelToList> AllBlParcels();
         IEnumerable<ParcelToList> ParcelsByStatus(ParcelStatus myStatus);
+        IEnumerable<ParcelToList> GetSentParcels(int id);
+        IEnumerable<ParcelToList> GetRecievedParcels(int id);
         void ChargeDrone(int? droneId);
         void DeliverAParcel(int? droneId);
         BaseStation FindBaseStation(int baseStationId);
@@ -25,6 +28,7 @@ namespace BlApi
         void DeleteBaseStation(int id);
         void DeleteDrone(int? id);
         void DeleteCustomer(int id);
+        void DeleteParcel(int id);
         IEnumerable<BaseStationToList> FreeSlotsBaseStations();
         IEnumerable<ParcelToList> NoneScheduledParcels();
         void PickingUpAParcel(int? droneId);
@@ -33,5 +37,6 @@ namespace BlApi
         void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
         void UpdateCustomer(int? customerId, string newName, string newPhone);
         void UpdateDroneModel(int? droneId, string newName);
+        IEnumerable<ParcelToList> ParcelsByDates(DateTime? fromDate, DateTime? toDate);
     }
 }

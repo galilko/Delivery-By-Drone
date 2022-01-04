@@ -31,7 +31,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalXml", "DalXml\DalXml.csp
 		{CFFBEAC3-99B7-48E2-B011-12DA76C6C16B} = {CFFBEAC3-99B7-48E2-B011-12DA76C6C16B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDal", "ConsoleDal\ConsoleDal.csproj", "{C5584668-7519-4C43-8C11-0822469A6E8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDal", "ConsoleDal\ConsoleDal.csproj", "{C5584668-7519-4C43-8C11-0822469A6E8A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XmlData", "XmlData", "{398B3100-8A51-4C2A-BBDE-1C59A9A26BB4}"
+	ProjectSection(SolutionItems) = preProject
+		XmlData\BaseStationsXml.xml = XmlData\BaseStationsXml.xml
+		XmlData\CustomersXml.xml = XmlData\CustomersXml.xml
+		XmlData\DronesInChargeXml.xml = XmlData\DronesInChargeXml.xml
+		XmlData\DronesXml.xml = XmlData\DronesXml.xml
+		XmlData\ParcelsXml.xml = XmlData\ParcelsXml.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

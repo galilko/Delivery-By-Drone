@@ -128,7 +128,7 @@ namespace PL
                 // send the chosen bs to new methods window
                 var dw = new DroneWindow(bl, dtl);
                 dw.ShowDialog();
-                //this.DronesListView.Items.Refresh();
+                this.lvDronesInCharge.Items.Refresh();
             }
         }
 
@@ -155,7 +155,25 @@ namespace PL
 
         private void btnDeleteBS_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteBaseStation(bstl.Id);
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete Base-Station?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    bl.DeleteBaseStation((int)bstl.Id);
+                    MessageBox.Show("Base-Station was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = $"{ex.Message}\n";
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    msg += $"{ex.Message}\n";
+                }
+                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

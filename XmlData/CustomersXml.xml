@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Customer>
+    <Id>710262437</Id>
+    <Name>David Weiss</Name>
+    <Phone>054-8118727</Phone>
+    <Lattitude>32.77765217526171</Lattitude>
+    <Longitude>34.429977689309595</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>877157015</Id>
+    <Name>Eyal Levi</Name>
+    <Phone>054-7537381</Phone>
+    <Lattitude>32.199959823904926</Lattitude>
+    <Longitude>35.801870139973076</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>940925617</Id>
+    <Name>Eyal Gabay</Name>
+    <Phone>058-3064988</Phone>
+    <Lattitude>32.495392147692286</Lattitude>
+    <Longitude>35.13904188685873</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>170102106</Id>
+    <Name>Dvir Levi</Name>
+    <Phone>058-7212605</Phone>
+    <Lattitude>30.114924288423214</Lattitude>
+    <Longitude>35.007790984104034</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>337494946</Id>
+    <Name>Dvir Weiss</Name>
+    <Phone>054-77647</Phone>
+    <Lattitude>31.87488256281051</Lattitude>
+    <Longitude>34.69519395894384</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>234554818</Id>
+    <Name>Michael Levi</Name>
+    <Phone>057-5302814</Phone>
+    <Lattitude>30.168187957237887</Lattitude>
+    <Longitude>35.678012408270185</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>583106034</Id>
+    <Name>David Miletzki</Name>
+    <Phone>053-5824589</Phone>
+    <Lattitude>32.77491601400981</Lattitude>
+    <Longitude>35.48594451730966</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>234827300</Id>
+    <Name>Gal Miletzki</Name>
+    <Phone>054-9991830</Phone>
+    <Lattitude>30.04619802708654</Lattitude>
+    <Longitude>34.71583196993943</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>695929264</Id>
+    <Name>Michael Weiss</Name>
+    <Phone>051-1490955</Phone>
+    <Lattitude>31.34466604374079</Lattitude>
+    <Longitude>35.50428128080667</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>746843077</Id>
+    <Name>Gal Miletzki</Name>
+    <Phone>052-2265150</Phone>
+    <Lattitude>29.747096983157938</Lattitude>
+    <Longitude>35.51159149809827</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>222222222</Id>
+    <Name>hbh vvvvv</Name>
+    <Phone>052-8787878</Phone>
+    <Lattitude>32.5555</Lattitude>
+    <Longitude>31.2222</Longitude>
+    <IsActive>false</IsActive>
+  </Customer>
+  <Customer>
+    <Id>111111111</Id>
+    <Name>aaa bbbb</Name>
+    <Phone>052-8754698</Phone>
+    <Lattitude>35.222</Lattitude>
+    <Longitude>31.222</Longitude>
+    <IsActive>false</IsActive>
+  </Customer>
+  <Customer>
+    <Id>555555555</Id>
+    <Name>hhhh</Name>
+    <Phone>052-8888888</Phone>
+    <Lattitude>36.2542</Lattitude>
+    <Longitude>31.222</Longitude>
+    <IsActive>false</IsActive>
+  </Customer>
+</ArrayOfCustomer>

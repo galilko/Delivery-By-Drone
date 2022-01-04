@@ -90,7 +90,25 @@ namespace PL
 
         private void btnDeleteParcel_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete parcel?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    bl.DeleteParcel(ptl.Id);
+                    MessageBox.Show("Parcel was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = $"{ex.Message}\n";
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    msg += $"{ex.Message}\n";
+                }
+                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         /// <summary>
         /// handle close methods of drone window

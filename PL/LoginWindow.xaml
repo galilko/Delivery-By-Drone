@@ -66,7 +66,7 @@
                     HorizontalAlignment="Center"
                     Style="{StaticResource MaterialDesignButtonTextBlock}"
                     FontSize="25"
-                    Text="Welcome to TMS"
+                    Text="Welcome to DDC"
                     />
 
             </StackPanel>
@@ -108,7 +108,7 @@
                         />
                 </StackPanel>
 
-                <StackPanel
+                <StackPanel x:Name="PasswordPanel" 
                     Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"

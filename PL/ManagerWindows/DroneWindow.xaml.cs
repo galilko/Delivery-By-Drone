@@ -313,9 +313,7 @@ namespace PL
         /// <param name="e"></param>
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            var ldw = new ListsManagerWindow(bl);
             Close();
-            ldw.ShowDialog();
         }
 
         private void Map_OnClick(object sender, RoutedEventArgs e)
@@ -345,7 +343,25 @@ namespace PL
 
         private void btnDeleteDrone_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteDrone(dtl.Id);
+            try
+            {
+                if (MessageBox.Show("Are you sure you want to delete Drone?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    bl.DeleteDrone((int)dtl.Id);
+                    MessageBox.Show("Drone was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = $"{ex.Message}\n";
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    msg += $"{ex.Message}\n";
+                }
+                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

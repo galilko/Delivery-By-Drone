@@ -297,5 +297,17 @@ namespace PL
         }
 
         #endregion
+
+        private void btnParcelsByDate_Click(object sender, RoutedEventArgs e)
+        {
+            TimeSpan newTime = new TimeSpan(24, 0, 0);
+            this.ParcelsListView.ItemsSource = bl.ParcelsByDates(fromDate.SelectedDate , toDate.SelectedDate + newTime);
+        }
+
+        private void btnResetByDate_Click(object sender, RoutedEventArgs e)
+        {
+            fromDate.SelectedDate = toDate.SelectedDate = null;
+            this.ParcelsListView.ItemsSource = bl.AllBlParcels();
+        }
     }
 }

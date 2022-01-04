@@ -23,11 +23,11 @@ namespace BO
     public enum Priorities
     {
         [Description("normal")]
-        Normal = 1,
+        Normal = 0,
         [Description("fast")]
-        Fast = 2,
+        Fast = 1,
         [Description("emergency")]
-        Emergency = 3
+        Emergency = 2
     }
     public enum ParcelStatus
     {

@@ -45,10 +45,10 @@ namespace BlApi
             //אחוזים לשעה
             BatteryChargeRate = MyDal.GetBatteryUse()[4];
             Random rand = new Random(DateTime.Now.Millisecond);
-            List<DO.Drone> Drones = (List<DO.Drone>)MyDal.AllDrones();
-            List<DO.Parcel> Parcels = (List<DO.Parcel>)MyDal.AllParcels();
-            List<DO.Customer> Customers = (List<DO.Customer>)MyDal.AllCustomers();
-            List<DO.BaseStation> BaseStations = (List<DO.BaseStation>)MyDal.AllBaseStations();
+            List<DO.Drone> Drones = MyDal.AllDrones().ToList();
+            List<DO.Parcel> Parcels = MyDal.AllParcels().ToList();
+            List<DO.Customer> Customers = MyDal.AllCustomers().ToList();
+            List<DO.BaseStation> BaseStations = MyDal.AllBaseStations().ToList();
             foreach (var item in Drones.ToList())
             {
                 DroneToList myDrone = new();
@@ -193,6 +193,20 @@ namespace BlApi
                 throw new BlFindItemException($"cannot Find parcel {parcelId}:", ex);
             }
         }
+        public void DeleteParcel(int parcelId)
+        {
+            try
+            {
+                if (FindParcel(parcelId).Scheduled == null)
+                    MyDal.DeleteParcel(parcelId);
+                else
+                    throw new BlDeleteItemException($"Parcel {parcelId} was scheduled:");
+            }
+            catch (Exception ex)
+            {
+                throw new BlDeleteItemException($"cannot Find parcel {parcelId}:", ex);
+            }
+        }
         /// <summary>
         /// return list of parcels through BL
         /// </summary>
@@ -202,15 +216,15 @@ namespace BlApi
             List<ParcelToList> myList = new(); 
             try
             {
-                foreach (var item in MyDal.AllParcels())
+                foreach (var item in MyDal.AllParcels().ToList())
                     myList.Add(new ParcelToList()
                     {
                         Id = item.Id,
-                        SenderName = (MyDal.AllCustomers().First(x => x.Id == item.SenderId)).Name,
-                        TargetName = (MyDal.AllCustomers().First(x => x.Id == item.TargetId)).Name,
+                        SenderName = MyDal.FindCustomer(item.SenderId).Name,
+                        TargetName = MyDal.FindCustomer(item.TargetId).Name,
                         Weight = (WeightCategories)item.Weight,
                         Priority = (Priorities)item.Priority,
-                        Status = Converter.CalculateParcelStatus(item),
+                        Status = Converter.CalculateParcelStatus(item)
                     });
             }
             catch (Exception ex)
@@ -263,6 +277,73 @@ namespace BlApi
             }
             if (myList.Count == 0)
                 throw new BlViewItemsListException("None-Scheduled Parcels list is empty");
+            return myList;
+        }
+
+        public IEnumerable<ParcelToList> ParcelsByDates(DateTime? fromDate, DateTime? toDate)
+        {
+            List<ParcelToList> myList = new();
+            try
+            {
+                foreach (var item in MyDal.AllParcels().ToList().Where(p=> p.Requested >= fromDate && p.Requested <= toDate))
+                    myList.Add(new ParcelToList()
+                    {
+                        Id = item.Id,
+                        SenderName = MyDal.FindCustomer(item.SenderId).Name,
+                        TargetName = MyDal.FindCustomer(item.TargetId).Name,
+                        Weight = (WeightCategories)item.Weight,
+                        Priority = (Priorities)item.Priority,
+                        Status = Converter.CalculateParcelStatus(item)
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BlViewItemsListException($"cannot show parcels list:", ex);
+            }
+            return myList;
+        }
+        public IEnumerable<ParcelToList> GetSentParcels(int id)
+        {
+            List<ParcelToList> myList = new();
+            try
+            {
+                foreach (var item in MyDal.AllParcels(x=>x.SenderId == id))
+                    myList.Add(new ParcelToList()
+                    {
+                        Id = item.Id,
+                        SenderName = (MyDal.AllCustomers().First(x => x.Id == item.SenderId)).Name,
+                        TargetName = (MyDal.AllCustomers().First(x => x.Id == item.TargetId)).Name,
+                        Weight = (WeightCategories)item.Weight,
+                        Priority = (Priorities)item.Priority,
+                        Status = Converter.CalculateParcelStatus(item),
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BlViewItemsListException($"cannot show parcels list:", ex);
+            }
+            return myList;
+        }
+        public IEnumerable<ParcelToList> GetRecievedParcels(int id)
+        {
+            List<ParcelToList> myList = new();
+            try
+            {
+                foreach (var item in MyDal.AllParcels(x => x.TargetId == id))
+                    myList.Add(new ParcelToList()
+                    {
+                        Id = item.Id,
+                        SenderName = (MyDal.AllCustomers().First(x => x.Id == item.SenderId)).Name,
+                        TargetName = (MyDal.AllCustomers().First(x => x.Id == item.TargetId)).Name,
+                        Weight = (WeightCategories)item.Weight,
+                        Priority = (Priorities)item.Priority,
+                        Status = Converter.CalculateParcelStatus(item),
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new BlViewItemsListException($"cannot show parcels list:", ex);
+            }
             return myList;
         }
         #endregion
@@ -564,7 +645,8 @@ namespace BlApi
                     myDrone.CurrentLocation = new Location(bs.Lattitude, bs.Longitude);
                     myDrone.TransferdParcel = 0;
                     myDrone.IsActive = true;
-                    MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone));     // set the new drone in data layer
+                    MyDal.AddDrone(Converter.ConvertBlDroneToDalDrone(myDrone)); // set the new drone in data layer
+                    MyDal.ChargeDrone(myDrone.Id, bs.Id);
                     blDrones.Add(myDrone);
                 }
             }
@@ -747,8 +829,9 @@ namespace BlApi
                 else if (blDrones.Find(x => x.Id == droneId).IsActive == false)
                     throw new BlUpdateEntityException("The chosen drone isn't active");
                 else
-                {                                                                                           // make a list parcels of all parcels from emergency to normal that their whight or equal or smaller then the drone can carry
-                    List<DO.Parcel> parcels = MyDal.NoneScheduledParcels().OrderByDescending(x => x.Priority).Where(x => x.Weight <= (DO.WeightCategories)myDrone.Weight).OrderByDescending(x => x.Weight).ToList();
+                {
+                    // make a list parcels of all parcels from emergency to normal that their weight or equal or smaller then the drone can carry
+                    List<DO.Parcel> parcels = MyDal.AllParcels(x=>x.Scheduled == null).OrderByDescending(x => x.Priority).Where(x => x.Weight <= (DO.WeightCategories)myDrone.Weight).OrderByDescending(x => x.Weight).ToList();
                     parcels = parcels.OrderBy(x => LocationFuncs.DistanceBetweenTwoLocations(new Location() { Latitude = MyDal.FindCustomer(x.SenderId).Lattitude, Longitude = MyDal.FindCustomer(x.SenderId).Longitude }, myDrone.CurrentLocation)).ToList();
                     if (parcels.Count > 0)                                       // sorted the parcels list that created from the nearest parcel to the drone location to The farthest
                     {
@@ -758,9 +841,10 @@ namespace BlApi
                             double distanceToSource = LocationFuncs.DistanceBetweenTwoLocations(myDrone.CurrentLocation, myParcel.CollectionLocation); //calculate the distance between drone to parcel location  
                             double distanceToBase = LocationFuncs.DistanceBetweenTwoLocations(myParcel.DeliveryDestinationLocation, LocationFuncs.ClosestBaseStationLocation(MyDal.AllBaseStations().ToList(), myParcel.DeliveryDestinationLocation)); // calculate the dustance between from delivery to the closest base station
                             double batteryNeedToBase = BatteryUseFREE * (distanceToSource + distanceToBase); //calculate the total use of battery to make the delivery and to the base station
+                            // different calculate for evert case of weight
                             if (item.Weight == DO.WeightCategories.Light)
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseLight;
-                            else if (item.Weight == DO.WeightCategories.Medium)                       // every case of waight of parcel we do diferent calculat
+                            else if (item.Weight == DO.WeightCategories.Medium)
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseMedium;
                             else if (item.Weight == DO.WeightCategories.Heavy)
                                 batteryNeedToBase += myParcel.TransportDistance * BatteryUseHeavy;
@@ -846,6 +930,8 @@ namespace BlApi
                 throw new BlUpdateEntityException($"cannot pick up {droneId}:", ex);
             }
         }
+
+        
 
 
         #endregion

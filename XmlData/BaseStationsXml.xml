@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BaseStation>
+    <Id>1001</Id>
+    <Name>Tel Aviv Central Station</Name>
+    <Lattitude>32.056312</Lattitude>
+    <Longitude>34.779888</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1000</Id>
+    <Name>Jerusalem Central Station</Name>
+    <Lattitude>31.78928</Lattitude>
+    <Longitude>35.202142</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+</ArrayOfBaseStation>

@@ -2,7 +2,9 @@
 using DO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace Dal
 {
@@ -14,7 +16,25 @@ namespace Dal
                 DataSource.Config.BatteryUseMedium, DataSource.Config.BatteryUseHeavy, DataSource.Config.BatteryChargeRate};
         }
         #region thread-safe DalObject singleton
-        private DalObject() { DataSource.Initialize(); }
+        private DalObject() { DataSource.Initialize();
+            
+            XmlSerializer serialiser1 = new XmlSerializer(typeof(List<Drone>));//modify to the name of your object
+            XmlSerializer serialiser2 = new XmlSerializer(typeof(List<BaseStation>));//modify to the name of your object
+            XmlSerializer serialiser3 = new XmlSerializer(typeof(List<Customer>));//modify to the name of your object
+            XmlSerializer serialiser4 = new XmlSerializer(typeof(List<Parcel>));//modify to the name of your object
+            TextWriter Filestream1 = new StreamWriter(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\XmlData\DronesXml.xml"); //here you enter the path in your computer where you want your xml file 
+            TextWriter Filestream2 = new StreamWriter(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\XmlData\BaseStationsXml.xml"); //here you enter the path in your computer where you want your xml file 
+            TextWriter Filestream3 = new StreamWriter(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\XmlData\CustomersXml.xml"); //here you enter the path in your computer where you want your xml file 
+            TextWriter Filestream4 = new StreamWriter(@"C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\XmlData\ParcelsXml.xml"); //here you enter the path in your computer where you want your xml file 
+            serialiser1.Serialize(Filestream1, DataSource.DronesList);//here you enter the name of your list
+            serialiser2.Serialize(Filestream2, DataSource.BaseStationsList);//here you enter the name of your list
+            serialiser3.Serialize(Filestream3, DataSource.CustomersList);//here you enter the name of your list
+            serialiser4.Serialize(Filestream4, DataSource.ParcelsList);//here you enter the name of your list
+            Filestream1.Close();
+            Filestream2.Close();
+            Filestream3.Close();
+            Filestream4.Close();
+        }
         static readonly object padlock = new object ();  
         static DalObject instance = null;
         internal static DalObject Instance
@@ -180,10 +200,8 @@ namespace Dal
                             if (DataSource.BaseStationsList[j].IsActive == false)
                                 throw new BaseStationException($"Base Station {baseStationId} isn't active");
                             DataSource.DroneChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
-                            Drone myDrone = DataSource.DronesList[i];
                             BaseStation myBaseStation = DataSource.BaseStationsList[j];
                             myBaseStation.FreeChargeSlots--;
-                            DataSource.DronesList[i] = myDrone;
                             DataSource.BaseStationsList[j] = myBaseStation;
                             return;
                         }
@@ -238,7 +256,7 @@ namespace Dal
         public Customer FindCustomer(int? id)
         {
             foreach (var item in DataSource.CustomersList)
-                if (item.Id == id)
+                if (item.Id == id && item.IsActive)
                     return item;
             throw new CustomerException($"Customer {id} doesn't exist");
         }
@@ -310,6 +328,22 @@ namespace Dal
                 if (item.Id == id)
                     return item;
             throw new ParcelException($"Parcel {id} doesn't exist");
+        }
+        /// <summary>
+        /// delete a parcel by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public void DeleteParcel(int id)
+        {
+            try
+            {
+                    DataSource.ParcelsList.Remove(FindParcel(id));
+            }
+            catch
+            {
+            throw new ParcelException($"cannot delete Parcel {id}");
+            }
         }
         /// <summary>
         /// schedule a drone for parcel delivery
@@ -451,7 +485,7 @@ namespace Dal
 
         #endregion
 
-        public List<DroneCharge> GetListOfInChargeDrones()
+        public IEnumerable<DroneCharge> GetListOfInChargeDrones()
         {
             return DataSource.DroneChargeList;
         }
