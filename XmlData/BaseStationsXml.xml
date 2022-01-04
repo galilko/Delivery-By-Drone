@@ -1,11 +1,19 @@
 <?xml version="1.0"?>
 <ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <BaseStation>
+    <Id>1111</Id>
+    <Name>Haifa</Name>
+    <Lattitude>33.6565</Lattitude>
+    <Longitude>31.2523</Longitude>
+    <FreeChargeSlots>25</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
     <Id>1000</Id>
     <Name>Jerusalem Central Station</Name>
     <Lattitude>31.78928</Lattitude>
     <Longitude>35.202142</Longitude>
-    <FreeChargeSlots>19</FreeChargeSlots>
+    <FreeChargeSlots>20</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
   <BaseStation>
@@ -13,15 +21,7 @@
     <Name>Tel Aviv Central Station</Name>
     <Lattitude>32.056312</Lattitude>
     <Longitude>34.779888</Longitude>
-    <FreeChargeSlots>13</FreeChargeSlots>
-    <IsActive>true</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1111</Id>
-    <Name>Haifa</Name>
-    <Lattitude>33.6565</Lattitude>
-    <Longitude>31.2523</Longitude>
-    <FreeChargeSlots>24</FreeChargeSlots>
+    <FreeChargeSlots>20</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
 </ArrayOfBaseStation>
