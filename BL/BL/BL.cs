@@ -709,6 +709,8 @@ namespace BlApi
         {
             try
             {
+                if (blDrones.Find(x => x.Id == id).Status == DroneStatusCategories.Maintenance)
+                    releaseDrone(id, new TimeSpan(0));
                 MyDal.DeleteDrone(id);
                 blDrones.Find(x => x.Id == id).IsActive = false;
             }

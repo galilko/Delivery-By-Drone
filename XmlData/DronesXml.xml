@@ -26,11 +26,6 @@
     <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
-    <Id>3907327</Id>
-    <Model>Model6</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
     <Id>9527488</Id>
     <Model>Model7</Model>
     <MaxWeight>Heavy</MaxWeight>
