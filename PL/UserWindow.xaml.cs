@@ -44,7 +44,7 @@ namespace PL
                 if(bl.AllBlCustomers().ToList()[i].Id != customerId)
                     this.cmbTarget.Items.Add(bl.AllBlCustomers().ToList()[i].Id);
             }*/
-            List<BO.CustomerToList> CustomersList = bl.AllBlCustomers().ToList();
+            List<BO.CustomerToList> CustomersList = bl.GetCustomers().ToList();
             cmbTarget.ItemsSource = CustomersList;
             this.txtSender.Text = customerId.ToString();
             newP.Sender = new() { Id = customerId };

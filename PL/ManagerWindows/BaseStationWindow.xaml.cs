@@ -2,6 +2,7 @@
 using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,16 +20,15 @@ namespace PL
     /// <summary>
     /// Interaction logic for BaseStationWindow.xaml
     /// </summary>
-    public partial class BaseStationWindow : Window
+    public partial class BaseStationWindow : Window, INotifyPropertyChanged
     {
         private IBL bl;
-        private BaseStationToList bstl;
-        private BaseStation newBS;
 
-        public BaseStationWindow()
-        {
-            InitializeComponent();
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public static Model Model1 { get; } = Model.Instance;
+
+        BaseStation baseStation;
+        public BaseStation BaseStation { get => baseStation; }
 
         /// <summary>
         /// ctor of add drone window
@@ -37,30 +37,36 @@ namespace PL
         public BaseStationWindow(BlApi.IBL theBl)
         {
             bl = theBl;
-            newBS = new BaseStation();
+            baseStation = new BaseStation() { Location = new() };
             InitializeComponent();
             this.Width = 400;
             this.Height = 500;
             this.MethodsBSGrid.Visibility = Visibility.Collapsed;
             this.AddBsGrid.Visibility = Visibility.Visible;
-            this.AddBsGrid.DataContext = newBS;
-            newBS.BSLocation = new();
-            LongitudeTextBox.DataContext = LatitudeIdTextBox.DataContext = newBS.BSLocation;
+           
         }
 
         public BaseStationWindow(IBL bl, BaseStationToList bstl)
         {
             this.bl = bl;
-            this.bstl = bstl;
+            baseStation = bl.GetBaseStation(bstl.Id);
             InitializeComponent();
             this.MethodsBSGrid.Visibility = Visibility.Visible;
             this.AddBsGrid.Visibility = Visibility.Collapsed;
-            var bs = bl.FindBaseStation(bstl.Id);
-            DataContext = bs;
-            lvDronesInCharge.DataContext = bs.DronesInCharge;
         }
 
-
+        /// <summary>
+        /// make it possible to drag the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
 
         /// <summary>
         /// handle close add drone window button click 
@@ -96,16 +102,12 @@ namespace PL
         /// <param name="e"></param>
         private void btnUpdateBS_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateBaseStation(bstl.Id, BSNameTextBox.Text, Convert.ToInt32(SlotsCountTextBox.Text));
-            MessageBox.Show($"Base Station {bstl.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+            bl.UpdateBaseStation(BaseStation.Id, BSNameTextBox.Text, Convert.ToInt32(SlotsCountTextBox.Text));
+            updateBSView();
+            MessageBox.Show($"Base Station {BaseStation.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             this.UpdateExpander.IsExpanded = false;
-            var bs = bl.FindBaseStation(bstl.Id);
-            DataContext = bs;
         }
 
-        
-    
-        
         /// <summary>
         /// handle close methods of drone window
         /// </summary>
@@ -136,7 +138,11 @@ namespace PL
         {
             try
             {
-                bl.AddBaseStation(newBS);
+                bl.AddBaseStation(BaseStation);
+                lock (bl)
+                {
+                    Model1.BaseStations.Add(bl.GetBSToList(BaseStation.Id));
+                }
                 MessageBox.Show("Base Station was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
@@ -159,7 +165,12 @@ namespace PL
             {
                 if (MessageBox.Show("Are you sure you want to delete Base-Station?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    bl.DeleteBaseStation((int)bstl.Id);
+                    BaseStationToList bstl = bl.GetBSToList(BaseStation.Id);
+                    bl.DeleteBaseStation((int)BaseStation.Id);
+                    lock (bl)
+                    {
+                        Model1.RemoveBS(bstl);
+                    }
                     MessageBox.Show("Base-Station was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
                 }
@@ -175,5 +186,23 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void updateBSView()
+        {
+            lock (bl)
+            {
+                baseStation = bl.GetBaseStation((int)BaseStation.Id);
+                this.setAndNotify(PropertyChanged, nameof(BaseStation), out baseStation, baseStation);
+
+                BaseStationToList bsToList = Model1.BaseStations.FirstOrDefault(b => b.Id == BaseStation.Id);
+                int index = Model1.BaseStations.IndexOf(bsToList);
+                if (index >= 0)
+                {
+                    Model1.BaseStations.Remove(bsToList);
+                    Model1.BaseStations.Insert(index, bl.GetBSToList(BaseStation.Id));
+                }
+            }
+        }
+
     }
 }

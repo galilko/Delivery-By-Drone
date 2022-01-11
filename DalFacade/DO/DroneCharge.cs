@@ -1,4 +1,6 @@
-﻿namespace DO
+﻿using System;
+
+namespace DO
 {
     public struct DroneCharge
     {

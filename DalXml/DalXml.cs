@@ -2,15 +2,35 @@
 using DO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Dal
 {
     public class DalXml : IDal
     {
         #region thread-safe DalXml singleton
-        private DalXml() { }
+        private DalXml()
+        {
+            List<DroneCharge> dronesInCharge = XMLTools.LoadListFromXMLSerializer<DroneCharge>(dronesInChargePath);
+            List<BaseStation> baseStations = XMLTools.LoadListFromXMLSerializer<BaseStation>(baseStationsPath);
+            foreach (var dc in dronesInCharge)
+            {
+                BaseStation? baseStation = baseStations.Find(bs => bs.Id == dc.StationId);
+                if (baseStation != null)
+                {
+                    BaseStation updatedBS = (BaseStation)baseStation;
+                    baseStations.Remove((BaseStation)baseStation);
+                    updatedBS.FreeChargeSlots++;
+                    baseStations.Add(updatedBS);
+                }
+            }
+            dronesInCharge.Clear();
+            XMLTools.SaveListToXMLSerializer(dronesInCharge, dronesInChargePath);
+            XMLTools.SaveListToXMLSerializer(baseStations, baseStationsPath);
+        }
         static readonly object padlock = new object();
         static DalXml instance = null;
         internal static DalXml Instance
@@ -39,11 +59,7 @@ namespace Dal
             internal static double BatteryChargeRate { get { return 20.5; } }
         }
 
-        public double[] GetBatteryUse()
-        {
-            return new double[5] { Config.BatteryUseFREE, Config.BatteryUseLight,
-                Config.BatteryUseMedium, Config.BatteryUseHeavy, Config.BatteryChargeRate};
-        }
+       
         #region DS XML Files
 
         private readonly string parcelsPath = @"ParcelsXml.xml"; //XMLSerializer
@@ -51,8 +67,18 @@ namespace Dal
         private readonly string customersPath = @"CustomersXml.xml"; //XElement
         private readonly string dronesPath = @"DronesXml.xml"; //XMLSerializer
         private readonly string dronesInChargePath = @"DronesInChargeXml.xml"; //XMLSerializer
+        private readonly string configPath = @"Config.xml"; //XMLSerializer
 
         #endregion
+
+        public double[] GetBatteryUse()
+        {
+            return XMLTools.LoadListFromXMLElement(configPath).Element("BatteryUsages").Elements()
+               .Select(e => Convert.ToDouble(e.Value)).ToArray();
+            //return new double[5] { Config.BatteryUseFREE, Config.BatteryUseLight,
+            //  Config.BatteryUseMedium, Config.BatteryUseHeavy, Config.BatteryChargeRate};
+        }
+
         #region done
         public void AddBaseStation(BaseStation newBaseStation)
         {
@@ -84,7 +110,7 @@ namespace Dal
             XElement customerElem = new XElement("Customer", new XElement("Id", newCustomer.Id),
                                   new XElement("Name", newCustomer.Name),
                                   new XElement("Phone", newCustomer.Phone),
-                                  new XElement("Lattitude", newCustomer.Lattitude),
+                                  new XElement("Latitude", newCustomer.Latitude),
                                   new XElement("Longitude", newCustomer.Longitude),
                                   new XElement("IsActive", true));
            
@@ -106,11 +132,16 @@ namespace Dal
             List<Parcel> parcelsList = XMLTools.LoadListFromXMLSerializer<Parcel>(parcelsPath);
             if (!parcelsList.FirstOrDefault(p => p.Id == newParcel.Id).Equals(default(Parcel)))
                 throw new DO.ParcelException($"Duplicate Parcel Id {newParcel.Id}");
+            XElement t = XElement.Load(configPath);
+            int id = Convert.ToInt32(t.Element("NewParcelId").Value);
+            t.Element("NewParcelId").Value = (id + 1).ToString(); 
+            newParcel.Id = id;
             parcelsList.Add(newParcel);
+            t.Save(configPath);
             XMLTools.SaveListToXMLSerializer(parcelsList, parcelsPath);
         }
 
-        public IEnumerable<BaseStation> AllBaseStations(Func<BaseStation, bool> predicate = null)
+        public IEnumerable<BaseStation> GetBaseStations(Func<BaseStation, bool> predicate = null)
         {
             List<BaseStation> baseStationsList = XMLTools.LoadListFromXMLSerializer<BaseStation>(baseStationsPath);
             if (predicate == null)
@@ -124,7 +155,7 @@ namespace Dal
                        select bs;
         }
 
-        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null)
+        public IEnumerable<Customer> GetCustomers(Func<Customer, bool> predicate = null)
         {
             /*  List<Customer> customersList = XMLTools.LoadListFromXMLSerializer<Customer>(customersPath);
               if (predicate == null)
@@ -144,7 +175,7 @@ namespace Dal
                         Id = Int32.Parse(c.Element("Id").Value),
                         Name = c.Element("Name").Value,
                         Phone = c.Element("Phone").Value,
-                        Lattitude = double.Parse(c.Element("Lattitude").Value),
+                        Latitude = double.Parse(c.Element("Latitude").Value),
                         Longitude = double.Parse(c.Element("Longitude").Value),
                         IsActive = bool.Parse(c.Element("IsActive").Value)
                     }
@@ -158,7 +189,7 @@ namespace Dal
                             Id = Int32.Parse(c.Element("Id").Value),
                             Name = c.Element("Name").Value,
                             Phone = c.Element("Phone").Value,
-                            Lattitude = double.Parse(c.Element("Lattitude").Value),
+                            Latitude = double.Parse(c.Element("Latitude").Value),
                             Longitude = double.Parse(c.Element("Longitude").Value),
                             IsActive = bool.Parse(c.Element("IsActive").Value)
                         }
@@ -168,14 +199,14 @@ namespace Dal
                    );
         }
 
-        public IEnumerable<Drone> AllDrones()
+        public IEnumerable<Drone> GetDrones()
         {
             List<Drone> dronesList = XMLTools.LoadListFromXMLSerializer<Drone>(dronesPath);
             return from drone in dronesList
                    select drone;
         }
 
-        public IEnumerable<Parcel> AllParcels(Func<Parcel, bool> predicate = null)
+        public IEnumerable<Parcel> GetParcels(Func<Parcel, bool> predicate = null)
         {
             List<Parcel> parcelsList = XMLTools.LoadListFromXMLSerializer<Parcel>(parcelsPath);
             if(predicate == null)
@@ -187,7 +218,7 @@ namespace Dal
                        select parcel;
         }
         
-        public BaseStation FindBaseStation(int id)
+        public BaseStation GetBaseStation(int id)
         {
             List<BaseStation> baseStationsList = XMLTools.LoadListFromXMLSerializer<BaseStation>(baseStationsPath);
             BaseStation bs = baseStationsList.Find(b => b.Id == id && b.IsActive == true);
@@ -197,7 +228,7 @@ namespace Dal
                 throw new DO.BaseStationException($"Missing Base-Station id: {id}");
         }
 
-        public Customer FindCustomer(int? id)
+        public Customer GetCustomer(int? id)
         {
             /* List<Customer> customersList = XMLTools.LoadListFromXMLSerializer<Customer>(customersPath);
             Customer customer = customersList.Find(c => c.Id == id && c.IsActive == true);
@@ -214,7 +245,7 @@ namespace Dal
                             Id = Int32.Parse(c.Element("Id").Value),
                             Name = c.Element("Name").Value,
                             Phone = c.Element("Phone").Value,
-                            Lattitude = double.Parse(c.Element("Lattitude").Value),
+                            Latitude = double.Parse(c.Element("Latitude").Value),
                             Longitude = double.Parse(c.Element("Longitude").Value),
                             IsActive = bool.Parse(c.Element("IsActive").Value)
                         }
@@ -227,7 +258,7 @@ namespace Dal
 
         }
 
-        public Drone FindDrone(int? id)
+        public Drone GetDrone(int? id)
         {
             List<Drone> dronesList = XMLTools.LoadListFromXMLSerializer<Drone>(dronesPath);
             Drone drone = dronesList.Find(d => d.Id == id);
@@ -237,7 +268,7 @@ namespace Dal
                 throw new DO.DroneException($"Missing Drone id: {id}");
         }
 
-        public Parcel FindParcel(int id)
+        public Parcel GetParcel(int id)
         {
             List<Parcel> parcelsList = XMLTools.LoadListFromXMLSerializer<Parcel>(parcelsPath);
             Parcel parcel = parcelsList.Find(p => p.Id == id);
@@ -250,7 +281,7 @@ namespace Dal
         public void DeleteBaseStation(int id)
         {
             List<BaseStation> baseStationsList = XMLTools.LoadListFromXMLSerializer<BaseStation>(baseStationsPath);
-            BaseStation? bs = FindBaseStation(id);
+            BaseStation? bs = GetBaseStation(id);
             if (bs != null)
             {
                 BaseStation inActiveBS = (BaseStation)bs;
@@ -329,7 +360,7 @@ namespace Dal
             if (!baseStationsList.Exists(b => b.Id == baseStationId && b.IsActive))
                 throw new BaseStationException($"Base Station {baseStationId} doesn't exist");
             dronesInChargeList.Add(new() { DroneId = droneId, StationId = baseStationId });
-            BaseStation bs = FindBaseStation(baseStationId);
+            BaseStation bs = GetBaseStation(baseStationId);
             BaseStation updatedBS = bs;
             baseStationsList.Remove(bs);
             updatedBS.FreeChargeSlots--;
@@ -346,7 +377,7 @@ namespace Dal
             if (!dronesList.Exists(d => d.Id == droneId))
                 throw new DroneException($"Drone {droneId} doesn't exist");
             DroneCharge dc = dronesInChargeList.Find(dc => dc.DroneId == droneId);
-            BaseStation bs = FindBaseStation(dc.StationId);
+            BaseStation bs = GetBaseStation(dc.StationId);
             BaseStation updatedBS = bs;
             dronesInChargeList.Remove(dc);
             baseStationsList.Remove(bs);
@@ -361,7 +392,7 @@ namespace Dal
             List<Parcel> parcelsList = XMLTools.LoadListFromXMLSerializer<Parcel>(parcelsPath);
             if (!parcelsList.Exists(p => p.Id == parcelId))
                 throw new ParcelException($"Parcel {parcelId} doesn't exist");
-            Parcel parcel = FindParcel(parcelId);
+            Parcel parcel = GetParcel(parcelId);
             Parcel updatedParcel = parcel;
             parcelsList.Remove(parcel);
             updatedParcel.Delivered = DateTime.Now;
@@ -418,7 +449,7 @@ namespace Dal
             XMLTools.SaveListToXMLSerializer(dronesList, dronesPath);
         }
 
-        public void UpdateBaseStation(int baseStationId, string newName, int slotsCount)
+        public void UpdateBaseStation(int? baseStationId, string newName, int slotsCount)
         {
             List<BaseStation> baseStationsList = XMLTools.LoadListFromXMLSerializer<BaseStation>(baseStationsPath);
             List<DroneCharge> dronesInChargeList = XMLTools.LoadListFromXMLSerializer<DroneCharge>(dronesInChargePath);
@@ -457,7 +488,7 @@ namespace Dal
             List<Parcel> parcelsList = XMLTools.LoadListFromXMLSerializer<Parcel>(parcelsPath);
             if (!parcelsList.Exists(p => p.Id == parcelId))
                 throw new ParcelException($"Parcel {parcelId} doesn't exist");
-            Parcel parcel = FindParcel(parcelId);
+            Parcel parcel = GetParcel(parcelId);
             Parcel updatedParcel = parcel;
             parcelsList.Remove(parcel);
             updatedParcel.PickedUp = DateTime.Now;
@@ -473,7 +504,7 @@ namespace Dal
                 throw new ParcelException($"Parcel {parcelId} doesn't exist");
             if (!dronesList.Exists(d => d.Id == droneId))
                 throw new DroneException($"Drone {droneId} doesn't exist");
-            Parcel parcel = FindParcel(parcelId);
+            Parcel parcel = GetParcel(parcelId);
             Parcel updatedParcel = parcel;
             parcelsList.Remove(parcel);
             updatedParcel.DroneId = droneId;
@@ -482,12 +513,23 @@ namespace Dal
             XMLTools.SaveListToXMLSerializer(parcelsList, parcelsPath);
         }
 
-        public IEnumerable<DroneCharge> GetListOfInChargeDrones()
+        public IEnumerable<DroneCharge> GetListOfInChargeDrones(Func<DroneCharge, bool> predicate = null)
         {
             List<DroneCharge> dronesInChargeList = XMLTools.LoadListFromXMLSerializer<DroneCharge>(dronesInChargePath);
-            return from dc in dronesInChargeList
-                   select dc;
+            if (predicate == null)
+                return from dc in dronesInChargeList
+                      select dc;
+            else
+                return from dc in dronesInChargeList
+                       where predicate(dc)
+                       select dc;
         }
-        
+
+        public int GetNextParcelId()
+        {
+            XElement t = XElement.Load(configPath);
+            int id = Convert.ToInt32(t.Element("NewParcelId").Value);
+            return id;
+        }
     }
 }

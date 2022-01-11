@@ -15,7 +15,8 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Window.Resources>
 
         <LinearGradientBrush x:Key="myLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -27,6 +28,7 @@
         CornerRadius="40"
         BorderBrush="#81d4fa"
         BorderThickness="4"
+        MouseDown="UIElement_OnMouseDown"
         Background="White">
 
         <Grid x:Name="MainGrid">
@@ -50,7 +52,7 @@
                     Height="30"
                 />
             </Button>
-            <Grid x:Name="AddBsGrid" Visibility="Visible" Grid.Row="1" Height="500" Width="280"
+            <Grid x:Name="AddBsGrid" Visibility="Visible" Grid.Row="1" Height="500" Width="280" DataContext="{Binding BaseStation}"
                   HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
@@ -74,9 +76,9 @@
                 <TextBox x:Name="NameTextBox" Width="100" Height="40" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="2" Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Name" materialDesign:HintAssist.IsFloating="True"/>
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Name="LongitudeTextBox" Height="40" Width="100" Text="{Binding Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                    <TextBox x:Name="LongitudeTextBox" Height="40" Width="100" Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Longitude" materialDesign:HintAssist.IsFloating="True"/>
-                    <TextBox x:Name="LatitudeIdTextBox" Height="40" Width="100" Margin="20,0,0,0" Text="{Binding Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                    <TextBox x:Name="LatitudeIdTextBox" Height="40" Width="100" Margin="20,0,0,0" Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Latitude" materialDesign:HintAssist.IsFloating="True"/>
                 </StackPanel>
                 <TextBox x:Name="SlotsCpuntTextBox" Height="40" Width="150" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="4" 
@@ -89,7 +91,8 @@
 />
 
             </Grid>
-            <Grid x:Name="MethodsBSGrid" Grid.Row="1" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+            <Grid x:Name="MethodsBSGrid" Grid.Row="1" Visibility="Visible" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch" Height="auto" Width="auto" DataContext="{Binding BaseStation}">
                 <Grid.Resources>
                     <local:AddConverter x:Key="AddConverter"/>
                 </Grid.Resources>
@@ -252,7 +255,7 @@
           />
 
                         <Label 
-        Content="{Binding BSLocation}"
+        Content="{Binding Location}"
         Grid.Row="3"
         Grid.Column="1"
         VerticalContentAlignment="Center"
@@ -272,7 +275,7 @@
         Grid.Column="1"
         VerticalContentAlignment="Center"
         />
-                        <ListView x:Name="lvDronesInCharge" ItemsSource="{Binding}" Grid.Row="6" Grid.Column="1" Grid.RowSpan="3" Width="260" Height="250" HorizontalAlignment="Left" MouseDoubleClick="lvDronesInCharge_MouseDoubleClick">
+                        <ListView x:Name="lvDronesInCharge" ItemsSource="{Binding DronesInCharge}" Grid.Row="6" Grid.Column="1" Grid.RowSpan="3" Width="260" Height="250" HorizontalAlignment="Left" MouseDoubleClick="lvDronesInCharge_MouseDoubleClick">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
                                     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -283,7 +286,17 @@
                                 <GridView>
                                     <GridView.Columns>
                                         <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
-                                        <GridViewColumn Header="Battery Status" DisplayMemberBinding="{Binding BatteryStatus, StringFormat={}{0:#.##}}"/>
+                                        <GridViewColumn Header="Battery Status">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <ProgressBar Name="BatteryProgressBar"  Width="80" Height="20" Margin="-5,-1"  Value="{Binding BatteryStatus, Mode=OneWay,Converter={StaticResource batteryToProgressBarConverter}}"
+                                                                         Foreground="{Binding BatteryStatus, Converter={StaticResource batteryToColorConverter}}" Background="White"/>
+                                                        <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
                                     </GridView.Columns>
                                 </GridView>
                             </ListView.View>

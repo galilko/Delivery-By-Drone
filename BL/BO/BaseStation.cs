@@ -2,11 +2,11 @@
 
 namespace BO
 {
-    public class BaseStation
+    public class BaseStation : ILocatable
     {
         public int? Id { get; set; }
         public string Name { get; set; }
-        public Location BSLocation { get; set; }
+        public Location Location { get; set; }
         public int? FreeChargeSlots { get; set; }
         public List<DroneInCharge> DronesInCharge { get; set; }
         public override string ToString()
@@ -14,7 +14,7 @@ namespace BO
             string result = "";
             result += $"Id:\t\t\t {Id}\n";
             result += $"Name:\t\t\t {Name}\n";
-            result += $"Location:\t\t {BSLocation}\n";
+            result += $"Location:\t\t {Location}\n";
             result += $"Num of charge slots:\t {FreeChargeSlots}\n";
             if (DronesInCharge.Count > 0)
                 foreach (var item in DronesInCharge)

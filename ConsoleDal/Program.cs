@@ -56,7 +56,7 @@ FOR ADDING A PARCEL PRESS 4
                                         double.TryParse(Console.ReadLine(), out double longitude);
                                         Console.Write("Number of free charger slots:\t");
                                         int.TryParse(Console.ReadLine(), out int freeSlots);
-                                        BaseStation myBaseStation = new() { Id = id, Name = name, Lattitude = latitude, Longitude = longitude, FreeChargeSlots = freeSlots };
+                                        BaseStation myBaseStation = new() { Id = id, Name = name, Latitude = latitude, Longitude = longitude, FreeChargeSlots = freeSlots };
                                         dal.AddBaseStation(myBaseStation);
                                         break;
                                     }
@@ -89,7 +89,7 @@ FOR ADDING A PARCEL PRESS 4
                                         double.TryParse(Console.ReadLine(), out double latitude);
                                         Console.Write("Longitude:\t");
                                         double.TryParse(Console.ReadLine(), out double longitude);
-                                        Customer myCustomer = new() { Id = id, Name = name, Phone = phone, Lattitude = latitude, Longitude = longitude };
+                                        Customer myCustomer = new() { Id = id, Name = name, Phone = phone, Latitude = latitude, Longitude = longitude };
                                         dal.AddCustomer(myCustomer);
                                         break;
                                     }
@@ -206,7 +206,7 @@ FOR VIEWING A PARCEL PRESS 4
                                         Console.Write("ENTER BASE-STATION ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int baseStationId);
                                         Console.WriteLine("---------------------------------");
-                                        BaseStation myBase = dal.FindBaseStation(baseStationId);
+                                        BaseStation myBase = dal.GetBaseStation(baseStationId);
                                         if (myBase.Equals(default(BaseStation)))
                                             Console.Write($"BASE-STATION {baseStationId} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
 
@@ -219,7 +219,7 @@ FOR VIEWING A PARCEL PRESS 4
                                         Console.Write("ENTER DRONE ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int droneId);
                                         Console.WriteLine("---------------------------------");
-                                        Drone myDrone = dal.FindDrone(droneId);
+                                        Drone myDrone = dal.GetDrone(droneId);
                                         if (myDrone.Equals(default(Drone)))
                                             Console.WriteLine($"DRONE {droneId} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
 
@@ -232,7 +232,7 @@ FOR VIEWING A PARCEL PRESS 4
                                         Console.Write("ENTER CUSTOMER ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int customerId);
                                         Console.WriteLine("---------------------------------");
-                                        Customer myCustomer = dal.FindCustomer(customerId);
+                                        Customer myCustomer = dal.GetCustomer(customerId);
                                         if (myCustomer.Equals(default(Customer)))
                                             Console.WriteLine($"CUSTOMER {customerId} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
 
@@ -246,7 +246,7 @@ FOR VIEWING A PARCEL PRESS 4
                                         Console.Write("ENTER PARCEL ID FOR VIEWING:\t");
                                         int.TryParse(Console.ReadLine(), out int parcelId);
                                         Console.WriteLine("---------------------------------");
-                                        Parcel myParcel = dal.FindParcel(parcelId);
+                                        Parcel myParcel = dal.GetParcel(parcelId);
                                         if (myParcel.Equals(default(Parcel)))
                                             Console.WriteLine($"PARCEL {parcelId} WASN'T FOUND", Console.ForegroundColor = ConsoleColor.Red);
                                         else
@@ -275,25 +275,25 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                             {
                                 case 1:
                                     {
-                                        ((List<BaseStation>)dal.AllBaseStations()).ForEach(myPrint);
+                                        ((List<BaseStation>)dal.GetBaseStations()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 2:
                                     {
-                                        ((List<Drone>)dal.AllDrones()).ForEach(myPrint);
+                                        ((List<Drone>)dal.GetDrones()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 3:
                                     {
-                                        ((List<Customer>)dal.AllCustomers()).ForEach(myPrint);
+                                        ((List<Customer>)dal.GetCustomers()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }
                                 case 4:
                                     {
-                                        ((List<Parcel>)dal.AllParcels()).ForEach(myPrint);
+                                        ((List<Parcel>)dal.GetParcels()).ForEach(myPrint);
                                         Console.ResetColor();
                                         break;
                                     }

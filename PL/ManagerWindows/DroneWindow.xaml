@@ -16,7 +16,9 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+
     <Window.Resources>
 
         <LinearGradientBrush x:Key="myLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,6 +30,7 @@
         CornerRadius="40"
         BorderBrush="#81d4fa"
         BorderThickness="4"
+        MouseDown="UIElement_OnMouseDown"
         Background="White">
         <Grid x:Name="MainGrid">
             
@@ -52,7 +55,7 @@
                     Height="30"
                 />
             </Button>
-            <Grid x:Name="AddDroneGrid" Visibility="Visible" Grid.Row="1" Height="500" Width="280"
+            <Grid x:Name="AddDroneGrid" DataContext="{Binding NewDrone}" Grid.Row="1" Height="500" Width="280"
                   HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1.5*"/>
@@ -70,7 +73,7 @@
                          materialDesign:HintAssist.Hint="Id" materialDesign:HintAssist.IsFloating="True"/>
                 <TextBox x:Name="DroneModelTextBox" Width="150" Height="35" HorizontalAlignment="Center" Grid.Row="2" Text="{Binding Model, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Name" materialDesign:HintAssist.IsFloating="True"/>
-                <ComboBox x:Name="cmbWeight" Text="Choose Weight:" IsEditable="True" IsReadOnly="True"
+                <ComboBox x:Name="cmbWeight" Text="Choose Weight:" IsEditable="True" IsReadOnly="True" ItemsSource="{Binding Source={StaticResource DroneStatusCategories}}"
                           HorizontalAlignment="Center" Width="150" Height="25" Grid.Row="3"
                       SelectedItem="{Binding Weight}" VerticalAlignment="Center" />
                 <ComboBox x:Name="cmbBaseStation" Text="Choose Base Station:" IsEditable="True" IsReadOnly="True"
@@ -83,7 +86,8 @@
 
             </Grid>
 
-            <Grid x:Name="MethodsDroneGrid" Grid.Row="1" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+            <Grid x:Name="MethodsDroneGrid" Grid.Row="1" DataContext="{Binding Drone}"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="1.5*"/>
@@ -103,29 +107,30 @@
                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <Label Content="Model:" HorizontalContentAlignment="Center" Width="47" />
-                                        <TextBox x:Name="NewModelTextBox" Width="101" Height="30"/>
+                                        <TextBox x:Name="NewModelTextBox" Text="{Binding Model, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="101" Height="30"/>
                                     </StackPanel>
-                                    <Button x:Name="btnUpdateModelToDrone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Content="Update" Height="29" Margin="0,10,0,0" Click="btnUpdateModelToDrone_Click" />
+                                    <Button x:Name="btnUpdateModelToDrone" Style="{StaticResource MaterialDesignOutlinedButton}" Content="Update" Height="29" Margin="0,10,0,0" Click="btnUpdateModelToDrone_Click" />
                                 </StackPanel>
                             </Expander>
-                            <Expander x:Name="ChargeReleaseExp" FontFamily="Comic Sans MS" Margin="5,0,5,5" Width="330" Expanded="ChargeReleaseExp_Expanded">
+                            <Expander x:Name="ChargeReleaseExp" FontFamily="Comic Sans MS" Margin="5,0,5,5" Width="330" >
                                 <Expander.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <materialDesign:PackIcon Kind="BatteryCharging50" Width="28" Height="28" Foreground="Green"/>
                                         <TextBlock Text="Charge/Realease Drone" FontSize="16" Height="22" Margin="30,0,0,0" Width="185"/>
                                     </StackPanel>
                                 </Expander.Header>
-                                <StackPanel Orientation="Vertical"  Margin="5,5,5,5" HorizontalAlignment="Center">
-                                    <Button x:Name="btnChargeDrone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Content="Charge Drone" Click="btnChargeDrone_Click"/>
-                                    <Expander x:Name="ReleaseExp" Header="Release Drone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Width="200" Margin="0,5,0,0" Padding="5" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
+                                <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
+                                    <Button x:Name="btnChargeDrone" Style="{StaticResource MaterialDesignOutlinedButton}" Visibility="{Binding Status, Converter={StaticResource freeVisibileConverter}}"
+                                           Content="Charge Drone" Click="btnChargeDrone_Click"/>
+                                    <!--<Expander x:Name="ReleaseExp" Visibility="{Binding Status, Converter={StaticResource maintenanceVisibileConverter}}" Header="Release Drone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Width="200" Margin="0,5,0,0" Padding="5" Expanded="ReleaseExp_Expanded" Collapsed="ReleaseExp_Collapsed">
                                         <StackPanel Orientation="Horizontal">
                                             <Label Content="Time In Charge:"/>
                                             <ComboBox x:Name="cmbHours" IsEditable="True" IsReadOnly="True" Text="h" Width="38"/>
                                             <Label Content=":"/>
                                             <ComboBox x:Name="cmbMins" IsEditable="True" IsReadOnly="True" Text="m" Width="38"/>
                                         </StackPanel>
-                                    </Expander>
-                                    <Button x:Name="btnReleaseDrone" Background="{StaticResource ResourceKey=myLinearGradientBrush}" Visibility="Collapsed" Padding="5" Margin="0,5,0,0" Content="Release Drone" Click="btnReleaseDrone_Click" />
+                                    </Expander>-->
+                                    <Button x:Name="btnReleaseDrone" Style="{StaticResource MaterialDesignOutlinedButton}" Visibility="{Binding Status, Converter={StaticResource maintenanceVisibileConverter}}" Padding="5" Margin="0,5,0,0" Content="Release Drone" Click="btnReleaseDrone_Click" />
                                 </StackPanel>
                             </Expander>
                             <Expander FontFamily="Comic Sans MS" Margin="5,0,5,5" Width="330">
@@ -136,9 +141,15 @@
                                     </StackPanel>
                                 </Expander.Header>
                                 <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Center">
-                                    <Button x:Name="btnScheduleDrone" Margin="2,2,2,2" Content="Schedule Drone to parcel" Background="{StaticResource ResourceKey=myLinearGradientBrush}" FontFamily="Comic Sans MS" Click="btnScheduleDrone_Click" />
-                                    <Button x:Name="btnPickudUpDrone" Margin="2,0,2,2" Content="Picked Up Parcel" Background="{StaticResource ResourceKey=myLinearGradientBrush}" FontFamily="Comic Sans MS" Click="btnPickudUpDrone_Click" />
-                                    <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" Background="{StaticResource ResourceKey=myLinearGradientBrush}" FontFamily="Comic Sans MS" Click="btnDeliveredDrone_Click" />
+                                        
+                                    <Button x:Name="btnScheduleDrone" Margin="2,2,2,2" Content="Schedule Drone to parcel" Visibility="{Binding Status, Converter={StaticResource freeVisibileConverter}}"
+                                            Style="{StaticResource MaterialDesignOutlinedButton}" FontFamily="Comic Sans MS" Click="btnScheduleDrone_Click" />
+                                    <StackPanel Visibility="{Binding Status, Converter={StaticResource deliveryVisibileConverter}}">
+                                    <Button x:Name="btnPickudUpDrone" Margin="2,0,2,2" Content="Picked Up Parcel" Visibility="{Binding CurrentParcel.Status, Converter={StaticResource falseVisibileConverter}}"
+                                            Style="{StaticResource MaterialDesignOutlinedButton}" FontFamily="Comic Sans MS" Click="btnPickudUpDrone_Click" />
+                                    <Button x:Name="btnDeliveredDrone" Margin="2,0,2,2" Content="Parcel Delivered" Visibility="{Binding CurrentParcel.Status, Converter={StaticResource trueVisibileConverter}}"
+                                            Style="{StaticResource MaterialDesignOutlinedButton}" FontFamily="Comic Sans MS" Click="btnDeliveredDrone_Click" />
+                                    </StackPanel>
                                 </StackPanel>
                             </Expander>
                             <Button x:Name="btnDeleteDrone" Background="Transparent" BorderBrush="DarkGray" FontFamily="Comic Sans MS" Height="51" Click="btnDeleteDrone_Click">
@@ -280,14 +291,12 @@
         Grid.ColumnSpan="3"
         VerticalContentAlignment="Center"
         />
-                        <Label 
-        x:Name="lbBattery"
-        Content="{Binding BatteryStatus}"
-        Grid.Row="4"
-        Grid.Column="3"
-        Grid.ColumnSpan="3"
-        VerticalContentAlignment="Center"
-        />
+                        <Grid Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="3">
+                            <ProgressBar Name="BatteryProgressBar" Width="100" Height="25" Margin="-5,-1"  Value="{Binding BatteryStatus, Mode=OneWay,Converter={StaticResource batteryToProgressBarConverter}}"
+                                         HorizontalAlignment="Left" Foreground="{Binding BatteryStatus, Converter={StaticResource batteryToColorConverter}}" Background="White"/>
+                            <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}" FontWeight="Bold" Margin="30,0,0,0" VerticalAlignment="Center"/>
+                        </Grid>
+
                         <Label 
         x:Name="lbStatus"
         Content="{Binding Status}"
@@ -299,8 +308,7 @@
                         <Button 
         x:Name="btnParcel"
         Style="{StaticResource MaterialDesignRaisedLightButton}"                   
-        Content="{Binding Id}" ToolTip="Watch Parcel Details"
-        IsEnabled="False"
+        Content="{Binding CurrentParcel.Id}" ToolTip="Watch Parcel Details"
         Grid.Row="6"
         Grid.Column="3"
         Grid.ColumnSpan="1"
@@ -308,7 +316,7 @@
         />
                         <Label 
         x:Name="lbLocation"
-        Content="{Binding CurrentLocation}"
+        Content="{Binding Location}"
         Grid.Row="7"
         Grid.Column="3"
         Grid.ColumnSpan="3"

@@ -36,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XmlData", "XmlData", "{398B3100-8A51-4C2A-BBDE-1C59A9A26BB4}"
 	ProjectSection(SolutionItems) = preProject
 		XmlData\BaseStationsXml.xml = XmlData\BaseStationsXml.xml
+		Config.xml = Config.xml
 		XmlData\CustomersXml.xml = XmlData\CustomersXml.xml
 		XmlData\DronesInChargeXml.xml = XmlData\DronesInChargeXml.xml
 		XmlData\DronesXml.xml = XmlData\DronesXml.xml

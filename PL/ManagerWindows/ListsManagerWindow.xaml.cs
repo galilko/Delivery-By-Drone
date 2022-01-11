@@ -15,10 +15,9 @@ namespace PL
     public partial class ListsManagerWindow : Window
     {
         BlApi.IBL bl;
-        ObservableCollection<DroneToList> obsDronesCollection;
-        ObservableCollection<BaseStationToList> obsBSCollection;
-        ObservableCollection<CustomerToList> obsCustomersCollection;
-        ObservableCollection<ParcelToList> obsParcelsCollection;
+        public static Model Model { get; } = Model.Instance;
+        
+
         /// <summary>
         ///  ctor of window that present tabs of all listviews
         /// </summary>
@@ -26,20 +25,16 @@ namespace PL
         {
             this.bl = bl;
             InitializeComponent();
-            this.cmbStatus.ItemsSource = Enum.GetValues(typeof(DroneStatusCategories)); //import cmb options from enum of Statuses
-            this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories)); //import cmb options from enum of Weights
-            this.cmbParcelStatus.ItemsSource = Enum.GetValues(typeof(ParcelStatus)); //import cmb options from enum of Parcel status
-            obsDronesCollection = new ObservableCollection<DroneToList>((List<DroneToList>) bl.AllBlDrones());
-            this.DronesListView.DataContext = obsDronesCollection; //import all drones to listview
-            //obsBSCollection = new ObservableCollection<BaseStationToList>((List<BaseStationToList>) bl.AllBlBaseStations());
-            this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
-            obsCustomersCollection = new ObservableCollection<CustomerToList>((List<CustomerToList>) bl.AllBlCustomers());
-            this.CustomersListView.DataContext = obsCustomersCollection; //import all customers to listview
-            obsParcelsCollection = new ObservableCollection<ParcelToList>((List<ParcelToList>) bl.AllBlParcels());
-            this.ParcelsListView.DataContext = obsParcelsCollection; //import all customers to listview
 
         }
 
+        void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Model.DronesRefresh();
+            Model.BaseStationsRefresh();
+            Model.CustomersRefresh();
+            Model.ParcelsRefresh();
+        }
 
         /// <summary>
         /// handle close window button
@@ -54,7 +49,7 @@ namespace PL
         }
 
         #region Drones
-        /// <summary>
+       /* /// <summary>
         /// update the drones list view according to combobox of statuses
         /// </summary>
         /// <param name="sender"></param>
@@ -95,7 +90,7 @@ namespace PL
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
             else
                 this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
-        }
+        }*/
         /// <summary>
         /// handle of openning "add drone" window
         /// </summary>
@@ -103,10 +98,7 @@ namespace PL
         /// <param name="e"></param>
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            
-            var dw = new DroneWindow(bl);
-            dw.ShowDialog();
-            this.DronesListView.Items.Refresh();
+            new DroneWindow(bl).ShowDialog();
         }
         /// <summary>
         /// handle event of double-click on some drone
@@ -123,7 +115,7 @@ namespace PL
                 // send the chosen drone to new methods window
                 var dw = new DroneWindow(bl, dtl);
                 dw.ShowDialog();
-                this.DronesListView.Items.Refresh();
+                Window_Loaded(sender, e);
             }
         }
         /// <summary>
@@ -196,14 +188,13 @@ namespace PL
                 // send the chosen bs to new methods window
                 var bsw = new BaseStationWindow(bl, bstl);
                 bsw.ShowDialog();
-                this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
+                Window_Loaded(sender, e);
             }
         }
 
         private void btnAddBaseStation_Click(object sender, RoutedEventArgs e)
         {
             new BaseStationWindow(bl).ShowDialog();
-            this.BSListView.DataContext = bl.AllBlBaseStations(); //import all base-stations to listview
         }
 
 
@@ -213,7 +204,6 @@ namespace PL
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             new CustomerWindow(bl).ShowDialog();
-            this.CustomersListView.DataContext = bl.AllBlCustomers(); //import all base-stations to listview
         }
 
         private void CustomersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -223,10 +213,9 @@ namespace PL
             {
                 var myItem = item as CustomerToList;
                 CustomerToList ctl = myItem;
-                // send the chosen bs to new methods window
                 var cw = new CustomerWindow(bl, ctl);
                 cw.ShowDialog();
-                this.CustomersListView.DataContext = bl.AllBlCustomers(); //import all base-stations to listview
+                Window_Loaded(sender, e);
             }
         }
         #endregion
@@ -239,10 +228,8 @@ namespace PL
             {
                 var myItem = item as ParcelToList;
                 ParcelToList ptl = myItem;
-                // send the chosen bs to new methods window
-                var pw = new ParcelWindow(bl, ptl);
-                pw.ShowDialog();
-                this.ParcelsListView.DataContext = bl.AllBlParcels(); //import all parcels to listview
+                new ParcelWindow(bl, ptl).ShowDialog();
+                Window_Loaded(sender, e);
             }
         }
 
@@ -268,14 +255,6 @@ namespace PL
             view.GroupDescriptions.Clear();
         }
 
-        private void cmbParcelStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-                if (this.cmbParcelStatus.SelectedItem != null)
-                    this.ParcelsListView.ItemsSource = bl.ParcelsByStatus((ParcelStatus)cmbParcelStatus.SelectedItem);
-                else
-                    this.ParcelsListView.ItemsSource = bl.AllBlParcels();
-        }
-
         private void PStatusGrouping_Checked(object sender, RoutedEventArgs e)
         {
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelsListView.ItemsSource);
@@ -287,7 +266,6 @@ namespace PL
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
-            this.ParcelsListView.DataContext = bl.AllBlParcels(); //import all parcels to listview
         }
 
         private void btnResetParcelStatus_Click(object sender, RoutedEventArgs e)
@@ -301,13 +279,19 @@ namespace PL
         private void btnParcelsByDate_Click(object sender, RoutedEventArgs e)
         {
             TimeSpan newTime = new TimeSpan(24, 0, 0);
+            
             this.ParcelsListView.ItemsSource = bl.ParcelsByDates(fromDate.SelectedDate , toDate.SelectedDate + newTime);
         }
 
         private void btnResetByDate_Click(object sender, RoutedEventArgs e)
         {
             fromDate.SelectedDate = toDate.SelectedDate = null;
-            this.ParcelsListView.ItemsSource = bl.AllBlParcels();
+            this.ParcelsListView.ItemsSource = bl.GetParcels();
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            Window_Loaded(sender, e);
         }
     }
 }

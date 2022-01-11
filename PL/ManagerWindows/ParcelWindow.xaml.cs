@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +20,16 @@ namespace PL
     /// <summary>
     /// Interaction logic for ParcelWindow.xaml
     /// </summary>
-    public partial class ParcelWindow : Window
+    public partial class ParcelWindow : Window, INotifyPropertyChanged
     {
         private IBL bl;
-        private ParcelToList ptl;
-        private Parcel newP;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public static Model Model1 { get; } = Model.Instance;
+
+        Parcel parcel;
+        public Parcel Parcel { get => parcel; }
+
 
         public ParcelWindow()
         {
@@ -37,41 +43,52 @@ namespace PL
         public ParcelWindow(BlApi.IBL theBl)
         {
             bl = theBl;
-            newP = new Parcel();
+            parcel = new Parcel() { Sender = new(), Target = new() };
             InitializeComponent();
-            this.cmbWeight.ItemsSource = Enum.GetValues(typeof(WeightCategories));
-            this.cmbPriority.ItemsSource = Enum.GetValues(typeof(Priorities));
-            for (int i = 0; i < bl.AllBlCustomers().ToList().Count; i++)
+            for (int i = 0; i < bl.GetCustomers().ToList().Count; i++)
             {
-                this.cmbSender.Items.Add(bl.AllBlCustomers().ToList()[i].Id);
-                this.cmbTarget.Items.Add(bl.AllBlCustomers().ToList()[i].Id);
+                this.cmbSender.Items.Add(bl.GetCustomers().ToList()[i].Id);
+                this.cmbTarget.Items.Add(bl.GetCustomers().ToList()[i].Id);
             }
             this.Width = 400;
             this.Height = 500;
             this.MethodsParcelGrid.Visibility = Visibility.Collapsed;
             this.AddParcelGrid.Visibility = Visibility.Visible;
-            newP.Sender = new();
-            newP.Target = new();
-            this.AddParcelGrid.DataContext = newP;
         }
 
         public ParcelWindow(IBL bl, ParcelToList ptl)
         {
             this.bl = bl;
-            this.ptl = ptl;
+            parcel = bl.GetParcel(ptl.Id);
             InitializeComponent();
             this.MethodsParcelGrid.Visibility = Visibility.Visible;
             this.AddParcelGrid.Visibility = Visibility.Collapsed;
-            var p = bl.FindParcel(ptl.Id);
-            DataContext = p;
         }
 
+        /// <summary>
+        /// make it possible to drag the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
 
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                bl.AddParcel(newP);
+                bl.AddParcel(Parcel);
+                lock (bl)
+                {
+                    var p = bl.GetParcelToList(bl.GetNextParcelId() - 1);
+                    if (Model1.ParcelStatusSelector == null || p.Status == Model1.ParcelStatusSelector)
+                        Model1.Parcels.Add(p);
+                }
                 MessageBox.Show("Parcel was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
@@ -94,7 +111,12 @@ namespace PL
             {
                 if (MessageBox.Show("Are you sure you want to delete parcel?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    bl.DeleteParcel(ptl.Id);
+                    ParcelToList ptl = bl.GetParcelToList(Parcel.Id);
+                    bl.DeleteParcel(Parcel.Id);
+                    lock (bl)
+                    {
+                        Model1.RemoveParcel(ptl);
+                    }
                     MessageBox.Show("Parcel was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
                 }
@@ -119,5 +141,23 @@ namespace PL
         {
             Close();
         }
+
+        private void updateCustomersView()
+        {
+            lock (bl)
+            {
+                parcel = bl.GetParcel(Parcel.Id);
+                this.setAndNotify(PropertyChanged, nameof(Parcel), out parcel, parcel);
+
+                ParcelToList ptl = Model1.Parcels.FirstOrDefault(c => c.Id == Parcel.Id);
+                int index = Model1.Parcels.IndexOf(ptl);
+                if (index >= 0)
+                {
+                    Model1.Parcels.Remove(ptl);
+                    Model1.Parcels.Insert(index, bl.GetParcelToList(Parcel.Id));
+                }
+            }
+        }
+
     }
 }

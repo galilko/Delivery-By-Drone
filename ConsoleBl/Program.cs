@@ -61,7 +61,7 @@ FOR ADDING A PARCEL PRESS 4
                                             if (!double.TryParse(Console.ReadLine(), out double latitude)) { throw new InputException("Invalid latitude"); }
                                             Console.Write("Longitude:\t");
                                             if (!double.TryParse(Console.ReadLine(), out double longitude)) { throw new InputException("Invalid longitude"); }
-                                            myBaseStation.BSLocation = new Location(latitude, longitude);
+                                            myBaseStation.Location = new Location() { Latitude = latitude, Longitude = longitude };
                                             Console.Write("Number of free charger slots:\t");
                                             if (!int.TryParse(Console.ReadLine(), out int freeSlots)) { throw new InputException("Invalid number"); }
                                             if (freeSlots < 0) throw new InputException("Free slots count can't be nagative");
@@ -109,10 +109,10 @@ FOR ADDING A PARCEL PRESS 4
                                             myCustomer.PhoneNumber = Console.ReadLine();
                                             Console.Write("Latitude:\t");
                                             if (!double.TryParse(Console.ReadLine(), out double latitude)) { throw new InputException("Invalid latitude"); }
-                                            myCustomer.CustomerLocation.Latitude = latitude;
+                                            myCustomer.Location.Latitude = latitude;
                                             Console.Write("Longitude:\t");
                                             if (!double.TryParse(Console.ReadLine(), out double longitude)) { throw new InputException("Invalid longitude"); }
-                                            myCustomer.CustomerLocation.Longitude = longitude;
+                                            myCustomer.Location.Longitude = longitude;
                                             myBl.AddCustomer(myCustomer);
                                             Console.WriteLine($"---------------------------------\n" +
                                                 $"Customer {id} was added successfully\n" +
@@ -239,7 +239,7 @@ FOR DELIVERING A PARCEL TO THE CUSTOMER PRESS 8
                                             if (!int.TryParse(Console.ReadLine(), out int droneId)) throw new InputException("Invalid Drone Id");
                                             Console.Write("TIME IN CHARGE:\t");
                                             TimeSpan.TryParse(Console.ReadLine(), out TimeSpan tSpanInCharge);
-                                            myBl.releaseDrone(droneId, tSpanInCharge);
+                                            myBl.releaseDrone(droneId);
                                             Console.WriteLine($"---------------------------------\n" +
                                                               $"Drone {droneId} was released successfully\n" +
                                                               $"---------------------------------", Console.ForegroundColor = ConsoleColor.Green);
@@ -305,7 +305,7 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.Write("ENTER BASE-STATION ID FOR VIEWING:\t");
                                             if (!int.TryParse(Console.ReadLine(), out int baseStationId)) throw new InputException("Invalid Base-Station Id");
                                             Console.WriteLine("---------------------------------");
-                                            BaseStation myBase = myBl.FindBaseStation(baseStationId);
+                                            BaseStation myBase = myBl.GetBaseStation(baseStationId);
                                             Console.Write(myBase.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                             Console.ResetColor(); break;
                                         }
@@ -314,7 +314,7 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.Write("ENTER DRONE ID FOR VIEWING:\t");
                                             if (!int.TryParse(Console.ReadLine(), out int droneId)) throw new InputException("Invalid Drone Id");
                                             Console.WriteLine("---------------------------------");
-                                            Drone myDrone = myBl.FindDrone(droneId);
+                                            Drone myDrone = myBl.GetDrone(droneId);
                                             Console.WriteLine(myDrone.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                             Console.ResetColor(); break;
                                         }
@@ -323,7 +323,7 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.Write("ENTER CUSTOMER ID FOR VIEWING:\t");
                                             if (!int.TryParse(Console.ReadLine(), out int customerId)) throw new InputException("Invalid customer Id");
                                             Console.WriteLine("---------------------------------");
-                                            Customer myCustomer = myBl.FindCustomer(customerId);
+                                            Customer myCustomer = myBl.GetCustomer(customerId);
                                             Console.WriteLine(myCustomer.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                             Console.ResetColor();
                                             break;
@@ -333,7 +333,7 @@ FOR VIEWING A PARCEL PRESS 4
                                             Console.Write("ENTER PARCEL ID FOR VIEWING:\t");
                                             if (!int.TryParse(Console.ReadLine(), out int parcelId)) throw new InputException("Invalid parcel Id");
                                             Console.WriteLine("---------------------------------");
-                                            Parcel myParcel = myBl.FindParcel(parcelId);
+                                            Parcel myParcel = myBl.GetParcel(parcelId);
                                             Console.WriteLine(myParcel.ToString(), Console.ForegroundColor = ConsoleColor.Green);
                                             Console.ResetColor();
                                             break;
@@ -362,25 +362,25 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                                 {
                                     case 1:
                                         {
-                                            ((List<BaseStationToList>)myBl.AllBlBaseStations()).ForEach(myPrint);
+                                            ((List<BaseStationToList>)myBl.GetBaseStations()).ForEach(myPrint);
                                             Console.ResetColor();
                                             break;
                                         }
                                     case 2:
                                         {
-                                            ((List<DroneToList>)myBl.AllBlDrones()).ForEach(myPrint);
+                                            ((List<DroneToList>)myBl.GetDrones()).ForEach(myPrint);
                                             Console.ResetColor();
                                             break;
                                         }
                                     case 3:
                                         {
-                                            ((List<CustomerToList>)myBl.AllBlCustomers()).ForEach(myPrint);
+                                            ((List<CustomerToList>)myBl.GetCustomers()).ForEach(myPrint);
                                             Console.ResetColor();
                                             break;
                                         }
                                     case 4:
                                         {
-                                            ((List<ParcelToList>)myBl.AllBlParcels()).ForEach(myPrint);
+                                            ((List<ParcelToList>)myBl.GetParcels()).ForEach(myPrint);
                                             Console.ResetColor();
                                             break;
                                         }

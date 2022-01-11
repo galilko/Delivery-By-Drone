@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Data>
+  <BatteryUsages>
+    <double>0.5</double>
+    <double>2.5</double>
+    <double>3.5</double>
+    <double>5.5</double>
+    <double>20.5</double>
+  </BatteryUsages>
+  <NewParcelId>100024</NewParcelId>
+</Data>

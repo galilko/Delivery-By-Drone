@@ -2,6 +2,7 @@
 using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,43 +20,47 @@ namespace PL
     /// <summary>
     /// Interaction logic for CustomerWindow.xaml
     /// </summary>
-    public partial class CustomerWindow : Window
+    public partial class CustomerWindow : Window, INotifyPropertyChanged
     {
         private IBL bl;
-        private CustomerToList ctl;
-        private Customer newC;
 
-        public CustomerWindow()
-        {
-            InitializeComponent();
-        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        public static Model Model1 { get; } = Model.Instance;
+
+        Customer customer;
+        public Customer Customer { get => customer; }
 
         public CustomerWindow(IBL bl)
         {
             this.bl = bl;
-            newC = new Customer();
+            customer = new Customer() { Location = new() };
             InitializeComponent();
             this.Width = 400;
             this.Height = 500;
-            this.MethodsBSGrid.Visibility = Visibility.Collapsed;
+            this.MethodsCustomerGrid.Visibility = Visibility.Collapsed;
             this.AddCustomerGrid.Visibility = Visibility.Visible;
-            this.AddCustomerGrid.DataContext = newC;
-            newC.CustomerLocation = new();
-            LongitudeTextBox.DataContext = LatitudeIdTextBox.DataContext = newC.CustomerLocation;
-
         }
 
         public CustomerWindow(IBL bl, CustomerToList ctl)
         {
             this.bl = bl;
-            this.ctl = ctl;
+            customer = bl.GetCustomer(ctl.Id);
             InitializeComponent();
-            this.MethodsBSGrid.Visibility = Visibility.Visible;
+            this.MethodsCustomerGrid.Visibility = Visibility.Visible;
             this.AddCustomerGrid.Visibility = Visibility.Collapsed;
-            var c = bl.FindCustomer(ctl.Id);
-            DataContext = c;
-            lvParcelSent.DataContext = c.ParcelFromCustomerList;
-            lvParcelRecieved.DataContext = c.ParcelToCustomerList;
+        }
+
+        /// <summary>
+        /// make it possible to drag the window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
         }
 
         /// <summary>
@@ -72,8 +77,12 @@ namespace PL
         {
             try
             {
-                bl.AddCustomer(newC);
-                MessageBox.Show($"Customer {newC.Id} was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                bl.AddCustomer(Customer);
+                lock (bl)
+                {
+                    Model1.Customers.Add(bl.GetCustomerToList(Customer.Id));
+                }
+                MessageBox.Show($"Customer {Customer.Id} was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
             }
             catch (Exception ex)
@@ -91,11 +100,10 @@ namespace PL
 
         private void btnUpdateCustomer_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateCustomer(ctl.Id, CNameTextBox.Text, CPhoneTextBox.Text);
-            MessageBox.Show($"Customer {ctl.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+            bl.UpdateCustomer(Customer.Id, CNameTextBox.Text, CPhoneTextBox.Text);
+            updateCustomersView();
+            MessageBox.Show($"Customer {Customer.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             this.UpdateExpander.IsExpanded = false;
-            var c = bl.FindCustomer(ctl.Id);
-            DataContext = c;
         }
 
         private void lvParcelSent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -130,7 +138,12 @@ namespace PL
             {
                 if (MessageBox.Show("Are you sure you want to delete Customer?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    bl.DeleteCustomer((int)ctl.Id);
+                    CustomerToList ctl = bl.GetCustomerToList(Customer.Id);
+                    bl.DeleteCustomer((int)Customer.Id);
+                    lock (bl)
+                    {
+                        Model1.RemoveCustomer(ctl);
+                    }
                     MessageBox.Show("Customer was deleted succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                     Close();
                 }
@@ -146,5 +159,23 @@ namespace PL
                 MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void updateCustomersView()
+        {
+            lock (bl)
+            {
+                customer = bl.GetCustomer((int)Customer.Id);
+                this.setAndNotify(PropertyChanged, nameof(Customer), out customer, customer);
+
+                CustomerToList ctl = Model1.Customers.FirstOrDefault(c => c.Id == Customer.Id);
+                int index = Model1.Customers.IndexOf(ctl);
+                if (index >= 0)
+                {
+                    Model1.Customers.Remove(ctl);
+                    Model1.Customers.Insert(index, bl.GetCustomerToList(Customer.Id));
+                }
+            }
+        }
+
     }
 }

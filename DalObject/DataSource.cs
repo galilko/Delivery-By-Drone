@@ -16,23 +16,22 @@ namespace Dal
         internal class Config
         {
             internal static int NewParcelId = 100000;
-            internal static double BatteryUseFREE { get { return 0.5; } }
-            internal static double BatteryUseLight { get { return 2.5; } }
-            internal static double BatteryUseMedium { get { return 3.5; } }
-            internal static double BatteryUseHeavy { get { return 5.5; } }
-            internal static double BatteryChargeRate { get { return 20.5; } }
+            internal static double BatteryUseFREE { get { return 1; } }
+            internal static double BatteryUseLight { get { return 2; } }
+            internal static double BatteryUseMedium { get { return 3; } }
+            internal static double BatteryUseHeavy { get { return 4; } }
+            internal static double BatteryChargeRate { get { return 5; } }
         }
 
-        static Random _R = new Random(DateTime.Now.Millisecond);
+        static Random rand = new Random(DateTime.Now.Millisecond);
         static T RandomEnumValue<T>()
         {
             var v = Enum.GetValues(typeof(T));
-            return (T)v.GetValue(_R.Next(v.Length));
+            return (T)v.GetValue(rand.Next(v.Length));
         }
 
         public static void Initialize()
         {
-            Random rand = new Random(DateTime.Now.Millisecond);
             //initialize drones
             for (int i = 0; i < 20; i++)
             {
@@ -44,8 +43,10 @@ namespace Dal
                 });
             }
             //initialize base-stations
-            BaseStationsList.Add(new BaseStation() { Id = 1000, Name = "Jerusalem Central Station", Lattitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 20, IsActive=true });
-            BaseStationsList.Add(new BaseStation() { Id = 1001, Name = "Tel Aviv Central Station", Lattitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 20, IsActive=true });
+            //BaseStationsList.Add(new BaseStation() { Id = 1000, Name = "Jerusalem Central Station", Latitude = 31.789280, Longitude = 35.202142, FreeChargeSlots = 20, IsActive=true });
+            //BaseStationsList.Add(new BaseStation() { Id = 1001, Name = "Tel Aviv Central Station", Latitude = 32.056312, Longitude = 34.779888, FreeChargeSlots = 20, IsActive=true });
+            BaseStationsList.Add(new BaseStation() { Id = 1000, Name = "Jerusalem Central Station", Latitude = getRandomCoordinate(31.71), Longitude = getRandomCoordinate(35.18), FreeChargeSlots = 20, IsActive=true });
+            BaseStationsList.Add(new BaseStation() { Id = 1001, Name = "Tel Aviv Central Station", Latitude = getRandomCoordinate(31.71), Longitude = getRandomCoordinate(35.18), FreeChargeSlots = 20, IsActive=true });
             //initialize customers
             String[] maleNames = { "Aaron", "Shoham", "Gal", "Yossef", "David", "Eyal", "Michael", "Matan", "Shaul", "Dvir" };
             String[] lastNames = { "Cohen", "Gabay", "Levi", "Weiss", "Miletzki" };
@@ -55,8 +56,10 @@ namespace Dal
                 {
                     Id = rand.Next(100000000, 999999999),
                     Name = maleNames[rand.Next(maleNames.Length)] + " " + lastNames[rand.Next(lastNames.Length)],
-                    Lattitude = rand.NextDouble() * (33.4188709641265 - 29.49970431757609) + 29.49970431757609,
-                    Longitude = rand.NextDouble() * (35.89927249423983 - 34.26371323423407) + 34.26371323423407,
+                    //Latitude = rand.NextDouble() * (33.4188709641265 - 29.49970431757609) + 29.49970431757609,
+                    //Longitude = rand.NextDouble() * (35.89927249423983 - 34.26371323423407) + 34.26371323423407,
+                    Latitude = getRandomCoordinate(31.71),
+                    Longitude = getRandomCoordinate(35.18),
                     Phone = "05" + rand.Next(0, 99999999).ToString().Insert(1, "-"),
                     IsActive = true
                 }
@@ -100,6 +103,8 @@ namespace Dal
             }
 
         }
+
+        static double getRandomCoordinate(double coord) => coord + rand.NextDouble() / 10;
 
     }
 }

@@ -11,7 +11,7 @@ namespace BO
         /// <param name="l1">point 1</param>
         /// <param name="l2">point 2</param>
         /// <returns> double distance</returns>
-        internal static double DistanceBetweenTwoLocations(Location p1, Location p2)
+        /*internal static double DistanceBetweenTwoLocations(Location p1, Location p2)
         {
             return Math.Sqrt(Math.Pow((double)p1.Latitude - (double)p2.Latitude, 2) + Math.Pow((double)p1.Longitude - (double)p2.Longitude, 2));
         }
@@ -22,15 +22,15 @@ namespace BO
             double MinDistance = double.MaxValue;
             foreach (var bs in BaseStations)
             {
-                Location BSLocation = new() { Latitude = bs.Lattitude, Longitude = bs.Longitude };
-                if (LocationFuncs.DistanceBetweenTwoLocations(BSLocation, MyLocation) < MinDistance)
+                Location Location = new() { Latitude = bs.Latitude, Longitude = bs.Longitude };
+                if (LocationFuncs.DistanceBetweenTwoLocations(Location, MyLocation) < MinDistance)
                 {
-                    MinDistance = LocationFuncs.DistanceBetweenTwoLocations(BSLocation, MyLocation);
-                    ClosestLocation = BSLocation;
+                    MinDistance = LocationFuncs.DistanceBetweenTwoLocations(Location, MyLocation);
+                    ClosestLocation = Location;
                 }
             }
             return ClosestLocation;
         }
-
+        */
     }
 }

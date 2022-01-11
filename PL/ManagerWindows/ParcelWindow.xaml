@@ -16,7 +16,8 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Window.Resources>
 
         <LinearGradientBrush x:Key="myLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -28,8 +29,9 @@
         CornerRadius="40"
         BorderBrush="#81d4fa"
         BorderThickness="4"
+        MouseDown="UIElement_OnMouseDown"
         Background="White">
-        <Grid x:Name="MainGrid">
+        <Grid x:Name="MainGrid" DataContext="{Binding Parcel}">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -71,11 +73,11 @@
                 <ComboBox x:Name="cmbTarget" Text="Choose target:" IsEditable="True" IsReadOnly="True"
                           HorizontalAlignment="Center" Width="150" Height="25" Grid.Row="2"
                       SelectedItem="{Binding Target.Id}" VerticalAlignment="Center" />
-                <ComboBox x:Name="cmbWeight" Text="Choose Weight:" IsEditable="True" IsReadOnly="True"
-                          HorizontalAlignment="Center" Width="150" Height="25" Grid.Row="3"
+                <ComboBox x:Name="cmbWeight" Text="Choose Weight:" IsEditable="True" IsReadOnly="True" 
+                          HorizontalAlignment="Center" Width="150" Height="25" Grid.Row="3" ItemsSource="{Binding Source={StaticResource WeightCategories}}"
                       SelectedItem="{Binding Weight}" VerticalAlignment="Center" />
                 <ComboBox x:Name="cmbPriority" Text="Choose Priority:" IsEditable="True" IsReadOnly="True"
-                          HorizontalAlignment="Center" Grid.Row="4" SelectedItem="{Binding Priority}"
+                          HorizontalAlignment="Center" Grid.Row="4" SelectedItem="{Binding Priority}" ItemsSource="{Binding Source={StaticResource Priorities}}"
                        VerticalAlignment="Center" Width="150" Height="25"/>
                 <Button x:Name="btnAddParcel" ToolTip="Add Parcel" Grid.Row="5" Grid.RowSpan="2" Margin="0,0,0,35"
                         Content="{materialDesign:PackIcon Kind=Add, Size=50}" VerticalAlignment="Center"
@@ -358,7 +360,7 @@
         />-->
                         <Label 
         x:Name="lbLocation"
-        Content="{Binding CurrentLocation}"
+        Content="{Binding Location}"
         Grid.Row="7"
         Grid.Column="3"
         Grid.ColumnSpan="3"

@@ -16,7 +16,9 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+                DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="Window_Loaded">
+
     <Window.Resources>
 
     </Window.Resources>
@@ -40,7 +42,6 @@
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#FF6176A6"/>
-                            <Setter Property="Foreground" Value="White"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -78,17 +79,17 @@
                                 <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png"/>
                                 <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
-                                        <ComboBox x:Name="cmbStatus" Text="Choose status:"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:"
-                                Width="150" SelectionChanged="cmbStatus_SelectionChanged" FontFamily="Comic Sans MS" FontSize="14"/>
+                                        <ComboBox x:Name="cmbStatus" Text="Choose status:" ItemsSource="{Binding Source={StaticResource DroneStatusCategories}}"
+                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:" SelectedItem="{Binding Model.StatusSelector}"
+                                Width="150" FontFamily="Comic Sans MS" FontSize="14"/>
                                         <Button x:Name="btnResetStatus" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
                                       Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="30" Height="30" 
  VerticalAlignment="Top" Click="btnResetStatus_Click" Margin="20,0,0,0"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                        <ComboBox x:Name="cmbWeight" Grid.Column="1" Text="Choose weight:" Width="150"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose weight:"
-                                 SelectionChanged="cmbWeight_SelectionChanged" FontFamily="Comic Sans MS" FontSize="14" />
+                                        <ComboBox x:Name="cmbWeight" Grid.Column="1" Text="Choose weight:" Width="150" ItemsSource="{Binding Source={StaticResource WeightCategories}}"
+                                IsEditable="True" IsReadOnly="True" ToolTip="Choose weight:" SelectedItem="{Binding Model.WeightSelector}"
+                                FontFamily="Comic Sans MS" FontSize="14" />
                                         <Button x:Name="btnResetWeight" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
                                                  Margin="20,0,0,0"
                     Grid.Column="2" Width="30" Click="btnResetWeight_Click" Height="30" />
@@ -110,7 +111,8 @@
                                 </Button>
                                 -->
                             </Grid>
-                            <ListView x:Name="DronesListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <ListView x:Name="DronesListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Drones, Mode=OneWay}"
+                                      Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
                   MouseDoubleClick="DronesListView_MouseDoubleClick" AlternationCount="2">
                                 <ListView.View>
@@ -119,10 +121,20 @@
                                             <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="65"/>
                                             <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model}" Width="65"/>
                                             <GridViewColumn Header="Weight" DisplayMemberBinding="{Binding Weight}" Width="65" />
-                                            <GridViewColumn Header="Battery Status" DisplayMemberBinding="{Binding BatteryStatus, StringFormat={}{0:#.##}}"  Width="120"/>
+                                            <GridViewColumn Header="Battery Status" Width="120">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <ProgressBar Name="BatteryProgressBar"  Width="80" Height="20" Margin="-5,-1"  Value="{Binding BatteryStatus, Mode=OneWay,Converter={StaticResource batteryToProgressBarConverter}}"
+                                                                         Foreground="{Binding BatteryStatus, Converter={StaticResource batteryToColorConverter}}" Background="White"/>
+                                                            <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
                                             <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"  Width="90"/>
                                             <GridViewColumn Header="Current Parcel" DisplayMemberBinding="{Binding TransferdParcel}"/>
-                                            <GridViewColumn Header="Current Location" DisplayMemberBinding="{Binding CurrentLocation}"/>
+                                            <GridViewColumn Header="Current Location" DisplayMemberBinding="{Binding Location}"/>
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
@@ -179,7 +191,7 @@
                                 </StackPanel>
                             </Grid>
 
-                            <ListView x:Name="BSListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <ListView x:Name="BSListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.BaseStations, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
                   AlternationCount="2" HorizontalContentAlignment="Center" MouseDoubleClick="BSListView_MouseDoubleClick">
                                 <ListView.View>
@@ -242,7 +254,7 @@
 
                             </Grid>
 
-                            <ListView x:Name="CustomersListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <ListView x:Name="CustomersListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Customers, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
                   MouseDoubleClick="CustomersListView_MouseDoubleClick" AlternationCount="2" HorizontalContentAlignment="Center">
                                 <ListView.View>
@@ -325,8 +337,8 @@
                                 <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
                                         <ComboBox x:Name="cmbParcelStatus" Text="Choose status:"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:"
-                                Width="150" FontFamily="Comic Sans MS" FontSize="14" SelectionChanged="cmbParcelStatus_SelectionChanged"/>
+                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:" ItemsSource="{Binding Source={StaticResource ParcelStatus}}"
+                                Width="150" FontFamily="Comic Sans MS" FontSize="14" SelectedItem="{Binding Model.ParcelStatusSelector}"/>
                                         <Button x:Name="btnResetParcelStatus" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
                                       Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="30" Height="30" 
  VerticalAlignment="Top" Margin="20,0,0,0" Click="btnResetParcelStatus_Click"/>
@@ -359,7 +371,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
-                            <ListView x:Name="ParcelsListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            <ListView x:Name="ParcelsListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Parcels, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
                   MouseDoubleClick="ParcelsListView_MouseDoubleClick" AlternationCount="2">
                                 <ListView.View>
@@ -410,7 +422,7 @@
                 Name="Refresh" Content="{materialDesign:PackIcon Kind=Refresh, Size=30}"
                 Height="35" Width="35" Margin="0,0,10,0"
                 Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Click="Close_OnClick"
+                Click="Refresh_Click"
                 />
                     <Button
                 Name="Close" Content="{materialDesign:PackIcon Kind=Close, Size=30}"

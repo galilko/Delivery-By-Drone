@@ -12,19 +12,19 @@ namespace BlApi
         void AddCustomer(Customer myCustomer);
         void AddDrone(DroneToList myDrone, int baseStationId);
         void AddParcel(Parcel myParcel);
-        IEnumerable<BaseStationToList> AllBlBaseStations();
-        IEnumerable<CustomerToList> AllBlCustomers();
-        IEnumerable<DroneToList> AllBlDrones(Func<DroneToList, bool> predicate = null);
-        IEnumerable<ParcelToList> AllBlParcels();
+        IEnumerable<BaseStationToList> GetBaseStations();
+        IEnumerable<CustomerToList> GetCustomers();
+        IEnumerable<DroneToList> GetDrones(Func<DroneToList, bool> predicate = null);
+        IEnumerable<ParcelToList> GetParcels();
         IEnumerable<ParcelToList> ParcelsByStatus(ParcelStatus myStatus);
         IEnumerable<ParcelToList> GetSentParcels(int id);
         IEnumerable<ParcelToList> GetRecievedParcels(int id);
         void ChargeDrone(int? droneId);
         void DeliverAParcel(int? droneId);
-        BaseStation FindBaseStation(int baseStationId);
-        Customer FindCustomer(int? customerId);
-        Drone FindDrone(int? droneId);
-        Parcel FindParcel(int parcelId);
+        BaseStation GetBaseStation(int baseStationId);
+        Customer GetCustomer(int? customerId);
+        Drone GetDrone(int? droneId);
+        Parcel GetParcel(int parcelId);
         void DeleteBaseStation(int id);
         void DeleteDrone(int? id);
         void DeleteCustomer(int id);
@@ -32,11 +32,16 @@ namespace BlApi
         IEnumerable<BaseStationToList> FreeSlotsBaseStations();
         IEnumerable<ParcelToList> NoneScheduledParcels();
         void PickingUpAParcel(int? droneId);
-        void releaseDrone(int? droneId, TimeSpan tSpanInCharge);
+        void releaseDrone(int? droneId);
         void ScheduleDroneForParcel(int? droneId);
-        void UpdateBaseStation(int baseStationId, string newName, int slotsCount);
+        void UpdateBaseStation(int? baseStationId, string newName, int slotsCount);
         void UpdateCustomer(int? customerId, string newName, string newPhone);
         void UpdateDroneModel(int? droneId, string newName);
         IEnumerable<ParcelToList> ParcelsByDates(DateTime? fromDate, DateTime? toDate);
+        DroneToList GetDroneToList(int? id);
+        BaseStationToList GetBSToList(int? id);
+        CustomerToList GetCustomerToList(int? id);
+        ParcelToList GetParcelToList(int? id);
+        int GetNextParcelId();
     }
 }

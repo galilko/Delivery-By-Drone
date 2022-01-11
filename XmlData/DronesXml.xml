@@ -1,123 +1,103 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
-    <Id>5084537</Id>
+    <Id>8067378</Id>
     <Model>Model0</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
-    <Id>8586195</Id>
+    <Id>1680573</Id>
     <Model>Model1</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>5179778</Id>
-    <Model>Model2</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>6319363</Id>
-    <Model>Model3</Model>
-    <MaxWeight>Medium</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>7554041</Id>
-    <Model>Model5</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>9527488</Id>
-    <Model>Model7</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>1833038</Id>
+    <Id>7474306</Id>
+    <Model>Model2</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>7609791</Id>
+    <Model>Model3</Model>
+    <MaxWeight>Light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>8629535</Id>
+    <Model>Model4</Model>
+    <MaxWeight>Light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>2367186</Id>
+    <Model>Model5</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>9161543</Id>
+    <Model>Model6</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>1541099</Id>
+    <Model>Model7</Model>
+    <MaxWeight>Light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>1031698</Id>
     <Model>Model8</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
-    <Id>9091303</Id>
+    <Id>8859642</Id>
     <Model>Model9</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
-    <Id>3799582</Id>
+    <Id>8690854</Id>
     <Model>Model10</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>7134834</Id>
-    <Model>Model11</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>8811790</Id>
+    <Id>3905427</Id>
+    <Model>Model11</Model>
+    <MaxWeight>Medium</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>4945740</Id>
     <Model>Model12</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
-    <Id>5914833</Id>
+    <Id>2169867</Id>
     <Model>Model13</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>9763398</Id>
+    <Id>8394321</Id>
     <Model>Model14</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>4479722</Id>
+    <Id>3279666</Id>
     <Model>Model15</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>9730820</Id>
+    <Id>2442138</Id>
     <Model>Model16</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
-    <Id>9956306</Id>
+    <Id>1446037</Id>
     <Model>Model17</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>8184673</Id>
+    <Id>6651109</Id>
     <Model>Model18</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>5284508</Id>
+    <Id>4900479</Id>
     <Model>Model19</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>1212121</Id>
-    <Model>njnj</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>1111111</Id>
-    <Model>ssssss</Model>
-    <MaxWeight>Medium</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>2222222</Id>
-    <Model>ssss</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>3333333</Id>
-    <Model>xxxxx</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>2222223</Id>
-    <Model>sdsd</Model>
-    <MaxWeight>Medium</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>6865795</Id>
-    <Model>myy</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
 </ArrayOfDrone>

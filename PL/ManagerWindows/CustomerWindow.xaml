@@ -15,7 +15,8 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
-        WindowStyle="None">
+        WindowStyle="None"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
     <Window.Resources>
 
         <LinearGradientBrush x:Key="myLinearGradientBrush" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -27,9 +28,10 @@
         CornerRadius="40"
         BorderBrush="#81d4fa"
         BorderThickness="4"
+        MouseDown="UIElement_OnMouseDown"
         Background="White">
 
-        <Grid x:Name="MainGrid">
+        <Grid x:Name="MainGrid" DataContext="{Binding Customer}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
@@ -50,7 +52,7 @@
                     Height="30"
                 />
             </Button>
-            <Grid x:Name="AddCustomerGrid" Visibility="Visible" Grid.Row="1" Height="500" Width="280"
+            <Grid x:Name="AddCustomerGrid" Grid.Row="1" Height="500" Width="280"
                   HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
@@ -71,9 +73,9 @@
                 <TextBox x:Name="PhoneTextBox" Width="220" Height="40" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="3" Text="{Binding PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Phone Number" materialDesign:HintAssist.IsFloating="True"/>
                 <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Name="LongitudeTextBox" Height="40" Width="100" Text="{Binding Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                    <TextBox x:Name="LongitudeTextBox" Height="40" Width="100" Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Longitude" materialDesign:HintAssist.IsFloating="True"/>
-                    <TextBox x:Name="LatitudeIdTextBox" Height="40" Width="100" Margin="20,0,0,0" Text="{Binding Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                    <TextBox x:Name="LatitudeIdTextBox" Height="40" Width="100" Margin="20,0,0,0" Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                      materialDesign:HintAssist.Hint="Latitude" materialDesign:HintAssist.IsFloating="True"/>
                 </StackPanel>
                 
@@ -83,7 +85,7 @@
 />
 
             </Grid>
-            <Grid x:Name="MethodsBSGrid" Grid.Row="1" Grid.RowSpan="2" Visibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
+            <Grid x:Name="MethodsCustomerGrid" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto" Width="auto">
                 
                 <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" >
 
@@ -246,12 +248,12 @@
         VerticalContentAlignment="Center"
         />
                         <Label 
-        Content="{Binding CustomerLocation}"
+        Content="{Binding Location}"
         Grid.Row="4"
         Grid.Column="1"
         VerticalContentAlignment="Center"
         />
-                        <ListView x:Name="lvParcelSent" ItemsSource="{Binding}" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Height="120"
+                        <ListView x:Name="lvParcelSent" ItemsSource="{Binding ParcelFromCustomerList, Mode=OneWay}" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Height="120"
                                   HorizontalAlignment="Left" Margin="150,0,0,0" MouseDoubleClick="lvParcelSent_MouseDoubleClick">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">
@@ -272,7 +274,7 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <ListView x:Name="lvParcelRecieved" ItemsSource="{Binding}" Grid.Row="8" Grid.RowSpan="2" Grid.ColumnSpan="2" Height="120"
+                        <ListView x:Name="lvParcelRecieved" ItemsSource="{Binding ParcelToCustomerList, Mode=OneWay}" Grid.Row="8" Grid.RowSpan="2" Grid.ColumnSpan="2" Height="120"
                                   HorizontalAlignment="Left" Margin="150,15,0,0" MouseDoubleClick="lvParcelRecieved_MouseDoubleClick">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem" BasedOn="{StaticResource MaterialDesignGridViewItem}">

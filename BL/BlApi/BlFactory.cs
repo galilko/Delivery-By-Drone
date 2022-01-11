@@ -4,7 +4,7 @@
     {
         public static BlApi.IBL GetBL()
         {
-            return BlApi.BL.Instance;
+            return BL.BL.Instance;
         }
     }
 }

@@ -23,11 +23,11 @@ namespace PL
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            foreach (var drone in theBL.AllBlDrones())
+            /*foreach (var drone in theBL.AllBlDrones())
             {
                 if (drone.Status == BO.DroneStatusCategories.Maintenance)
                     theBL.releaseDrone(drone.Id, new System.TimeSpan(0));
-            }
+            }*/
             Close();
         }
 

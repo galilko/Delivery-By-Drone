@@ -2,21 +2,54 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             xmlns:bo="clr-namespace:BO;assembly=BL"
+             xmlns:rt="clr-namespace:System;assembly=System.Runtime">
     <Application.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type Window}">
                 <Setter Property="FontFamily" Value="Comic Sans MS" />
             </Style>
+            <ObjectDataProvider x:Key="WeightCategories" MethodName="GetValues"
+                            ObjectType="{x:Type rt:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="bo:WeightCategories"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="DroneStatusCategories" MethodName="GetValues"
+                            ObjectType="{x:Type rt:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="bo:DroneStatusCategories"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="ParcelStatus" MethodName="GetValues"
+                            ObjectType="{x:Type rt:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="bo:ParcelStatus"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="Priorities" MethodName="GetValues"
+                            ObjectType="{x:Type rt:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="bo:Priorities"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <local:BatteryToColorConverter x:Key="batteryToColorConverter"/>
+            <local:BatteryToProgressBarConverter x:Key="batteryToProgressBarConverter"/>
+            <local:TrueVisibileConverter x:Key="trueVisibileConverter"/>
+            <local:FalseVisibileConverter x:Key="falseVisibileConverter"/>
+            <local:DeliveryVisibileConverter x:Key="deliveryVisibileConverter"/>
+            <local:MaintenanceVisibileConverter x:Key="maintenanceVisibileConverter"/>
+            <local:FreeVisibileConverter x:Key="freeVisibileConverter"/>
             <ResourceDictionary.MergedDictionaries>
+                
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.LightBlue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/Generic.xaml" />
-    <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignExtensions;component/Themes/MaterialDesignLightTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

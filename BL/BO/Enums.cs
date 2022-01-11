@@ -40,4 +40,6 @@ namespace BO
         [Description("delivered")]
         Delivered
     }
+    public enum BatteryUsage { Available, Light, Medium, Heavy, Charging }
+
 }

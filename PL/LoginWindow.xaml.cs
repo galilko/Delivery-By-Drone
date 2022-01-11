@@ -56,7 +56,7 @@ namespace PL
             {
                 if (int.TryParse(UserNameTextBox.Text, out int customerId))
                 {
-                    BO.Customer loggedCustomer = bl.FindCustomer(customerId);
+                    BO.Customer loggedCustomer = bl.GetCustomer(customerId);
                     if (!loggedCustomer.Equals(default(BO.Customer)))
                     {
                         var uw = new UserWindow(bl, customerId);

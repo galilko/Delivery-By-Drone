@@ -73,7 +73,7 @@ namespace Dal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public BaseStation FindBaseStation(int id)
+        public BaseStation GetBaseStation(int id)
         {
             foreach (var item in DataSource.BaseStationsList)
                 if (item.Id == id)
@@ -106,7 +106,7 @@ namespace Dal
         /// <param name="baseStationId"></param>
         /// <param name="newName"></param>
         /// <param name="slotsCount"></param>
-        public void UpdateBaseStation(int baseStationId, string newName, int slotsCount)
+        public void UpdateBaseStation(int? baseStationId, string newName, int slotsCount)
         {
             if (!DataSource.BaseStationsList.Exists(x => x.Id == baseStationId)) //if base station doesn't exist
                 throw new BaseStationException($"Base Station {baseStationId} doesn't exists");
@@ -126,7 +126,7 @@ namespace Dal
         /// return List of base-stations
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BaseStation> AllBaseStations(Func<BaseStation, bool> predicate = null)
+        public IEnumerable<BaseStation> GetBaseStations(Func<BaseStation, bool> predicate = null)
         {
             if (predicate == null)
                 return DataSource.BaseStationsList.Where(x=>x.IsActive == true).ToList();
@@ -156,7 +156,7 @@ namespace Dal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Drone FindDrone(int? id)
+        public Drone GetDrone(int? id)
         {
             foreach (var item in DataSource.DronesList)
                 if (item.Id == id)
@@ -253,14 +253,14 @@ namespace Dal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Customer FindCustomer(int? id)
+        public Customer GetCustomer(int? id)
         {
             foreach (var item in DataSource.CustomersList)
                 if (item.Id == id && item.IsActive)
                     return item;
             throw new CustomerException($"Customer {id} doesn't exist");
         }
-
+        
         public void DeleteCustomer(int id)
         {
             if (!DataSource.CustomersList.Exists(x => x.Id == id)) //if base station doesn't exist
@@ -322,7 +322,7 @@ namespace Dal
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Parcel FindParcel(int id)
+        public Parcel GetParcel(int id)
         {
             foreach (var item in DataSource.ParcelsList)
                 if (item.Id == id)
@@ -338,7 +338,7 @@ namespace Dal
         {
             try
             {
-                    DataSource.ParcelsList.Remove(FindParcel(id));
+                    DataSource.ParcelsList.Remove(GetParcel(id));
             }
             catch
             {
@@ -418,6 +418,11 @@ namespace Dal
                         }
                 }
         }
+
+        public int GetNextParcelId()
+        {
+            return DataSource.Config.NewParcelId;
+        }
         #endregion
 
 
@@ -427,7 +432,7 @@ namespace Dal
         /// return List of customers
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Customer> AllCustomers(Func<Customer, bool> predicate = null)
+        public IEnumerable<Customer> GetCustomers(Func<Customer, bool> predicate = null)
         {
             if (predicate == null)
                 return DataSource.CustomersList.Where(x => x.IsActive == true).ToList();
@@ -441,12 +446,12 @@ namespace Dal
         /// return List of drones
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Drone> AllDrones() => DataSource.DronesList;
+        public IEnumerable<Drone> GetDrones() => DataSource.DronesList;
         /// <summary>
         /// return List of parcels
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Parcel> AllParcels(Func<Parcel, bool> predicate = null)
+        public IEnumerable<Parcel> GetParcels(Func<Parcel, bool> predicate = null)
         {
             if (predicate == null)
                 return DataSource.ParcelsList.ToList();
@@ -485,9 +490,10 @@ namespace Dal
 
         #endregion
 
-        public IEnumerable<DroneCharge> GetListOfInChargeDrones()
+        public IEnumerable<DroneCharge> GetListOfInChargeDrones(Func<DroneCharge, bool> predicate = null)
         {
-            return DataSource.DroneChargeList;
+            if (predicate == null) return DataSource.DroneChargeList;
+            else return DataSource.DroneChargeList.Where(predicate);
         }
         void IDal.UpdateDroneModel(int? droneId, string newName)
         {

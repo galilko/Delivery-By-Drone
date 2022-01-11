@@ -7,7 +7,7 @@ namespace DO
         public int? Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
-        public double Lattitude { get; set; }
+        public double Latitude { get; set; }
         public double Longitude { get; set; }
         public bool IsActive { get; set; }
         public override string ToString()
@@ -16,7 +16,7 @@ namespace DO
             str += $"Id:\t\t {Id}\n";
             str += $"Name:\t\t {Name}\n";
             str += $"Phone:\t\t {Phone}\n";
-            str += $"Lattitude:\t {Converter.LatitudeToSexadecimal(Lattitude)}\n";
+            str += $"Latitude:\t {Converter.LatitudeToSexadecimal(Latitude)}\n";
             str += $"Longitude:\t {Converter.LongitudeToSexadecimal(Longitude)}\n";
             return str;
         }
