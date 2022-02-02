@@ -1,39 +1,67 @@
 <?xml version="1.0"?>
 <ArrayOfDroneCharge xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DroneCharge>
-    <DroneId>8067378</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100001</DroneId>
+    <StationId>1009</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>7609791</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100005</DroneId>
+    <StationId>1002</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>8629535</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100007</DroneId>
+    <StationId>1009</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>9161543</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100008</DroneId>
+    <StationId>1004</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>2169867</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100010</DroneId>
+    <StationId>1006</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>8394321</DroneId>
+    <DroneId>100011</DroneId>
     <StationId>1000</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>3279666</DroneId>
+    <DroneId>100013</DroneId>
+    <StationId>1002</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100014</DroneId>
     <StationId>1001</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>4900479</DroneId>
+    <DroneId>100018</DroneId>
+    <StationId>1005</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100021</DroneId>
+    <StationId>1000</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100023</DroneId>
+    <StationId>1005</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100024</DroneId>
     <StationId>1001</StationId>
   </DroneCharge>
   <DroneCharge>
-    <DroneId>2367186</DroneId>
-    <StationId>1001</StationId>
+    <DroneId>100025</DroneId>
+    <StationId>1000</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100027</DroneId>
+    <StationId>1002</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>100028</DroneId>
+    <StationId>1003</StationId>
+  </DroneCharge>
+  <DroneCharge>
+    <DroneId>1215154</DroneId>
+    <StationId>1003</StationId>
   </DroneCharge>
 </ArrayOfDroneCharge>

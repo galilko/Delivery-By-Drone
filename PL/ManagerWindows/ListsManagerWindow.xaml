@@ -6,103 +6,173 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="List Drones Window" Height="640" Width="820"
+        Title="List Drones Window"
+        Height="640"
+        Width="820"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal" 
-        TextOptions.TextRenderingMode="Auto"        
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
         WindowStyle="None"
-                DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}" Loaded="Window_Loaded">
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
 
     </Window.Resources>
 
-    <Border
-        CornerRadius="40"
-        BorderBrush="#81d4fa"
-        BorderThickness="4"
-        Background="White">
-        <Grid x:Name="MainGrid" >
+    <Border CornerRadius="40"
+            BorderBrush="#81d4fa"
+            BorderThickness="4"
+            Background="White">
+        <Grid x:Name="MainGrid">
             <Grid.Resources>
-                <Style x:Key="alternatingStyle" TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="Height" Value="30"/>
+                <Style x:Key="alternatingStyle"
+                       TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment"
+                            Value="Center" />
+                    <Setter Property="Height"
+                            Value="30" />
                     <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="#81d4fa"></Setter>
+                        <Trigger Property="ItemsControl.AlternationIndex"
+                                 Value="0">
+                            <Setter Property="Background"
+                                    Value="#81d4fa"></Setter>
                         </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="White"></Setter>
+                        <Trigger Property="ItemsControl.AlternationIndex"
+                                 Value="1">
+                            <Setter Property="Background"
+                                    Value="White"></Setter>
                         </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#FF6176A6"/>
+                        <Trigger Property="IsSelected"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="#FF6176A6" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-                <Style x:Key="headerStyle" TargetType="GridViewColumnHeader">
-                    <Setter Property="Height" Value="45"/>
-                    <Setter Property="FontSize" Value="15"/>
+                <Style x:Key="headerStyle"
+                       TargetType="GridViewColumnHeader">
+                    <Setter Property="Height"
+                            Value="45" />
+                    <Setter Property="FontSize"
+                            Value="15" />
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
 
             <Grid x:Name="TabsGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TabControl Style="{StaticResource MaterialDesignTabControl}" Grid.ColumnSpan="2">
+                <TabControl Style="{StaticResource MaterialDesignTabControl}"
+                            Grid.ColumnSpan="2">
                     <TabItem Header="Drones">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="5*" />
                             </Grid.RowDefinitions>
-                            <Grid  x:Name="DronesUpGrid" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-               Height="auto" Width="auto" Background="White">
+                            <Grid  x:Name="DronesUpGrid"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Height="auto"
+                                   Width="auto"
+                                   Background="White">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png"/>
-                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png" />
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Vertical"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
-                                        <ComboBox x:Name="cmbStatus" Text="Choose status:" ItemsSource="{Binding Source={StaticResource DroneStatusCategories}}"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:" SelectedItem="{Binding Model.StatusSelector}"
-                                Width="150" FontFamily="Comic Sans MS" FontSize="14"/>
-                                        <Button x:Name="btnResetStatus" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
-                                      Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="30" Height="30" 
- VerticalAlignment="Top" Click="btnResetStatus_Click" Margin="20,0,0,0"/>
+                                        <ComboBox x:Name="cmbStatus"
+                                                  Text="Choose status:"
+                                                  ItemsSource="{Binding Source={StaticResource DroneStatusCategories}}"
+                                                  IsEditable="True"
+                                                  IsReadOnly="True"
+                                                  ToolTip="Choose status:"
+                                                  SelectedItem="{Binding Model.StatusSelector}"
+                                                  Width="150"
+                                                  FontFamily="Comic Sans MS"
+                                                  FontSize="14" />
+                                        <Button x:Name="btnResetStatus"
+                                                Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                Width="30"
+                                                Height="30"
+                                                VerticalAlignment="Top"
+                                                Click="btnResetStatus_Click"
+                                                Margin="20,0,0,0" />
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                                        <ComboBox x:Name="cmbWeight" Grid.Column="1" Text="Choose weight:" Width="150" ItemsSource="{Binding Source={StaticResource WeightCategories}}"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose weight:" SelectedItem="{Binding Model.WeightSelector}"
-                                FontFamily="Comic Sans MS" FontSize="14" />
-                                        <Button x:Name="btnResetWeight" Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
-                                                 Margin="20,0,0,0"
-                    Grid.Column="2" Width="30" Click="btnResetWeight_Click" Height="30" />
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,20,0,0">
+                                        <ComboBox x:Name="cmbWeight"
+                                                  Grid.Column="1"
+                                                  Text="Choose weight:"
+                                                  Width="150"
+                                                  ItemsSource="{Binding Source={StaticResource WeightCategories}}"
+                                                  IsEditable="True"
+                                                  IsReadOnly="True"
+                                                  ToolTip="Choose weight:"
+                                                  SelectedItem="{Binding Model.WeightSelector}"
+                                                  FontFamily="Comic Sans MS"
+                                                  FontSize="14" />
+                                        <Button x:Name="btnResetWeight"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
+                                                Margin="20,0,0,0"
+                                                Grid.Column="2"
+                                                Width="30"
+                                                Click="btnResetWeight_Click"
+                                                Height="30" />
                                     </StackPanel>
                                 </StackPanel>
-                                <Button x:Name="btnAddDrone" Content="Add drone" Grid.Column="4" Height="52" Width="116" Style="{StaticResource MaterialDesignRaisedLightButton}"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="15" VerticalAlignment="Center" Click="btnAddDrone_Click" FontWeight="Bold"
+                                <Button x:Name="btnAddDrone"
+                                        Content="Add drone"
+                                        Grid.Column="4"
+                                        Height="52"
+                                        Width="116"
+                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="Comic Sans MS"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        Click="btnAddDrone_Click"
+                                        FontWeight="Bold"
                                         materialDesign:ButtonAssist.CornerRadius="25">
                                 </Button>
-                                <StackPanel Orientation="Vertical" Grid.Column="3" VerticalAlignment="Center">
-                                    <RadioButton x:Name="StatusGrouping" Content="Group By Status" GroupName="groupA" Checked="StatusGrouping_Checked"/>
-                                    <RadioButton x:Name="WeightGrouping" Content="Group By Weight" GroupName="groupA" Checked="WeightGrouping_Checked"/>
-                                    <RadioButton x:Name="CancelGrouping" Content="Not Grouping" GroupName="groupA" Checked="CancelGrouping_Checked"/>
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Column="3"
+                                            VerticalAlignment="Center">
+                                    <RadioButton x:Name="StatusGrouping"
+                                                 Content="Group By Status"
+                                                 GroupName="groupA"
+                                                 Checked="StatusGrouping_Checked" />
+                                    <RadioButton x:Name="WeightGrouping"
+                                                 Content="Group By Weight"
+                                                 GroupName="groupA"
+                                                 Checked="WeightGrouping_Checked" />
+                                    <RadioButton x:Name="CancelGrouping"
+                                                 Content="Not Grouping"
+                                                 GroupName="groupA"
+                                                 Checked="CancelGrouping_Checked" />
                                 </StackPanel>
                                 <!--
                                 <Button x:Name="btnClose" Content="Close Window" Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Column="5" Height="52" Width="143"
@@ -111,30 +181,58 @@
                                 </Button>
                                 -->
                             </Grid>
-                            <ListView x:Name="DronesListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Drones, Mode=OneWay}"
-                                      Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
-                  MouseDoubleClick="DronesListView_MouseDoubleClick" AlternationCount="2">
+                            <ListView x:Name="DronesListView"
+                                      ItemContainerStyle="{StaticResource alternatingStyle}"
+                                      ItemsSource="{Binding Model.Drones, Mode=OneWay}"
+                                      Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      BorderBrush="#FFA8CC7B"
+                                      FontFamily="Comic Sans MS"
+                                      FontSize="12"
+                                      FontWeight="Bold"
+                                      Background="#FFE1E2DD"
+                                      MouseDoubleClick="DronesListView_MouseDoubleClick"
+                                      AlternationCount="2">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource headerStyle}">
                                         <GridView.Columns>
-                                            <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" Width="65"/>
-                                            <GridViewColumn Header="Model" DisplayMemberBinding="{Binding Model}" Width="65"/>
-                                            <GridViewColumn Header="Weight" DisplayMemberBinding="{Binding Weight}" Width="65" />
-                                            <GridViewColumn Header="Battery Status" Width="120">
+                                            <GridViewColumn Header="ID"
+                                                            DisplayMemberBinding="{Binding Id}"
+                                                            Width="65" />
+                                            <GridViewColumn Header="Model"
+                                                            DisplayMemberBinding="{Binding Model}"
+                                                            Width="65" />
+                                            <GridViewColumn Header="Weight"
+                                                            DisplayMemberBinding="{Binding Weight}"
+                                                            Width="65" />
+                                            <GridViewColumn Header="Battery Status"
+                                                            Width="120">
                                                 <GridViewColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Grid>
-                                                            <ProgressBar Name="BatteryProgressBar"  Width="80" Height="20" Margin="-5,-1"  Value="{Binding BatteryStatus, Mode=OneWay,Converter={StaticResource batteryToProgressBarConverter}}"
-                                                                         Foreground="{Binding BatteryStatus, Converter={StaticResource batteryToColorConverter}}" Background="White"/>
-                                                            <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <ProgressBar x:Name="BatteryProgressBar"
+                                                                         Style="{x:Null}"
+                                                                         Width="80"
+                                                                         Height="20"
+                                                                         Margin="-5,-1"
+                                                                         Value="{Binding BatteryStatus, Mode=OneWay,Converter={StaticResource batteryToProgressBarConverter}}"
+                                                                         Foreground="{Binding BatteryStatus, Converter={StaticResource batteryToColorConverter}}"
+                                                                         Background="White" />
+                                                            <TextBlock Text="{Binding Value, ElementName=BatteryProgressBar, StringFormat={}{0:0}%}"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center" />
                                                         </Grid>
                                                     </DataTemplate>
                                                 </GridViewColumn.CellTemplate>
                                             </GridViewColumn>
-                                            <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Status}"  Width="90"/>
-                                            <GridViewColumn Header="Current Parcel" DisplayMemberBinding="{Binding TransferdParcel}"/>
-                                            <GridViewColumn Header="Current Location" DisplayMemberBinding="{Binding Location}"/>
+                                            <GridViewColumn Header="Status"
+                                                            DisplayMemberBinding="{Binding Status}"
+                                                            Width="90" />
+                                            <GridViewColumn Header="Current Parcel"
+                                                            DisplayMemberBinding="{Binding TransferdParcel}" />
+                                            <GridViewColumn Header="Current Location"
+                                                            DisplayMemberBinding="{Binding Location}" />
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
@@ -148,9 +246,23 @@
                                                             <Expander IsExpanded="True">
                                                                 <Expander.Header>
                                                                     <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="#81d4fa" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding Name}"
+                                                                                   FontWeight="Bold"
+                                                                                   Foreground="Gray"
+                                                                                   FontSize="22"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding ItemCount}"
+                                                                                   FontSize="22"
+                                                                                   Foreground="#81d4fa"
+                                                                                   FontWeight="Bold"
+                                                                                   FontStyle="Italic"
+                                                                                   Margin="10,0,0,0"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text=" item(s)"
+                                                                                   FontSize="22"
+                                                                                   Foreground="Silver"
+                                                                                   FontStyle="Italic"
+                                                                                   VerticalAlignment="Bottom" />
                                                                     </StackPanel>
                                                                 </Expander.Header>
                                                                 <ItemsPresenter />
@@ -171,36 +283,77 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="5*" />
                             </Grid.RowDefinitions>
-                            <Grid  x:Name="BaseStationsUpGrid" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-               Height="auto" Width="auto" Background="White">
+                            <Grid  x:Name="BaseStationsUpGrid"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Height="auto"
+                                   Width="auto"
+                                   Background="White">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
                                 <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png" />
-                                <Button x:Name="btnAddBaseStation" Content="Add Base-Station" Grid.Column="4" Height="52" Style="{StaticResource MaterialDesignRaisedLightButton}"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="15" VerticalAlignment="Center" FontWeight="Bold"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Click="btnAddBaseStation_Click">
+                                <Button x:Name="btnAddBaseStation"
+                                        Content="Add Base-Station"
+                                        Grid.Column="4"
+                                        Height="52"
+                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="Comic Sans MS"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        materialDesign:ButtonAssist.CornerRadius="25"
+                                        Click="btnAddBaseStation_Click">
                                 </Button>
-                                <StackPanel Orientation="Vertical" Grid.Column="3" VerticalAlignment="Center">
-                                    <RadioButton x:Name="FreeSlotsGrouping" Content="Group By Free Slots" GroupName="groupA" Checked="FreeSlotsGrouping_Checked"/>
-                                    <RadioButton x:Name="CancelBSGrouping" Content="Not Grouping" GroupName="groupA" Checked="CancelBSGrouping_Checked"/>
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Column="3"
+                                            VerticalAlignment="Center">
+                                    <RadioButton x:Name="FreeSlotsGrouping"
+                                                 Content="Group By Free Slots"
+                                                 GroupName="groupA"
+                                                 Checked="FreeSlotsGrouping_Checked" />
+                                    <RadioButton x:Name="CancelBSGrouping"
+                                                 Content="Not Grouping"
+                                                 GroupName="groupA"
+                                                 Checked="CancelBSGrouping_Checked" />
                                 </StackPanel>
                             </Grid>
 
-                            <ListView x:Name="BSListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.BaseStations, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
-                  AlternationCount="2" HorizontalContentAlignment="Center" MouseDoubleClick="BSListView_MouseDoubleClick">
+                            <ListView x:Name="BSListView"
+                                      ItemContainerStyle="{StaticResource alternatingStyle}"
+                                      ItemsSource="{Binding Model.BaseStations, Mode=OneWay}"
+                                      Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      BorderBrush="#FFA8CC7B"
+                                      FontFamily="Comic Sans MS"
+                                      FontSize="12"
+                                      FontWeight="Bold"
+                                      Background="#FFE1E2DD"
+                                      AlternationCount="2"
+                                      HorizontalContentAlignment="Center"
+                                      MouseDoubleClick="BSListView_MouseDoubleClick">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource headerStyle}">
                                         <GridView.Columns>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="100"/>
-                                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="200"/>
-                                            <GridViewColumn Header="Free Charge Slots" DisplayMemberBinding="{Binding FreeChargeSlots}" Width="200"/>
-                                            <GridViewColumn Header="Busy Charge Slots" DisplayMemberBinding="{Binding BusyChargeSlots}" Width="200"/>
+                                            <GridViewColumn Header="Id"
+                                                            DisplayMemberBinding="{Binding Id}"
+                                                            Width="100" />
+                                            <GridViewColumn Header="Name"
+                                                            DisplayMemberBinding="{Binding Name}"
+                                                            Width="200" />
+                                            <GridViewColumn Header="Free Charge Slots"
+                                                            DisplayMemberBinding="{Binding FreeChargeSlots}"
+                                                            Width="200" />
+                                            <GridViewColumn Header="Busy Charge Slots"
+                                                            DisplayMemberBinding="{Binding BusyChargeSlots}"
+                                                            Width="200" />
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
@@ -214,9 +367,23 @@
                                                             <Expander IsExpanded="True">
                                                                 <Expander.Header>
                                                                     <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="#81d4fa" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding Name}"
+                                                                                   FontWeight="Bold"
+                                                                                   Foreground="Gray"
+                                                                                   FontSize="22"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding ItemCount}"
+                                                                                   FontSize="22"
+                                                                                   Foreground="#81d4fa"
+                                                                                   FontWeight="Bold"
+                                                                                   FontStyle="Italic"
+                                                                                   Margin="10,0,0,0"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text=" item(s)"
+                                                                                   FontSize="22"
+                                                                                   Foreground="Silver"
+                                                                                   FontStyle="Italic"
+                                                                                   VerticalAlignment="Bottom" />
                                                                     </StackPanel>
                                                                 </Expander.Header>
                                                                 <ItemsPresenter />
@@ -237,76 +404,127 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="5*" />
                             </Grid.RowDefinitions>
-                            <Grid  x:Name="CustomersUpGrid" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-               Height="auto" Width="auto" Background="White">
+                            <Grid  x:Name="CustomersUpGrid"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Stretch"
+                                   Height="auto"
+                                   Width="auto"
+                                   Background="White">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png"/>
-                                <Button x:Name="btnAddCustomer" Content="Add Customer" Grid.Column="4" Height="52" Style="{StaticResource MaterialDesignRaisedLightButton}"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="15" VerticalAlignment="Center" FontWeight="Bold"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Click="btnAddCustomer_Click" >
+                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png" />
+                                <Button x:Name="btnAddCustomer"
+                                        Content="Add Customer"
+                                        Grid.Column="4"
+                                        Height="52"
+                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="Comic Sans MS"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        materialDesign:ButtonAssist.CornerRadius="25"
+                                        Click="btnAddCustomer_Click">
                                 </Button>
 
                             </Grid>
 
-                            <ListView x:Name="CustomersListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Customers, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
-                  MouseDoubleClick="CustomersListView_MouseDoubleClick" AlternationCount="2" HorizontalContentAlignment="Center">
+                            <ListView x:Name="CustomersListView"
+                                      ItemContainerStyle="{StaticResource alternatingStyle}"
+                                      ItemsSource="{Binding Model.Customers, Mode=OneWay}"
+                                      Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      BorderBrush="#FFA8CC7B"
+                                      FontFamily="Comic Sans MS"
+                                      FontSize="12"
+                                      FontWeight="Bold"
+                                      Background="#FFE1E2DD"
+                                      MouseDoubleClick="CustomersListView_MouseDoubleClick"
+                                      AlternationCount="2"
+                                      HorizontalContentAlignment="Center">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource headerStyle}">
                                         <GridView.Columns>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="110"/>
-                                            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="110"/>
-                                            <GridViewColumn Header="Phone Number" DisplayMemberBinding="{Binding PhoneNumber}" Width="110"/>
-                                            <GridViewColumn DisplayMemberBinding="{Binding SentAndSuppliedParcels}" Width="110">
+                                            <GridViewColumn Header="Id"
+                                                            DisplayMemberBinding="{Binding Id}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Name"
+                                                            DisplayMemberBinding="{Binding Name}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Phone Number"
+                                                            DisplayMemberBinding="{Binding PhoneNumber}"
+                                                            Width="110" />
+                                            <GridViewColumn DisplayMemberBinding="{Binding SentAndSuppliedParcels}"
+                                                            Width="110">
                                                 <GridViewColumn.Header>
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="sent" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="sent"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="supplied" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="supplied"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </GridViewColumn.Header>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding SentAndNotSuppliedParcels}"  Width="110">
+                                            <GridViewColumn DisplayMemberBinding="{Binding SentAndNotSuppliedParcels}"
+                                                            Width="110">
                                                 <GridViewColumn.Header>
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="sent" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="sent"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="supplied" IsChecked="False"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="supplied"
+                                                                      IsChecked="False" />
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </GridViewColumn.Header>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding RecievedParcels}"  Width="110">
+                                            <GridViewColumn DisplayMemberBinding="{Binding RecievedParcels}"
+                                                            Width="110">
                                                 <GridViewColumn.Header>
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="recieved" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="recieved"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="supplied" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="supplied"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </GridViewColumn.Header>
                                             </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding InProcessParcelsToCustomer}" Width="110">
+                                            <GridViewColumn DisplayMemberBinding="{Binding InProcessParcelsToCustomer}"
+                                                            Width="110">
                                                 <GridViewColumn.Header>
                                                     <StackPanel Orientation="Vertical">
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="recieved" IsChecked="True"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="recieved"
+                                                                      IsChecked="True" />
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <CheckBox IsEnabled="False" Content="supplied" IsChecked="False"/>
+                                                            <CheckBox IsEnabled="False"
+                                                                      Content="supplied"
+                                                                      IsChecked="False" />
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </GridViewColumn.Header>
@@ -323,66 +541,148 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="5*" />
                             </Grid.RowDefinitions>
-                            <Grid x:Name="ParcelsUpGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-               Height="auto" Width="auto" Background="White">
+                            <Grid x:Name="ParcelsUpGrid"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  Height="auto"
+                                  Width="auto"
+                                  Background="White">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png"/>
+                                <Image Source="C:\Users\Gal Gabay\source\repos\galilko\dotNet5782_6024_2498\PL\Images\DroneLogo.png" />
 
-                                <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel Grid.Column="2"
+                                            Orientation="Vertical"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
-                                        <ComboBox x:Name="cmbParcelStatus" Text="Choose status:"
-                                IsEditable="True" IsReadOnly="True" ToolTip="Choose status:" ItemsSource="{Binding Source={StaticResource ParcelStatus}}"
-                                Width="150" FontFamily="Comic Sans MS" FontSize="14" SelectedItem="{Binding Model.ParcelStatusSelector}"/>
-                                        <Button x:Name="btnResetParcelStatus" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
-                                      Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Width="30" Height="30" 
- VerticalAlignment="Top" Margin="20,0,0,0" Click="btnResetParcelStatus_Click"/>
+                                        <ComboBox x:Name="cmbParcelStatus"
+                                                  Text="Choose status:"
+                                                  IsEditable="True"
+                                                  IsReadOnly="True"
+                                                  ToolTip="Choose status:"
+                                                  ItemsSource="{Binding Source={StaticResource ParcelStatus}}"
+                                                  Width="150"
+                                                  FontFamily="Comic Sans MS"
+                                                  FontSize="14"
+                                                  SelectedItem="{Binding Model.ParcelStatusSelector}" />
+                                        <Button x:Name="btnResetParcelStatus"
+                                                Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                Width="30"
+                                                Height="30"
+                                                VerticalAlignment="Top"
+                                                Margin="20,0,0,0"
+                                                Click="btnResetParcelStatus_Click" />
                                     </StackPanel>
                                 </StackPanel>
-                                <Button x:Name="btnAddParcel" Content="Add Parcel" Grid.Column="4" Height="52" Width="116" Style="{StaticResource MaterialDesignRaisedLightButton}"
-                    HorizontalAlignment="Center" FontFamily="Comic Sans MS" FontSize="15" VerticalAlignment="Center" FontWeight="Bold"
-                                        materialDesign:ButtonAssist.CornerRadius="25" Click="btnAddParcel_Click">
+                                <Button x:Name="btnAddParcel"
+                                        Content="Add Parcel"
+                                        Grid.Column="4"
+                                        Height="52"
+                                        Width="116"
+                                        Style="{StaticResource MaterialDesignRaisedLightButton}"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="Comic Sans MS"
+                                        FontSize="15"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        materialDesign:ButtonAssist.CornerRadius="25"
+                                        Click="btnAddParcel_Click">
                                 </Button>
-                                <StackPanel Orientation="Vertical" Grid.Column="3" VerticalAlignment="Center">
-                                    <RadioButton x:Name="SenderGrouping" Content="Group By Sender" GroupName="groupA" Checked="SenderGrouping_Checked" />
-                                    <RadioButton x:Name="RecieverGrouping" Content="Group By Reciever" GroupName="groupA" Checked="RecieverGrouping_Checked"/>
-                                    <RadioButton x:Name="PStatusGrouping" Content="Group By Status" GroupName="groupA" Checked="PStatusGrouping_Checked"/>
-                                    <RadioButton x:Name="CancelParcelGrouping" Content="Not Grouping" GroupName="groupA" Checked="CancelParcelGrouping_Checked"/>
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Column="3"
+                                            VerticalAlignment="Center">
+                                    <RadioButton x:Name="SenderGrouping"
+                                                 Content="Group By Sender"
+                                                 GroupName="groupA"
+                                                 Checked="SenderGrouping_Checked" />
+                                    <RadioButton x:Name="RecieverGrouping"
+                                                 Content="Group By Reciever"
+                                                 GroupName="groupA"
+                                                 Checked="RecieverGrouping_Checked" />
+                                    <RadioButton x:Name="PStatusGrouping"
+                                                 Content="Group By Status"
+                                                 GroupName="groupA"
+                                                 Checked="PStatusGrouping_Checked" />
+                                    <RadioButton x:Name="CancelParcelGrouping"
+                                                 Content="Not Grouping"
+                                                 GroupName="groupA"
+                                                 Checked="CancelParcelGrouping_Checked" />
                                 </StackPanel>
-                                <StackPanel Orientation="Vertical" Grid.Column="1">
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Column="1">
                                     <StackPanel Orientation="Horizontal">
-                                    <Label Content="From"/>
-                                    <DatePicker x:Name="fromDate" Width="90" Margin="8,0,0,0"/>
+                                        <Label Content="From" />
+                                        <DatePicker x:Name="fromDate"
+                                                    Width="90"
+                                                    Margin="8,0,0,0" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Label Content="To"/>
-                                        <DatePicker x:Name="toDate" Width="90" Margin="25,0,0,0"/>
+                                        <Label Content="To" />
+                                        <DatePicker x:Name="toDate"
+                                                    Width="90"
+                                                    Margin="25,0,0,0" />
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0" HorizontalAlignment="Center">
-                                        <Button x:Name="btnResetByDate" ToolTip="Reset" Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}" Height="30" Width="30"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Margin="0,0,30,0" Click="btnResetByDate_Click"/>
-                                    <Button x:Name="btnParcelsByDate" Content="{materialDesign:PackIcon Kind=Search}" Height="30" Width="30"
-                                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Click="btnParcelsByDate_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,10,0,0"
+                                                HorizontalAlignment="Center">
+                                        <Button x:Name="btnResetByDate"
+                                                ToolTip="Reset"
+                                                Content="{materialDesign:PackIcon Kind=BackspaceReverseOutline}"
+                                                Height="30"
+                                                Width="30"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                Margin="0,0,30,0"
+                                                Click="btnResetByDate_Click" />
+                                        <Button x:Name="btnParcelsByDate"
+                                                Content="{materialDesign:PackIcon Kind=Search}"
+                                                Height="30"
+                                                Width="30"
+                                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                                                Click="btnParcelsByDate_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
-                            <ListView x:Name="ParcelsListView" ItemContainerStyle="{StaticResource alternatingStyle}" ItemsSource="{Binding Model.Parcels, Mode=OneWay}" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  BorderBrush="#FFA8CC7B" FontFamily="Comic Sans MS" FontSize="12" FontWeight="Bold" Background="#FFE1E2DD"
-                  MouseDoubleClick="ParcelsListView_MouseDoubleClick" AlternationCount="2">
+                            <ListView x:Name="ParcelsListView"
+                                      ItemContainerStyle="{StaticResource alternatingStyle}"
+                                      ItemsSource="{Binding Model.Parcels, Mode=OneWay}"
+                                      Grid.Row="2"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      BorderBrush="#FFA8CC7B"
+                                      FontFamily="Comic Sans MS"
+                                      FontSize="12"
+                                      FontWeight="Bold"
+                                      Background="#FFE1E2DD"
+                                      MouseDoubleClick="ParcelsListView_MouseDoubleClick"
+                                      AlternationCount="2">
                                 <ListView.View>
                                     <GridView ColumnHeaderContainerStyle="{StaticResource headerStyle}">
                                         <GridView.Columns>
-                                            <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="110"/>
-                                            <GridViewColumn Header="Sender Name" DisplayMemberBinding="{Binding SenderName}" Width="110"/>
-                                            <GridViewColumn Header="Target Name" DisplayMemberBinding="{Binding TargetName}" Width="110"/>
-                                            <GridViewColumn Header="Weight" DisplayMemberBinding="{Binding Weight}" Width="110"/>
-                                            <GridViewColumn Header="Priority" DisplayMemberBinding="{Binding Priority}" Width="110"/>
-                                            <GridViewColumn Header="Parcel Status" DisplayMemberBinding="{Binding Status}" Width="110"/>
+                                            <GridViewColumn Header="Id"
+                                                            DisplayMemberBinding="{Binding Id}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Sender Name"
+                                                            DisplayMemberBinding="{Binding SenderName}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Target Name"
+                                                            DisplayMemberBinding="{Binding TargetName}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Weight"
+                                                            DisplayMemberBinding="{Binding Weight}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Priority"
+                                                            DisplayMemberBinding="{Binding Priority}"
+                                                            Width="110" />
+                                            <GridViewColumn Header="Parcel Status"
+                                                            DisplayMemberBinding="{Binding Status}"
+                                                            Width="110" />
                                         </GridView.Columns>
                                     </GridView>
                                 </ListView.View>
@@ -396,9 +696,23 @@
                                                             <Expander IsExpanded="True">
                                                                 <Expander.Header>
                                                                     <StackPanel Orientation="Horizontal">
-                                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="#81d4fa" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-                                                                        <TextBlock Text=" item(s)" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding Name}"
+                                                                                   FontWeight="Bold"
+                                                                                   Foreground="Gray"
+                                                                                   FontSize="22"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text="{Binding ItemCount}"
+                                                                                   FontSize="22"
+                                                                                   Foreground="#81d4fa"
+                                                                                   FontWeight="Bold"
+                                                                                   FontStyle="Italic"
+                                                                                   Margin="10,0,0,0"
+                                                                                   VerticalAlignment="Bottom" />
+                                                                        <TextBlock Text=" item(s)"
+                                                                                   FontSize="22"
+                                                                                   Foreground="Silver"
+                                                                                   FontStyle="Italic"
+                                                                                   VerticalAlignment="Bottom" />
                                                                     </StackPanel>
                                                                 </Expander.Header>
                                                                 <ItemsPresenter />
@@ -416,20 +730,24 @@
 
 
                 </TabControl>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right"
-                 Margin="0,8,15,0" Grid.Column="1">
-                    <Button
-                Name="Refresh" Content="{materialDesign:PackIcon Kind=Refresh, Size=30}"
-                Height="35" Width="35" Margin="0,0,10,0"
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Click="Refresh_Click"
-                />
-                    <Button
-                Name="Close" Content="{materialDesign:PackIcon Kind=Close, Size=30}"
-                Height="35" Width="35" 
-                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                Click="Close_OnClick"
-                />
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            Margin="0,8,15,0"
+                            Grid.Column="1">
+                    <Button Name="Refresh"
+                            Content="{materialDesign:PackIcon Kind=Refresh, Size=30}"
+                            Height="35"
+                            Width="35"
+                            Margin="0,0,10,0"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Click="Refresh_Click" />
+                    <Button Name="Close"
+                            Content="{materialDesign:PackIcon Kind=Close, Size=30}"
+                            Height="35"
+                            Width="35"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                            Click="Close_OnClick" />
                 </StackPanel>
             </Grid>
         </Grid>

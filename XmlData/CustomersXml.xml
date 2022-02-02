@@ -1,83 +1,251 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>759581567</Id>
-    <Name>Yossef Weiss</Name>
-    <Phone>057-0993227</Phone>
-    <Latitude>31.782360445313323</Latitude>
-    <Longitude>35.24409993724157</Longitude>
+    <Id>100000494</Id>
+    <Name>Shaul Golan</Name>
+    <Phone>057 - 2397963</Phone>
+    <Latitude>31.786534026258874</Latitude>
+    <Longitude>35.10087051722262</Longitude>
     <IsActive>true</IsActive>
   </Customer>
   <Customer>
-    <Id>440665629</Id>
-    <Name>Michael Weiss</Name>
-    <Phone>058-3857830</Phone>
-    <Latitude>31.71061401580489</Latitude>
-    <Longitude>35.27747395887853</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>317149883</Id>
-    <Name>Eyal Gabay</Name>
-    <Phone>058-9376854</Phone>
-    <Latitude>31.768078605429306</Latitude>
-    <Longitude>35.24908821215345</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>495526576</Id>
-    <Name>Shoham Weiss</Name>
-    <Phone>052-8799616</Phone>
-    <Latitude>31.755104076175535</Latitude>
-    <Longitude>35.24064876865626</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>801845181</Id>
+    <Id>100001357</Id>
     <Name>Yossef Levi</Name>
-    <Phone>053-2602795</Phone>
-    <Latitude>31.71089431130369</Latitude>
-    <Longitude>35.182143360768514</Longitude>
+    <Phone>050 - 2008473</Phone>
+    <Latitude>31.71950874278299</Latitude>
+    <Longitude>35.10965724611173</Longitude>
     <IsActive>true</IsActive>
   </Customer>
   <Customer>
-    <Id>896464101</Id>
-    <Name>Michael Miletzki</Name>
-    <Phone>051-0257995</Phone>
-    <Latitude>31.754196122765634</Latitude>
-    <Longitude>35.26375803021889</Longitude>
+    <Id>100001578</Id>
+    <Name>David Gabayx</Name>
+    <Phone>055 - 5145302</Phone>
+    <Latitude>31.75436144096514</Latitude>
+    <Longitude>35.17177804302042</Longitude>
     <IsActive>true</IsActive>
   </Customer>
   <Customer>
-    <Id>467304539</Id>
-    <Name>David Cohen</Name>
-    <Phone>056-3611383</Phone>
-    <Latitude>31.72116590179092</Latitude>
-    <Longitude>35.2099152107583</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>126904352</Id>
-    <Name>Shoham Weiss</Name>
-    <Phone>051-2273049</Phone>
-    <Latitude>31.731098141428596</Latitude>
-    <Longitude>35.22553529585038</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>774116880</Id>
-    <Name>Shaul Miletzki</Name>
-    <Phone>059-3976604</Phone>
-    <Latitude>31.781728604879106</Latitude>
-    <Longitude>35.26125633810705</Longitude>
-    <IsActive>true</IsActive>
-  </Customer>
-  <Customer>
-    <Id>215511777</Id>
+    <Id>100001848</Id>
     <Name>Gal Weiss</Name>
-    <Phone>052-7750786</Phone>
-    <Latitude>31.754246900986995</Latitude>
-    <Longitude>35.27437764733768</Longitude>
+    <Phone>054 - 8168002</Phone>
+    <Latitude>31.74767530963182</Latitude>
+    <Longitude>35.18775467466924</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100001901</Id>
+    <Name>Yossef Golan</Name>
+    <Phone>055 - 4042848</Phone>
+    <Latitude>31.749486493202618</Latitude>
+    <Longitude>35.11904063835696</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100002064</Id>
+    <Name>Yossef Haviv</Name>
+    <Phone>053 - 9636410</Phone>
+    <Latitude>31.798082280204667</Latitude>
+    <Longitude>35.16234100207796</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100002941</Id>
+    <Name>Yossef Havi</Name>
+    <Phone>055 - 2011198</Phone>
+    <Latitude>31.751582901762603</Latitude>
+    <Longitude>35.13022639436193</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100003166</Id>
+    <Name>Yossef Cohen</Name>
+    <Phone>051 - 8984756</Phone>
+    <Latitude>31.799677334399743</Latitude>
+    <Longitude>35.12265590593343</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100003763</Id>
+    <Name>Eyal Weiss</Name>
+    <Phone>052 - 4497284</Phone>
+    <Latitude>31.713115842553375</Latitude>
+    <Longitude>35.181897694189985</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100003794</Id>
+    <Name>David Levi</Name>
+    <Phone>056 - 7302002</Phone>
+    <Latitude>31.790616607754778</Latitude>
+    <Longitude>35.10591601166219</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100003886</Id>
+    <Name>David Gabay</Name>
+    <Phone>054 - 6065124</Phone>
+    <Latitude>31.709437040942458</Latitude>
+    <Longitude>35.13853796554661</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100004805</Id>
+    <Name>Eyal Golan</Name>
+    <Phone>055 - 9648316</Phone>
+    <Latitude>31.75752828030732</Latitude>
+    <Longitude>35.18265485138756</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100005797</Id>
+    <Name>Matan Miletzki</Name>
+    <Phone>053 - 5482824</Phone>
+    <Latitude>31.79638473242353</Latitude>
+    <Longitude>35.15603587527575</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100006570</Id>
+    <Name>Yossef Cohen</Name>
+    <Phone>054 - 8646979</Phone>
+    <Latitude>31.780443307887968</Latitude>
+    <Longitude>35.18560089249425</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100007497</Id>
+    <Name>Eyal Golan</Name>
+    <Phone>053 - 6486966</Phone>
+    <Latitude>31.724310382699738</Latitude>
+    <Longitude>35.113415782252986</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100008378</Id>
+    <Name>Dvir Shachor</Name>
+    <Phone>052 - 9121626</Phone>
+    <Latitude>31.78411794038681</Latitude>
+    <Longitude>35.167479628123104</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100009368</Id>
+    <Name>Eyal Shachor</Name>
+    <Phone>053 - 6002880</Phone>
+    <Latitude>31.799242842802425</Latitude>
+    <Longitude>35.10283655761873</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100010040</Id>
+    <Name>Shaul Levi</Name>
+    <Phone>051 - 9480868</Phone>
+    <Latitude>31.749880136386434</Latitude>
+    <Longitude>35.131120404056794</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100010156</Id>
+    <Name>Aaron Golan</Name>
+    <Phone>055 - 3609435</Phone>
+    <Latitude>31.752937073052365</Latitude>
+    <Longitude>35.19922404489444</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>100010199</Id>
+    <Name>Dvir Levi</Name>
+    <Phone>052 - 3989610</Phone>
+    <Latitude>31.769239069134574</Latitude>
+    <Longitude>35.111227192781506</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>212121212</Id>
+    <Name>,llmlm</Name>
+    <Phone>54</Phone>
+    <Latitude>54</Latitude>
+    <Longitude>45</Longitude>
+    <IsActive>false</IsActive>
+  </Customer>
+  <Customer>
+    <Id>121215151</Id>
+    <Name>ssss</Name>
+    <Phone>45454</Phone>
+    <Latitude>5</Latitude>
+    <Longitude>4</Longitude>
+    <IsActive>false</IsActive>
+  </Customer>
+  <Customer>
+    <Id>121212121</Id>
+    <Name>sssss</Name>
+    <Phone>05202020</Phone>
+    <Latitude>35.1626</Latitude>
+    <Longitude>32.31651</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>329080477</Id>
+    <Name>Joni Shachor</Name>
+    <Phone>058 - 7388497</Phone>
+    <Latitude>32.1513</Latitude>
+    <Longitude>31.1215</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>33229683</Id>
+    <Name>Oded Shachor</Name>
+    <Phone>052 - 8697674</Phone>
+    <Latitude>34.5626</Latitude>
+    <Longitude>33.211</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>212151515</Id>
+    <Name>ssss</Name>
+    <Phone>151515</Phone>
+    <Latitude>15</Latitude>
+    <Longitude>15</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>207006024</Id>
+    <Name>ssss</Name>
+    <Phone>15</Phone>
+    <Latitude>12</Latitude>
+    <Longitude>12</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>855588</Id>
+    <Name>ddd</Name>
+    <Phone>555</Phone>
+    <Latitude>5</Latitude>
+    <Longitude>5</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>58254216</Id>
+    <Name>htgvnb</Name>
+    <Phone>5824</Phone>
+    <Latitude>154</Latitude>
+    <Longitude>11</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>638542182</Id>
+    <Name>mutjgfh</Name>
+    <Phone>54321</Phone>
+    <Latitude>6</Latitude>
+    <Longitude>6464</Longitude>
+    <IsActive>true</IsActive>
+  </Customer>
+  <Customer>
+    <Id>52541</Id>
+    <Name>mnhkb</Name>
+    <Phone>245</Phone>
+    <Latitude>22</Latitude>
+    <Longitude>35</Longitude>
     <IsActive>true</IsActive>
   </Customer>
 </ArrayOfCustomer>

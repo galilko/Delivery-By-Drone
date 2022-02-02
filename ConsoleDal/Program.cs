@@ -158,7 +158,7 @@ FOR RELEASING A DRONE FROM CHARGING PRESS 5
                                     }
                                 case 4:
                                     {
-                                        List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
+                                        List<BaseStation> myList = (List<BaseStation>)dal.GetBaseStations(b => b?.FreeChargeSlots > 0);
                                         if (myList.Count <= 0)
                                             Console.WriteLine("THERE AREN'T BASE-STATIONS WITH FREE SLOTS", Console.ForegroundColor = ConsoleColor.Red);
                                         else
@@ -299,7 +299,7 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                                     }
                                 case 5:
                                     {
-                                        List<Parcel> myList = (List<Parcel>)dal.NoneScheduledParcels();
+                                        List<Parcel> myList = (List<Parcel>)dal.GetParcels(x=>x?.Scheduled == null);
                                         if (myList.Count > 0)
                                             myList.ForEach(myPrint);
                                         else
@@ -309,7 +309,7 @@ FOR VIEWING ALL FREE BASE-STATIONS PRESS 6
                                     }
                                 case 6:
                                     {
-                                        List<BaseStation> myList = (List<BaseStation>)dal.FreeSlotsBaseStations();
+                                        List<BaseStation> myList = (List<BaseStation>)dal.GetBaseStations(b=>b?.FreeChargeSlots > 0);
                                         if (myList.Count > 0)
                                             myList.ForEach(myPrint);
                                         else

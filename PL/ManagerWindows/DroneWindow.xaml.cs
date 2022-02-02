@@ -27,7 +27,13 @@ namespace PL
         DroneToList dtl;
         public DroneToList NewDrone { get => dtl; }
 
-       // private DroneToList dtl;
+        bool auto;
+        public bool Auto
+        {
+            get => auto;
+            set => this.setAndNotify(PropertyChanged, nameof(Auto), out auto, value);
+        }
+
         /// <summary>
         /// ctor of add drone window
         /// </summary>
@@ -55,12 +61,13 @@ namespace PL
         {
             this.dtl = myDrone;
             this.bl = theBl;
-            drone = bl.GetDrone(myDrone.Id);
+            drone = bl.GetDrone((int)myDrone.Id);
             InitializeComponent();
             this.MethodsDroneGrid.Visibility = Visibility.Visible;
             this.AddDroneGrid.Visibility = Visibility.Hidden;
-            var currentDrone = bl.GetDrone(dtl.Id);
+            var currentDrone = bl.GetDrone((int)dtl.Id);
             var currentParcel = currentDrone.CurrentParcel;
+            auto = false;
             //this.MethodsDroneGrid.DataContext = currentDrone;
             /*if (currentParcel != null)
             {
@@ -119,7 +126,7 @@ namespace PL
                 bl.AddDrone(NewDrone, baseStationId);
                 lock (bl)
                 {
-                    var drone = bl.GetDroneToList(NewDrone.Id);
+                    var drone = bl.GetDroneToList((int)NewDrone.Id);
                     if ((Model1.StatusSelector == null || drone.Status == Model1.StatusSelector) &&
                         (Model1.WeightSelector == null || drone.Weight == Model1.WeightSelector))
                         Model1.Drones.Add(drone);
@@ -163,7 +170,7 @@ namespace PL
         /// <param name="e"></param>
         private void btnUpdateModelToDrone_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateDroneModel(dtl.Id, NewModelTextBox.Text);
+            bl.UpdateDroneModel((int)dtl.Id, NewModelTextBox.Text);
             updateDroneView();
             MessageBox.Show($"Model of Drone {dtl.Id} was changed to '{dtl.Model}'", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             this.UpdateExpander.IsExpanded = false;         
@@ -177,7 +184,7 @@ namespace PL
         {
             try
             {
-                bl.ChargeDrone(dtl.Id);
+                bl.ChargeDrone((int)dtl.Id);
                 updateDroneView();
                 MessageBox.Show($"Drone {dtl.Id} was charged successfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -201,7 +208,7 @@ namespace PL
         {
             try
             {
-                bl.releaseDrone(dtl.Id);
+                bl.releaseDrone((int)dtl.Id);
                 updateDroneView();
                 TimeSpan tSpan = DateTime.Now - dtl.StartCharge;
                 MessageBox.Show($"Drone {dtl.Id} was released successfully after {tSpan.Hours:00}:{tSpan.Minutes:00} hours", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -229,7 +236,7 @@ namespace PL
         {
             try
             {
-                bl.ScheduleDroneForParcel(dtl.Id);
+                bl.ScheduleDroneForParcel((int)dtl.Id);
                 updateDroneView();
                 MessageBox.Show("Drone as Scheduled to parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -253,7 +260,7 @@ namespace PL
         {
             try
             {
-                bl.PickingUpAParcel(dtl.Id);
+                bl.PickingUpAParcel((int)dtl.Id);
                 updateDroneView();
                 MessageBox.Show("Drone Pickud-Up the parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -277,7 +284,7 @@ namespace PL
         {
             try
             {
-                bl.DeliverAParcel(dtl.Id);
+                bl.DeliverAParcel((int)dtl.Id);
                 updateDroneView();
                 MessageBox.Show("Drone Delivered the parcel succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -324,7 +331,7 @@ namespace PL
 
         private void btnParcel_Click(object sender, RoutedEventArgs e)
         {
-            new ParcelDetailsWindow(bl.GetDrone(dtl.Id).CurrentParcel).ShowDialog();
+            new ParcelDetailsWindow(bl.GetDrone((int)dtl.Id).CurrentParcel).ShowDialog();
         }
 
         private void btnDeleteDrone_Click(object sender, RoutedEventArgs e)
@@ -358,7 +365,7 @@ namespace PL
         {
             lock (bl)
             {
-                drone = bl.GetDrone(Drone.Id);
+                drone = bl.GetDrone((int)Drone.Id);
                 this.setAndNotify(PropertyChanged, nameof(Drone), out drone, drone);
 
                 DroneToList droneToList = Model1.Drones.FirstOrDefault(d => d.Id == Drone.Id);
@@ -366,9 +373,32 @@ namespace PL
                 if (index >= 0)
                 {
                     Model1.Drones.Remove(droneToList);
-                    Model1.Drones.Insert(index, bl.GetDroneToList(Drone.Id));
+                    Model1.Drones.Insert(index, bl.GetDroneToList((int)Drone.Id));
                 }
             }
         }
+
+
+        BackgroundWorker worker;
+        private void updateDrone() => worker.ReportProgress(0);
+        private bool checkStop() => worker.CancellationPending;
+
+        private void Auto_Click(object sender, RoutedEventArgs e)
+        {
+            Auto = true;
+            worker = new() { WorkerReportsProgress = true, WorkerSupportsCancellation = true, };
+            worker.DoWork += (sender, args) => bl.StartDroneSimulator((int)args.Argument, updateDrone, checkStop);
+            worker.RunWorkerCompleted += (sender, args) =>
+            {
+                Auto = false;
+                worker = null;
+               // if (closing) Close();
+            };
+            worker.ProgressChanged += (sender, args) => updateDroneView();
+            worker.RunWorkerAsync(Drone.Id);
+        }
+
+        private void Manual_Click(object sender, RoutedEventArgs e) => worker?.CancelAsync();
+
     }
 }

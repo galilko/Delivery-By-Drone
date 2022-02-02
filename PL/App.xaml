@@ -41,6 +41,7 @@
             <local:DeliveryVisibileConverter x:Key="deliveryVisibileConverter"/>
             <local:MaintenanceVisibileConverter x:Key="maintenanceVisibileConverter"/>
             <local:FreeVisibileConverter x:Key="freeVisibileConverter"/>
+            <local:NullToDisableConverter x:Key="nullToDisableConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />

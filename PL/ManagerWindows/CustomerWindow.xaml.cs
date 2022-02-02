@@ -44,7 +44,7 @@ namespace PL
         public CustomerWindow(IBL bl, CustomerToList ctl)
         {
             this.bl = bl;
-            customer = bl.GetCustomer(ctl.Id);
+            customer = bl.GetCustomer((int)ctl.Id);
             InitializeComponent();
             this.MethodsCustomerGrid.Visibility = Visibility.Visible;
             this.AddCustomerGrid.Visibility = Visibility.Collapsed;
@@ -80,7 +80,7 @@ namespace PL
                 bl.AddCustomer(Customer);
                 lock (bl)
                 {
-                    Model1.Customers.Add(bl.GetCustomerToList(Customer.Id));
+                    Model1.Customers.Add(bl.GetCustomerToList((int)Customer.Id));
                 }
                 MessageBox.Show($"Customer {Customer.Id} was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
@@ -100,7 +100,7 @@ namespace PL
 
         private void btnUpdateCustomer_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateCustomer(Customer.Id, CNameTextBox.Text, CPhoneTextBox.Text);
+            bl.UpdateCustomer((int)Customer.Id, Customer.Name, Customer.PhoneNumber);
             updateCustomersView();
             MessageBox.Show($"Customer {Customer.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
             this.UpdateExpander.IsExpanded = false;
@@ -138,7 +138,7 @@ namespace PL
             {
                 if (MessageBox.Show("Are you sure you want to delete Customer?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    CustomerToList ctl = bl.GetCustomerToList(Customer.Id);
+                    CustomerToList ctl = bl.GetCustomerToList((int)Customer.Id);
                     bl.DeleteCustomer((int)Customer.Id);
                     lock (bl)
                     {
@@ -172,7 +172,7 @@ namespace PL
                 if (index >= 0)
                 {
                     Model1.Customers.Remove(ctl);
-                    Model1.Customers.Insert(index, bl.GetCustomerToList(Customer.Id));
+                    Model1.Customers.Insert(index, bl.GetCustomerToList((int)Customer.Id));
                 }
             }
         }

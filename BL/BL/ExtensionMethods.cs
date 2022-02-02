@@ -16,43 +16,32 @@ namespace BL
         internal static double Distance(this ILocatable from, ILocatable to)
         {
             int R = 6371 * 1000; // metres
-            double phi1 = from.Location.Latitude * Math.PI / 180; // φ, λ in radians
-            double phi2 = to.Location.Latitude * Math.PI / 180;
-            double deltaPhi = (to.Location.Latitude - from.Location.Latitude) * Math.PI / 180;
-            double deltaLambda = (to.Location.Longitude - from.Location.Longitude) * Math.PI / 180;
-
-            double a = Math.Sin(deltaPhi / 2) * Math.Sin(deltaPhi / 2) +
-                       Math.Cos(phi1) * Math.Cos(phi2) *
-                       Math.Sin(deltaLambda / 2) * Math.Sin(deltaLambda / 2);
+            double? phi1 = from.Location.Latitude * Math.PI / 180; // φ, λ in radians
+            double? phi2 = to.Location.Latitude * Math.PI / 180;
+            double? deltaPhi = (to.Location.Latitude - from.Location.Latitude) * Math.PI / 180;
+            double? deltaLambda = (to.Location.Longitude - from.Location.Longitude) * Math.PI / 180;
+                  
+            double a = Math.Sin((double)deltaPhi / 2) * Math.Sin((double)deltaPhi / 2) +
+                       Math.Cos((double)phi1) * Math.Cos((double)phi2) *
+                       Math.Sin((double)deltaLambda / 2) * Math.Sin((double)deltaLambda / 2);
             double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             double d = R * c / 1000; // in kilometres
             return d;
         }
-
-        /*internal static double EuclideanDistance(this Location from, Location to) =>
-            Math.Sqrt(Math.Pow(to.Longitude - from.Longitude, 2) + Math.Pow(to.Latitude - from.Latitude, 2));
-
-        internal static CustomerAtParcel GetDeliveryCustomer(this DO.Customer customer) =>
-            new()
-            {
-                Id = customer.Id,
-                Name = customer.Name,
-               // Location = new Location { Latitude = customer.Latitude, Longitude = customer.Longitude }
-            };
-
-        internal static Location Location(this DO.BaseStation baseStation) =>
-            new() { Latitude = baseStation.Latitude, Longitude = baseStation.Longitude };
-
-        internal static Location Location(this DO.Customer customer) =>
-            new() { Latitude = customer.Latitude, Longitude = customer.Longitude };*/
-
+        /// <summary>
+        /// Calculate the required battery to deliver a parcel for drone
+        /// </summary>
+        /// <param name="drone"></param>
+        /// <param name="bl"></param>
+        /// <param name="parcelId"></param>
+        /// <returns></returns>
         internal static double RequiredBattery(this ILocatable drone, BL bl, int parcelId)
         {
             DO.Parcel parcel = bl.MyDal.GetParcel(parcelId);
             Customer sender = bl.GetCustomer(parcel.SenderId);
             Customer target = bl.GetCustomer(parcel.TargetId);
             double battery = bl.BatteryUsages[(int)Enum.Parse(typeof(BatteryUsage), parcel.Weight.ToString())] * sender.Distance(target); // required battery from sender to target
-            battery += bl.BatteryUsages[DRONE_FREE] * target.Distance(bl.FindClosestBaseStation(target)); // required battery from target to closest base-station
+            battery += bl.BatteryUsages[DRONE_FREE] * target.Distance(bl.FindClosestBaseStation(target, false)); // required battery from target to closest base-station
             if (parcel.PickedUp is null)
                 battery += bl.BatteryUsages[DRONE_FREE] * drone.Distance(sender); // required battery from drone to sender
             return battery;

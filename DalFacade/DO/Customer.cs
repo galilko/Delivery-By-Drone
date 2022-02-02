@@ -4,7 +4,7 @@ namespace DO
 {
     public struct Customer
     {
-        public int? Id { get; init; }
+        public int Id { get; init; }
         public string Name { get; set; }
         public string Phone { get; set; }
         public double Latitude { get; set; }

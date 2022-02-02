@@ -6,36 +6,33 @@ using System.Linq;
 
 namespace BL
 {
-    public class Converter
+    internal class Converter
     {
+        internal static IDal dal = DalFactory.GetDal();
+        /// <summary>
+        /// Convert DroneToList To Dal Drone
+        /// </summary>
+        /// <param name="myDrone"></param>
+        /// <returns>Dal Drone</returns>
         internal static DO.Drone GetDalDrone(DroneToList myDrone)
         {
             return new DO.Drone()
             {
-                Id = myDrone.Id,
+                Id = (int)myDrone.Id,
                 MaxWeight = (DO.WeightCategories)myDrone.Weight,
                 Model = myDrone.Model
             };
         }
-
-        internal static DO.BaseStation ConvertBlBsToDalBs(BaseStation myBaseStation)
-        {
-            return new DO.BaseStation()
-            {
-                Id = (int)myBaseStation.Id,
-                Name = myBaseStation.Name,
-                Latitude = (double)myBaseStation.Location.Latitude,
-                Longitude = (double)myBaseStation.Location.Longitude,
-                FreeChargeSlots = (int)myBaseStation.FreeChargeSlots,
-                IsActive = true
-            };
-        }
-
+        /// <summary>
+        /// Convert BL Customer to Dal Customer
+        /// </summary>
+        /// <param name="myCustomer"></param>
+        /// <returns>Dal Customer</returns>
         internal static DO.Customer GetDalCustomer(Customer myCustomer)
         {
-            return new DO.Customer()
+                return new DO.Customer()
             {
-                Id = myCustomer.Id,
+                Id = (int)myCustomer.Id,
                 Name = myCustomer.Name,
                 Phone = myCustomer.PhoneNumber,
                 Latitude = (double)myCustomer.Location.Latitude,
@@ -43,7 +40,11 @@ namespace BL
                 IsActive = true
             };
         }
-
+        /// <summary>
+        /// Convert BL Parcel to Dal Parcel
+        /// </summary>
+        /// <param name="myParcel"></param>
+        /// <returns>Dal Parcel</returns>
         internal static DO.Parcel GetDalParcel(Parcel myParcel)
         {
             myParcel.Requested = DateTime.Now;
@@ -62,26 +63,11 @@ namespace BL
                 Delivered = myParcel.Delivered,
             };
         }
-
-        internal static ParcelInTransfer ConvertDalParcelToBlParcelInTranfer(DO.Parcel parcel, List<DO.Customer> customerList)
-        {
-            ParcelInTransfer pit = new() { Id = parcel.Id };
-            DO.Customer sender = customerList.Find(x => x.Id == parcel.SenderId);
-            pit.Sender = new() { Id = sender.Id, Name = sender.Name };
-            DO.Customer target = customerList.Find(x => x.Id == parcel.TargetId);
-            pit.Reciever = new() { Id = target.Id, Name = target.Name };
-            pit.Weight = (WeightCategories)parcel.Weight;
-            pit.Priority = (Priorities)parcel.Priority;
-            if (parcel.PickedUp == null)
-                pit.Status = false;
-            else
-                pit.Status = true;
-            pit.CollectionLocation = new() { Latitude = sender.Latitude, Longitude = sender.Longitude };
-            pit.DeliveryDestinationLocation = new() { Latitude = target.Latitude, Longitude = target.Longitude };
-            pit.TransportDistance = new Customer() { Location = pit.CollectionLocation }.Distance(new Customer() { Location = pit.DeliveryDestinationLocation });
-            return pit;
-        }
-
+        /// <summary>
+        /// Calculate BL Parcel status according to Dal Parcel times
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>Parcel status</returns>
         internal static ParcelStatus CalculateParcelStatus(DO.Parcel parcel)
         {
             if (parcel.Delivered != null)
@@ -93,14 +79,19 @@ namespace BL
             else
                 return ParcelStatus.Defined;
         }
-
-        internal static Parcel GetBlParcel(DO.Parcel dalParcel, IDal myDal, List<DroneToList> blDrones)
+        /// <summary>
+        /// Convert Dal Parcel to BL Parcel
+        /// </summary>
+        /// <param name="dalParcel"></param>
+        /// <param name="blDrones"></param>
+        /// <returns>BL Parcel</returns>
+        internal static Parcel GetBlParcel(DO.Parcel dalParcel, List<DroneToList> blDrones)
         {
             Parcel blParcel = new()
             {
                 Id = dalParcel.Id,
-                Sender = new CustomerAtParcel() { Id = dalParcel.SenderId, Name = myDal.GetCustomer(dalParcel.SenderId).Name },
-                Target = new CustomerAtParcel() { Id = dalParcel.TargetId, Name = myDal.GetCustomer(dalParcel.TargetId).Name },
+                Sender = new CustomerAtParcel() { Id = dalParcel.SenderId, Name = dal.GetCustomer(dalParcel.SenderId).Name },
+                Target = new CustomerAtParcel() { Id = dalParcel.TargetId, Name = dal.GetCustomer(dalParcel.TargetId).Name },
                 Weight = (WeightCategories)dalParcel.Weight,
                 Priority = (Priorities)dalParcel.Priority,
                 Requested = dalParcel.Requested,
@@ -120,20 +111,28 @@ namespace BL
             }
             return blParcel;
         }
-
-        internal static ParcelToList GetParcelToList(DO.Parcel parcel, IDal myDal)
+        /// <summary>
+        /// Convert Dal Parcel to ParcelToList
+        /// </summary>
+        /// <param name="parcel"></param>
+        /// <returns>ParcelToList</returns>
+        internal static ParcelToList GetParcelToList(DO.Parcel parcel)
         {
             return new ParcelToList()
             {
                 Id = parcel.Id,
-                SenderName = myDal.GetCustomer(parcel.SenderId).Name,
-                TargetName = myDal.GetCustomer(parcel.TargetId).Name,
+                SenderName = dal.GetCustomer(parcel.SenderId).Name,
+                TargetName = dal.GetCustomer(parcel.TargetId).Name,
                 Weight = (WeightCategories)parcel.Weight,
                 Priority = (Priorities)parcel.Priority,
                 Status = Converter.CalculateParcelStatus(parcel)
             };
         }
-
+        /// <summary>
+        /// Convert BL Base-Station To Dal Base-Station
+        /// </summary>
+        /// <param name="myBaseStation"></param>
+        /// <returns>Dal Base-Station</returns>
         internal static DO.BaseStation GetDalBS(BaseStation myBaseStation)
         {
             return new DO.BaseStation()
@@ -146,8 +145,13 @@ namespace BL
                 IsActive = true
             };// use with AddBaseStation from mydal to set basestation from the user to datasorce        }
         }
-
-        internal static BaseStation GetBlBS(DO.BaseStation dalBs, IDal myDal, List<DroneToList> blDrones)
+        /// <summary>
+        /// Convert Dal Base-Station To BL Base-Station
+        /// </summary>
+        /// <param name="dalBs"></param>
+        /// <param name="blDrones"></param>
+        /// <returns></returns>
+        internal static BaseStation GetBlBS(DO.BaseStation dalBs, List<DroneToList> blDrones)
         {
             BaseStation blBS = new BaseStation()
             {
@@ -157,8 +161,9 @@ namespace BL
                 FreeChargeSlots = dalBs.FreeChargeSlots,
                 DronesInCharge = new()
             };
-            List<DO.DroneCharge> dronesInCharge = myDal.GetListOfInChargeDrones().Where(x => x.StationId == blBS.Id).ToList(); //update the blBs.DronesInCharge with all the drones that chargeing on the BaseStation that found 
-            foreach (var droneCharge in dronesInCharge)
+
+            List<DO.DroneCharge?> dronesInCharge = dal.GetDronesInCharge(x => x?.StationId == blBS.Id).ToList(); //update the blBs.DronesInCharge with all the drones that chargeing on the BaseStation that found 
+            foreach (DO.DroneCharge droneCharge in dronesInCharge)
             {
                 blBS.DronesInCharge.Add(new DroneInCharge()
                 {
@@ -168,19 +173,27 @@ namespace BL
             }
             return blBS;
         }
-
-        internal static BaseStationToList GetBSToList(DO.BaseStation bs, IDal myDal)
+        /// <summary>
+        /// Convert Dal Base-Station To BaseStationToList
+        /// </summary>
+        /// <param name="bs"></param>
+        /// <returns>BaseStationToList</returns>
+        internal static BaseStationToList GetBSToList(DO.BaseStation bs)
         {
             return new BaseStationToList()
             {
                 Id = bs.Id,
                 Name = bs.Name,
                 FreeChargeSlots = bs.FreeChargeSlots,
-                BusyChargeSlots = myDal.GetListOfInChargeDrones().Where(x => x.StationId == bs.Id).Count()
+                BusyChargeSlots = dal.GetDronesInCharge(x => x?.StationId == bs.Id).Count()
             };
         }
-
-        internal static Customer GetBlCustomer(DO.Customer dalCustomer, IDal myDal)
+        /// <summary>
+        /// Convert Dal Customer To BL Customer
+        /// </summary>
+        /// <param name="dalCustomer"></param>
+        /// <returns>BL Customer</returns>
+        internal static Customer GetBlCustomer(DO.Customer dalCustomer)
         {
             Customer blCustomer = new()
             {
@@ -190,7 +203,7 @@ namespace BL
                 PhoneNumber = dalCustomer.Phone
             };
             blCustomer.ParcelFromCustomerList = new List<ParcelAtCustomer>();
-            foreach (var item in myDal.GetParcels().Where(x => x.SenderId == blCustomer.Id)) // creat a list into  blCustomer of all the parcel that he hever send and all the details of hevry parcel
+            foreach (DO.Parcel item in dal.GetParcels().Where(x => x?.SenderId == blCustomer.Id)) // creat a list into  blCustomer of all the parcel that he hever send and all the details of hevry parcel
             {
                 blCustomer.ParcelFromCustomerList.Add(new ParcelAtCustomer()
                 {
@@ -201,12 +214,12 @@ namespace BL
                     CustomerAtParcel = new CustomerAtParcel()
                     {
                         Id = item.TargetId,
-                        Name = myDal.GetCustomer(item.TargetId).Name
+                        Name = dal.GetCustomer(item.TargetId).Name
                     }
                 });
             }
             blCustomer.ParcelToCustomerList = new List<ParcelAtCustomer>();
-            foreach (var item in myDal.GetParcels().Where(x => x.TargetId == blCustomer.Id))//creat a list into  blCustomer of all the parcel that he hever have received and all the details of hevry parcel
+            foreach (DO.Parcel item in dal.GetParcels(x => x?.TargetId == blCustomer.Id))//creat a list into  blCustomer of all the parcel that he hever have received and all the details of hevry parcel
             {
                 blCustomer.ParcelToCustomerList.Add(new ParcelAtCustomer()
                 {
@@ -217,37 +230,45 @@ namespace BL
                     CustomerAtParcel = new CustomerAtParcel()
                     {
                         Id = item.SenderId,
-                        Name = myDal.GetCustomer(item.SenderId).Name
+                        Name = dal.GetCustomer(item.SenderId).Name
                     }
                 });
             }
             return blCustomer;
         }
-
-        internal static CustomerToList GetCustomerToList(DO.Customer customer, IDal myDal)
+        /// <summary>
+        /// Convert Dal Customer To BL CustomerToList
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns>CustomerToList</returns>
+        internal static CustomerToList GetCustomerToList(DO.Customer customer)
         {
             return new CustomerToList()
             {
                 Id = customer.Id,
                 Name = customer.Name,
                 PhoneNumber = customer.Phone,
-                SentAndSuppliedParcels = myDal.GetParcels().Where(x => x.SenderId == customer.Id && x.Delivered != null).Count(),
-                SentAndNotSuppliedParcels = myDal.GetParcels().Where(x => x.SenderId == customer.Id && x.Delivered == null).Count(),
-                RecievedParcels = myDal.GetParcels().Where(x => x.TargetId == customer.Id && x.Delivered != null).Count(),
-                InProcessParcelsToCustomer = myDal.GetParcels().Where(x => x.TargetId == customer.Id && x.Delivered == null).Count(),
+                SentAndSuppliedParcels = dal.GetParcels(x => x?.SenderId == customer.Id && x?.Delivered != null).Count(),
+                SentAndNotSuppliedParcels = dal.GetParcels(x => x?.SenderId == customer.Id && x?.Delivered == null).Count(),
+                RecievedParcels = dal.GetParcels(x => x?.TargetId == customer.Id && x?.Delivered != null).Count(),
+                InProcessParcelsToCustomer = dal.GetParcels().Where(x => x?.TargetId == customer.Id && x?.Delivered == null).Count(),
             };
         }
-
-        internal static ParcelInTransfer GetParcelInTransfer(DO.Parcel dalParcel, IDal myDal)
+        /// <summary>
+        /// Convert Dal Parcel to ParcelInTransfer
+        /// </summary>
+        /// <param name="dalParcel"></param>
+        /// <returns>ParcelInTransfer</returns>
+        internal static ParcelInTransfer GetParcelInTransfer(DO.Parcel dalParcel)
         {
             ParcelInTransfer parcelInTransfer = new()
             {
                 Id = dalParcel.Id,                                                                                                 // update the details in  ParcelInTransfer 
-                Sender = new CustomerAtParcel() { Id = dalParcel.SenderId, Name = myDal.GetCustomer(dalParcel.SenderId).Name },
-                Reciever = new CustomerAtParcel() { Id = dalParcel.TargetId, Name = myDal.GetCustomer(dalParcel.TargetId).Name },
+                Sender = new CustomerAtParcel() { Id = dalParcel.SenderId, Name = dal.GetCustomer(dalParcel.SenderId).Name },
+                Reciever = new CustomerAtParcel() { Id = dalParcel.TargetId, Name = dal.GetCustomer(dalParcel.TargetId).Name },
                 Weight = (WeightCategories)dalParcel.Weight,
-                CollectionLocation = new() { Latitude = myDal.GetCustomer(dalParcel.SenderId).Latitude, Longitude = myDal.GetCustomer(dalParcel.SenderId).Longitude },
-                DeliveryDestinationLocation = new() { Latitude = myDal.GetCustomer(dalParcel.TargetId).Latitude, Longitude = myDal.GetCustomer(dalParcel.TargetId).Longitude },
+                CollectionLocation = new() { Latitude = dal.GetCustomer(dalParcel.SenderId).Latitude, Longitude = dal.GetCustomer(dalParcel.SenderId).Longitude },
+                DeliveryDestinationLocation = new() { Latitude = dal.GetCustomer(dalParcel.TargetId).Latitude, Longitude = dal.GetCustomer(dalParcel.TargetId).Longitude },
                 Priority = (Priorities)dalParcel.Priority,
             };
             parcelInTransfer.TransportDistance = new Customer() { Location = parcelInTransfer.CollectionLocation }.Distance(new Customer() { Location = parcelInTransfer.DeliveryDestinationLocation }); // use in Distance calculation function that creat for calculat distance between two locations
@@ -257,8 +278,12 @@ namespace BL
                 parcelInTransfer.Status = true;
             return parcelInTransfer;
         }
-
-        internal static Drone GetBlDrone(DroneToList dtl, IDal myDal)
+        /// <summary>
+        /// Convert DroneToList to BL Drone
+        /// </summary>
+        /// <param name="dtl"></param>
+        /// <returns>BL Drone</returns>
+        internal static Drone GetBlDrone(DroneToList dtl)
         {
             Drone drone = new()
             {
@@ -271,8 +296,8 @@ namespace BL
             };
             if (drone.Status == DroneStatusCategories.Delivery) 
             {
-                DO.Parcel dalParcel = myDal.GetParcels().First(x => x.DroneId == drone.Id && x.Delivered == null);
-                ParcelInTransfer parcelInTransfer = Converter.GetParcelInTransfer(dalParcel, myDal);
+                DO.Parcel dalParcel = (DO.Parcel)dal.GetParcels().First(x => x?.DroneId == drone.Id && x?.Delivered == null);
+                ParcelInTransfer parcelInTransfer = Converter.GetParcelInTransfer(dalParcel);
                 drone.CurrentParcel = parcelInTransfer;
             }
             return drone;

@@ -10,7 +10,7 @@ namespace BO
         public double BatteryStatus { get; set; }
         public DroneStatusCategories Status { get; set; }
         public Location Location { get; set; }
-        public int TransferdParcel { get; set; }
+        public int? TransferdParcel { get; set; }
         public DateTime StartCharge { get; set; }
         public bool IsActive { get; set; }
 

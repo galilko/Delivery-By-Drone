@@ -29,7 +29,6 @@ namespace Dal
                 throw new DO.XMLFileLoadCreateException(filePath, $"fail to create xml file: {filePath}", ex);
             }
         }
-
         public static XElement LoadListFromXMLElement(string filePath)
         {
             try

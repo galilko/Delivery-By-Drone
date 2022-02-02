@@ -25,7 +25,7 @@ namespace PL
         {
             this.bl = bl;
             InitializeComponent();
-
+            
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)
@@ -49,48 +49,6 @@ namespace PL
         }
 
         #region Drones
-       /* /// <summary>
-        /// update the drones list view according to combobox of statuses
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmbStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (this.cmbStatus.SelectedIndex == -1)
-            {
-                if (this.cmbWeight.SelectedItem != null)
-                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == (WeightCategories)cmbWeight.SelectedItem);
-                else
-                    this.DronesListView.ItemsSource = bl.AllBlDrones();
-                return;
-            }
-            DroneStatusCategories status = (DroneStatusCategories)cmbStatus.SelectedItem;
-            if (this.cmbWeight.SelectedItem != null)
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status && item.Weight == (WeightCategories)cmbWeight.SelectedItem);
-            else
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == status);
-        }
-        /// <summary>
-        /// update the drones list view according to combobox of weights
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cmbWeight_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (this.cmbWeight.SelectedIndex == -1)
-            {
-                if (this.cmbStatus.SelectedItem != null)
-                    this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
-                else
-                    this.DronesListView.ItemsSource = bl.AllBlDrones();
-                return;
-            }
-            WeightCategories weight = (WeightCategories)cmbWeight.SelectedItem;
-            if (this.cmbStatus.SelectedItem != null)
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight && item.Status == (DroneStatusCategories)cmbStatus.SelectedItem);
-            else
-                this.DronesListView.ItemsSource = bl.AllBlDrones(item => item.Weight == weight);
-        }*/
         /// <summary>
         /// handle of openning "add drone" window
         /// </summary>
@@ -114,8 +72,8 @@ namespace PL
                 DroneToList dtl = myItem;
                 // send the chosen drone to new methods window
                 var dw = new DroneWindow(bl, dtl);
-                dw.ShowDialog();
-                Window_Loaded(sender, e);
+                dw.Show();
+                //Window_Loaded(sender, e);
             }
         }
         /// <summary>
@@ -127,6 +85,7 @@ namespace PL
         {
             cmbWeight.SelectedIndex = -1;
             cmbWeight.Text = "Choose weight:";
+             
         }
         /// <summary>
         /// handle click on reset status sort
@@ -188,7 +147,7 @@ namespace PL
                 // send the chosen bs to new methods window
                 var bsw = new BaseStationWindow(bl, bstl);
                 bsw.ShowDialog();
-                Window_Loaded(sender, e);
+                //Window_Loaded(sender, e);
             }
         }
 
@@ -215,7 +174,7 @@ namespace PL
                 CustomerToList ctl = myItem;
                 var cw = new CustomerWindow(bl, ctl);
                 cw.ShowDialog();
-                Window_Loaded(sender, e);
+                //Window_Loaded(sender, e);
             }
         }
         #endregion
@@ -229,7 +188,7 @@ namespace PL
                 var myItem = item as ParcelToList;
                 ParcelToList ptl = myItem;
                 new ParcelWindow(bl, ptl).ShowDialog();
-                Window_Loaded(sender, e);
+                //Window_Loaded(sender, e);
             }
         }
 

@@ -102,10 +102,24 @@ namespace PL
         /// <param name="e"></param>
         private void btnUpdateBS_Click(object sender, RoutedEventArgs e)
         {
-            bl.UpdateBaseStation(BaseStation.Id, BSNameTextBox.Text, Convert.ToInt32(SlotsCountTextBox.Text));
-            updateBSView();
-            MessageBox.Show($"Base Station {BaseStation.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-            this.UpdateExpander.IsExpanded = false;
+            try
+            {
+                bl.UpdateBaseStation((int)BaseStation.Id, BSNameTextBox.Text, Convert.ToInt32(SlotsCountTextBox.Text));
+                updateBSView();
+                MessageBox.Show($"Base Station {BaseStation.Id} was Updated", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.UpdateExpander.IsExpanded = false;
+            }
+            catch (Exception ex)
+            {
+                string msg = $"{ex.Message}\n";
+                while (ex.InnerException != null)
+                {
+                    ex = ex.InnerException;
+                    msg += $"{ex.Message}\n";
+                }
+
+                MessageBox.Show(msg, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -141,7 +155,7 @@ namespace PL
                 bl.AddBaseStation(BaseStation);
                 lock (bl)
                 {
-                    Model1.BaseStations.Add(bl.GetBSToList(BaseStation.Id));
+                    Model1.BaseStations.Add(bl.GetBSToList((int)BaseStation.Id));
                 }
                 MessageBox.Show("Base Station was added succesfully", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
                 Close();
@@ -165,7 +179,7 @@ namespace PL
             {
                 if (MessageBox.Show("Are you sure you want to delete Base-Station?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    BaseStationToList bstl = bl.GetBSToList(BaseStation.Id);
+                    BaseStationToList bstl = bl.GetBSToList((int)BaseStation.Id);
                     bl.DeleteBaseStation((int)BaseStation.Id);
                     lock (bl)
                     {
@@ -199,7 +213,7 @@ namespace PL
                 if (index >= 0)
                 {
                     Model1.BaseStations.Remove(bsToList);
-                    Model1.BaseStations.Insert(index, bl.GetBSToList(BaseStation.Id));
+                    Model1.BaseStations.Insert(index, bl.GetBSToList((int)BaseStation.Id));
                 }
             }
         }

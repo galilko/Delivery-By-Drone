@@ -17,7 +17,8 @@ namespace PL
 
 
         ObservableCollection<DroneToList> drones = new(bl.GetDrones());
-        public ObservableCollection<DroneToList> Drones {
+        public ObservableCollection<DroneToList> Drones
+        {
             get => drones;
             private set
             {
@@ -25,7 +26,7 @@ namespace PL
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Drones)));
             }
         }
-        
+
         ObservableCollection<BaseStationToList> baseStations = new(bl.GetBaseStations());
         public ObservableCollection<BaseStationToList> BaseStations
         {
@@ -36,7 +37,7 @@ namespace PL
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BaseStations)));
             }
         }
-        
+
         ObservableCollection<CustomerToList> customers = new(bl.GetCustomers());
         public ObservableCollection<CustomerToList> Customers
         {
@@ -60,9 +61,10 @@ namespace PL
         }
 
         DroneStatusCategories? statusSelector = null;
-        public DroneStatusCategories? StatusSelector {
+        public DroneStatusCategories? StatusSelector
+        {
             get => statusSelector;
-            set 
+            set
             {
                 statusSelector = value;
                 DronesRefresh();
@@ -70,7 +72,8 @@ namespace PL
         }
 
         WeightCategories? weightSelector = null;
-        public WeightCategories? WeightSelector {
+        public WeightCategories? WeightSelector
+        {
             get => weightSelector;
             set
             {
@@ -78,7 +81,7 @@ namespace PL
                 DronesRefresh();
             }
         }
-        
+
         ParcelStatus? parcelStatusSelector = null;
         public ParcelStatus? ParcelStatusSelector
         {
@@ -104,10 +107,9 @@ namespace PL
 
         public void ParcelsRefresh()
         {
-            if(parcelStatusSelector != null)
-                Parcels = new(bl.GetParcels().Where(p=>p.Status == parcelStatusSelector));
-            else
-                Parcels = new(bl.GetParcels());
+            Parcels = parcelStatusSelector != null ?
+                    new(bl.GetParcels().Where(p => p.Status == parcelStatusSelector))
+                    : Parcels = new(bl.GetParcels());
         }
 
 
