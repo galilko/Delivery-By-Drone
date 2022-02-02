@@ -203,7 +203,7 @@
                         <TextBox x:Name="LongitudeTextBox"
                                  Height="40"
                                  Width="100"
-                                 Text="{Binding Location.Longitude, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                 Text="{Binding Location.Longitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                                  materialDesign:HintAssist.Hint="Longitude"
                                  materialDesign:HintAssist.IsFloating="True" />
                         <TextBox x:Name="LatitudeTextBox"
@@ -211,7 +211,7 @@
                                  Height="40"
                                  Width="100"
                                  Margin="20,0,0,0"
-                                 Text="{Binding Location.Latitude, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                                 Text="{Binding Location.Latitude, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
                                  materialDesign:HintAssist.Hint="Latitude"
                                  materialDesign:HintAssist.IsFloating="True" />
                     </StackPanel>

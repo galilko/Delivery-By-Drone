@@ -1,84 +1,89 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
     <Id>100000</Id>
-    <Model>DRN-6</Model>
+    <Model>DRN-1</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100001</Id>
     <Model>DRN-6</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100002</Id>
-    <Model>DRN-8</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>DRN-9</Model>
+    <MaxWeight>Light</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>100003</Id>
+    <Model>DRN-3</Model>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100004</Id>
-    <Model>DRN-5</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>DRN-0</Model>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100005</Id>
-    <Model>DRN-3</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>DRN-1</Model>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100006</Id>
-    <Model>DRN-7</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>DRN-4</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100007</Id>
     <Model>DRN-7</Model>
-    <MaxWeight>Light</MaxWeight>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100008</Id>
-    <Model>DRN-4</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>DRN-8</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <Id>100009</Id>
-    <Model>DRN-9</Model>
+    <Model>DRN-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100010</Id>
-    <Model>DRN-9</Model>
+    <Model>DRN-5</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100011</Id>
-    <Model>DRN-8</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>100012</Id>
     <Model>DRN-2</Model>
     <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
-    <Id>100013</Id>
-    <Model>DRN-9</Model>
-    <MaxWeight>Medium</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>100014</Id>
-    <Model>DRN-5</Model>
+    <Id>100012</Id>
+    <Model>DRN-1</Model>
     <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
-    <Id>100015</Id>
-    <Model>DRN-9</Model>
+    <Id>100013</Id>
+    <Model>DRN-1</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
+    <Id>100014</Id>
+    <Model>DRN-0</Model>
     <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
+    <Id>100015</Id>
+    <Model>DRN-3</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
     <Id>100016</Id>
-    <Model>DRN-8</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>DRN-9</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100017</Id>
@@ -87,72 +92,62 @@
   </Drone>
   <Drone>
     <Id>100018</Id>
-    <Model>DRN-7</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <Model>DRN-2</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <Id>100019</Id>
-    <Model>DRN-2</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>DRN-7</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <Id>100020</Id>
-    <Model>DRN-5</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>100021</Id>
-    <Model>DRN-5</Model>
+    <Model>DRN-8</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
-    <Id>100022</Id>
-    <Model>DRN-3</Model>
+    <Id>100021</Id>
+    <Model>DRN-9</Model>
     <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
+    <Id>100022</Id>
+    <Model>DRN-8</Model>
+    <MaxWeight>Heavy</MaxWeight>
+  </Drone>
+  <Drone>
     <Id>100023</Id>
-    <Model>DRN-1</Model>
-    <MaxWeight>Light</MaxWeight>
+    <Model>DRN-9</Model>
+    <MaxWeight>Medium</MaxWeight>
   </Drone>
   <Drone>
     <Id>100024</Id>
     <Model>DRN-3</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100025</Id>
-    <Model>DRN-9</Model>
+    <Model>DRN-2</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100026</Id>
-    <Model>DRN-4</Model>
+    <Model>DRN-9</Model>
     <MaxWeight>Heavy</MaxWeight>
   </Drone>
   <Drone>
     <Id>100027</Id>
     <Model>DRN-2</Model>
-    <MaxWeight>Heavy</MaxWeight>
+    <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100028</Id>
-    <Model>DRN-0</Model>
+    <Model>DRN-5</Model>
     <MaxWeight>Light</MaxWeight>
   </Drone>
   <Drone>
     <Id>100029</Id>
-    <Model>DRN-6</Model>
-    <MaxWeight>Medium</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>100003</Id>
-    <Model>DRN-3x</Model>
-    <MaxWeight>Light</MaxWeight>
-  </Drone>
-  <Drone>
-    <Id>1215154</Id>
-    <Model>sssskm</Model>
-    <MaxWeight>Medium</MaxWeight>
+    <Model>DRN-9</Model>
+    <MaxWeight>Heavy</MaxWeight>
   </Drone>
 </ArrayOfDrone>

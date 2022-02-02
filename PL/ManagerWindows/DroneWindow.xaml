@@ -474,7 +474,7 @@
                                 ToolTip="Watch Parcel Details"
                                 Grid.Row="6"
                                 Grid.Column="3"
-                                Grid.ColumnSpan="1"
+                                Grid.ColumnSpan="2"
                                 VerticalContentAlignment="Center"
                                 IsEnabled="{Binding CurrentParcel, Converter={StaticResource nullToDisableConverter}}"
                                 Click="btnParcel_Click" />

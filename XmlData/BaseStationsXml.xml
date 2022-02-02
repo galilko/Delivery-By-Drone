@@ -1,75 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfBaseStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <BaseStation>
-    <Id>1222</Id>
-    <Name>ssss</Name>
-    <Latitude>12</Latitude>
-    <Longitude>12</Longitude>
-    <FreeChargeSlots>12</FreeChargeSlots>
-    <IsActive>false</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1211</Id>
-    <Name>sssss</Name>
-    <Latitude>12</Latitude>
-    <Longitude>12</Longitude>
-    <FreeChargeSlots>12</FreeChargeSlots>
-    <IsActive>false</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1010</Id>
-    <Name>dddd</Name>
-    <Latitude>32.2156</Latitude>
-    <Longitude>31.2512</Longitude>
-    <FreeChargeSlots>50</FreeChargeSlots>
-    <IsActive>false</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1007</Id>
-    <Name>Base Station7</Name>
-    <Latitude>31.77242378748135</Latitude>
-    <Longitude>35.23768411939856</Longitude>
-    <FreeChargeSlots>10</FreeChargeSlots>
-    <IsActive>false</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1008</Id>
-    <Name>Base Station8</Name>
-    <Latitude>31.78822937405586</Latitude>
-    <Longitude>35.247539142429616</Longitude>
+    <Id>1000</Id>
+    <Name>Jerusalem Central Station</Name>
+    <Latitude>31.78928</Latitude>
+    <Longitude>35.202142</Longitude>
     <FreeChargeSlots>20</FreeChargeSlots>
-    <IsActive>false</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1009</Id>
-    <Name>Base Station9</Name>
-    <Latitude>31.753080957393667</Latitude>
-    <Longitude>35.25145537742016</Longitude>
-    <FreeChargeSlots>19</FreeChargeSlots>
-    <IsActive>true</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1004</Id>
-    <Name>Base Station4</Name>
-    <Latitude>31.778809439320494</Latitude>
-    <Longitude>35.272292034156756</Longitude>
-    <FreeChargeSlots>2</FreeChargeSlots>
-    <IsActive>true</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1006</Id>
-    <Name>Base Station6</Name>
-    <Latitude>31.771240147874337</Latitude>
-    <Longitude>35.23152027204238</Longitude>
-    <FreeChargeSlots>20</FreeChargeSlots>
-    <IsActive>true</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1005</Id>
-    <Name>Base Station5</Name>
-    <Latitude>31.787364997601774</Latitude>
-    <Longitude>35.21074419076123</Longitude>
-    <FreeChargeSlots>18</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
   <BaseStation>
@@ -77,31 +13,71 @@
     <Name>Tel Aviv Central Station</Name>
     <Latitude>32.056312</Latitude>
     <Longitude>34.779888</Longitude>
-    <FreeChargeSlots>28</FreeChargeSlots>
-    <IsActive>true</IsActive>
-  </BaseStation>
-  <BaseStation>
-    <Id>1000</Id>
-    <Name>Jerusalem Central Station</Name>
-    <Latitude>31.78928</Latitude>
-    <Longitude>35.202142</Longitude>
-    <FreeChargeSlots>21</FreeChargeSlots>
+    <FreeChargeSlots>20</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
   <BaseStation>
     <Id>1002</Id>
     <Name>Base Station2</Name>
-    <Latitude>31.79249413984944</Latitude>
-    <Longitude>35.27895279742729</Longitude>
+    <Latitude>31.72075982563699</Latitude>
+    <Longitude>35.23585027321049</Longitude>
     <FreeChargeSlots>20</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
   <BaseStation>
     <Id>1003</Id>
     <Name>Base Station3</Name>
-    <Latitude>31.758565640369696</Latitude>
-    <Longitude>35.204198026873264</Longitude>
-    <FreeChargeSlots>18</FreeChargeSlots>
+    <Latitude>31.809508453998486</Latitude>
+    <Longitude>35.24091224628543</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1004</Id>
+    <Name>Base Station4</Name>
+    <Latitude>31.77795615133269</Latitude>
+    <Longitude>35.2189394458099</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1005</Id>
+    <Name>Base Station5</Name>
+    <Latitude>31.744545955078</Latitude>
+    <Longitude>35.23550506145484</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1006</Id>
+    <Name>Base Station6</Name>
+    <Latitude>31.713393439251647</Latitude>
+    <Longitude>35.24478797023408</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1007</Id>
+    <Name>Base Station7</Name>
+    <Latitude>31.764766967731887</Latitude>
+    <Longitude>35.215404623781986</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1008</Id>
+    <Name>Base Station8</Name>
+    <Latitude>31.78572421025286</Latitude>
+    <Longitude>35.26607375793442</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
+    <IsActive>true</IsActive>
+  </BaseStation>
+  <BaseStation>
+    <Id>1009</Id>
+    <Name>Base Station9</Name>
+    <Latitude>31.792098831041763</Latitude>
+    <Longitude>35.26154877865759</Longitude>
+    <FreeChargeSlots>20</FreeChargeSlots>
     <IsActive>true</IsActive>
   </BaseStation>
 </ArrayOfBaseStation>

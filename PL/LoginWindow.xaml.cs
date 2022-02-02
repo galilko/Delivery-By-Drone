@@ -132,9 +132,7 @@ namespace PL
             {
                 try
                 {
-                    AddCustomerGrid.Focus();
-                    //Keyboard.Focus(signUplbl);
-                    //LongitudeTextBox.Focus();
+                    LongitudeTextBox.Focus();
                     lock (bl)
                     {
                         bl.AddCustomer(Customer);
